@@ -7,6 +7,7 @@ public class Grid {
     private int y;
     private int height;
     private boolean occupy;
+    private static final int MAX_HEIGHT = 4;
 
     public Grid(int x, int y) {
         this.x = x;
@@ -27,7 +28,7 @@ public class Grid {
     }
 
     public boolean addBrick() {
-        if(this.height >= 4){
+        if(this.height >= MAX_HEIGHT){
             return false;
         }
         else{

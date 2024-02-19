@@ -3,6 +3,8 @@ package main.java.com.example;
 
 public class Validator {
 
+    private static final int MAX_HEIGHT = 4;
+
     public Validator(){
     
     }
@@ -44,7 +46,7 @@ public class Validator {
         if(targetGrid.getOccupy()){
             return false;
         }
-        if(targetGrid.getHeight() >= 4){
+        if(targetGrid.getHeight() >= MAX_HEIGHT){
             return false;
         }
         if((targetGrid.getHeight() - workeGrid.getHeight()) > 1){
@@ -66,7 +68,7 @@ public class Validator {
         if(grid.getOccupy()){
             return false;
         }
-        if(grid.getHeight() >= 4){
+        if(grid.getHeight() >= MAX_HEIGHT){
             return false;
         }
         return true;
@@ -78,7 +80,7 @@ public class Validator {
 
         Grid grid = board.getGrid(workerX, workerY);
 
-        if(grid.getHeight() == 3) {
+        if(grid.getHeight() == MAX_HEIGHT - 1) {
             return true;
         }
         else{
