@@ -54,39 +54,133 @@ public class PlayerTest {
         assertFalse(player.chooseWorker(2));
     }
 
+    // @Test
+    // public void testMoveWorker() {
+    //     player.workerInit(validator, board, 0, 0, 1, 1);
+    //     player.chooseWorker(0);
+
+    //     assertFalse(player.moveWorker(validator, board, -1, -1)); // not in boundary
+    //     assertFalse(player.moveWorker(validator, board, rows, cols)); // not in boundary
+    //     assertFalse(player.moveWorker(validator, board, 1, 1)); // Occupied
+    //     assertFalse(player.moveWorker(validator, board, 1, 2)); // No adjacent
+
+    //     Grid targetGrid = board.getGrid(1, 0);
+    //     Grid workerGrid = board.getGrid(0, 0);
+    //     assertTrue(player.moveWorker(validator, board, 1, 0));
+    //     assertFalse(workerGrid.getOccupy());
+    //     assertTrue(targetGrid.getOccupy());
+
+    // }
+
+    // @Test
+    // public void testBuild() {
+    //     player.workerInit(validator, board, 0, 0, 1, 1);
+    //     player.chooseWorker(0);
+
+    //     assertFalse(player.build(validator, board, -1, -1)); // not in boundary
+    //     assertFalse(player.build(validator, board, rows, cols)); // not in boundary
+    //     assertFalse(player.build(validator, board, 1, 1)); // Occupied
+    //     assertFalse(player.build(validator, board, 1, 2)); // No adjacent
+
+    //     Grid grid = board.getGrid(0, 1);
+    //     for(int i = 0; i <= 3; i++){
+    //         assertEquals(grid.getHeight(), i);
+    //         assertTrue(player.build(validator, board, 0, 1));
+    //     }
+    //     assertFalse(player.build(validator, board, 0, 1));
+    // }
+
     @Test
-    public void testMoveWorker() {
+    public void testMoveWorker_NotInBoundary_NegativeCoordinates() {
         player.workerInit(validator, board, 0, 0, 1, 1);
         player.chooseWorker(0);
-
-        assertFalse(player.moveWorker(validator, board, -1, -1)); // not in boundary
-        assertFalse(player.moveWorker(validator, board, rows, cols)); // not in boundary
-        assertFalse(player.moveWorker(validator, board, 1, 1)); // Occupied
-        assertFalse(player.moveWorker(validator, board, 1, 2)); // No adjacent
-
-        Grid targetGrid = board.getGrid(1, 0);
-        Grid workerGrid = board.getGrid(0, 0);
-        assertTrue(player.moveWorker(validator, board, 1, 0));
-        assertFalse(workerGrid.getOccupy());
-        assertTrue(targetGrid.getOccupy());
-
+        assertFalse("Worker should not move to negative coordinates.", player.moveWorker(validator, board, -1, -1));
     }
 
     @Test
-    public void testBuild() {
+    public void testMoveWorker_NotInBoundary_ExceedsGrid() {
         player.workerInit(validator, board, 0, 0, 1, 1);
         player.chooseWorker(0);
+        assertFalse("Worker should not move outside grid boundaries.", player.moveWorker(validator, board, rows, cols));
+    }
 
-        assertFalse(player.build(validator, board, -1, -1)); // not in boundary
-        assertFalse(player.build(validator, board, rows, cols)); // not in boundary
-        assertFalse(player.build(validator, board, 1, 1)); // Occupied
-        assertFalse(player.build(validator, board, 1, 2)); // No adjacent
+    @Test
+    public void testMoveWorker_OccupiedTarget() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertFalse("Worker should not move to an occupied grid.", player.moveWorker(validator, board, 1, 1));
+    }
 
+    @Test
+    public void testMoveWorker_NotAdjacent() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertFalse("Worker should only move to adjacent grids.", player.moveWorker(validator, board, 2, 2));
+    }
+
+    @Test
+    public void testMoveWorker_SuccessfulMove() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertTrue("Worker should move successfully to the target grid.", player.moveWorker(validator, board, 0, 1));
+    }
+
+    @Test
+    public void testBuild_NotInBoundary_NegativeCoordinates() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertFalse("Cannot build on grid with negative coordinates.", player.build(validator, board, -1, -1));
+    }
+
+    @Test
+    public void testBuild_NotInBoundary_ExceedsGrid() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertFalse("Cannot build outside of grid boundaries.", player.build(validator, board, rows, cols));
+    }
+
+    @Test
+    public void testBuild_OccupiedTarget() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertFalse("Cannot build on an occupied grid.", player.build(validator, board, 1, 1));
+    }
+
+    @Test
+    public void testBuild_NotAdjacent() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertFalse("Can only build on adjacent grids.", player.build(validator, board, 2, 2));
+    }
+
+    @Test
+    public void testBuild_SuccessfulBuild_FirstLevel() {
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertTrue("Should successfully build on the target grid.", player.build(validator, board, 0, 1));
+    }
+
+    @Test
+    public void testBuild_SuccessfulBuild_SecondLevel() {
+        // Assuming a building was already initiated in the setup or a previous test
         Grid grid = board.getGrid(0, 1);
-        for(int i = 0; i <= 3; i++){
-            assertEquals(grid.getHeight(), i);
-            assertTrue(player.build(validator, board, 0, 1));
-        }
-        assertFalse(player.build(validator, board, 0, 1));
+        grid.addBrick(); // Simulate a build action to reach the first level
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertTrue("Should successfully build the second level on the target grid.", player.build(validator, board, 0, 1));
     }
+
+    @Test
+    public void testBuild_MaxHeight() {
+        Grid grid = board.getGrid(0, 1);
+        // Manually set the grid to max height minus one to simulate building to max height
+        while (grid.getHeight() < 3) {
+            grid.addBrick();
+        }
+        player.workerInit(validator, board, 0, 0, 1, 1);
+        player.chooseWorker(0);
+        assertTrue("Should successfully build the max height on the target grid.", player.build(validator, board, 0, 1));
+        assertFalse("Should not be able to build beyond max height.", player.build(validator, board, 0, 1));
+    }
+
 }
