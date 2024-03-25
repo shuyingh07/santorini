@@ -45,13 +45,7 @@ public class Game {
     }
 
     public Player getWinner() {
-        if(this.winner == null){
-            return null;
-        }
-
-        else{
-            return this.winner;
-        }
+        return this.winner;
     }
 
     public boolean setWinner(Player player) {
