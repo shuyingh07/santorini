@@ -31,7 +31,7 @@ public class Board {
     * Get the grid in a specified location
     * @param x - specified x location
     * @param y - specified y location
-    * @returns the specified grid
+    * @return the specified grid
     */
     public Grid getGrid(int x,  int y) {
         if (x < 0 || y < 0){
@@ -48,7 +48,7 @@ public class Board {
 
     /**
     * Get the row length of the board
-    * @returns row length of the board
+    * @return row length of the board
     */
     public int getRowLen() {
         return this.rows;
@@ -56,7 +56,7 @@ public class Board {
 
     /**
     * Get the column length of the board
-    * @returns column length of the board
+    * @return column length of the board
     */
     public int getColLen() {
         return this.cols;
