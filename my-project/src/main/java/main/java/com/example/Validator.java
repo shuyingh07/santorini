@@ -27,7 +27,7 @@ public class Validator {
 
     /**
     * Check whether a location is adjacent to a worker
-    * @param Worker - the worker that player chooses this turn
+    * @param worker - the worker that player chooses this turn
     * @param x - specified x location
     * @param y - specified y location
     * @return boolean that demonstrates whether the specified location is adjacent to the worker
@@ -47,7 +47,7 @@ public class Validator {
     /**
     * Check whether a worker can move successfully
     * @param board - game board that has boundary
-    * @param Worker - the worker that player chooses this turn
+    * @param worker - the worker that player chooses this turn
     * @param x - specified x location
     * @param y - specified y location
     * @return boolean that demonstrates whether the worker can move to a specified location successfully
@@ -80,7 +80,7 @@ public class Validator {
     /**
     * Check whether a worker can build successfully
     * @param board - game board that has boundary
-    * @param Worker - the worker that player chooses this turn
+    * @param worker - the worker that player chooses this turn
     * @param x - specified x location
     * @param y - specified y location
     * @return boolean that demonstrates whether the worker can build in a specified location successfully
@@ -107,7 +107,7 @@ public class Validator {
     /**
     * Check whether the game has a winner
     * @param board - game board that has boundary
-    * @param Worker - the worker that player chooses this turn
+    * @param worker - the worker that player chooses this turn
     * @return boolean that demonstrates whether the game has a winner
     */
     public boolean isWin(Board board, Worker worker) {
