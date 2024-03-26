@@ -23,7 +23,7 @@ public class Player {
     * @param y1 - the y location of the worker1
     * @param x2 - the x location of the worker2
     * @param y2 - the y location of the worker2
-    * @returns boolean that demonstrates whether the player intializes workers successfuly
+    * @return boolean that demonstrates whether the player intializes workers successfuly
     */
     public boolean workerInit(Validator validator, Board board, int x1, int y1, int x2, int y2) {
         if(x1 == x2 && y1 ==y2){
@@ -57,7 +57,7 @@ public class Player {
     /**
     * Choose worker to do operations in this turn
     * @param workerID - the worker that need to operate this turn
-    * @returns boolean that demonstrates whether the player choose the worker successfully
+    * @return boolean that demonstrates whether the player choose the worker successfully
     */
     public boolean chooseWorker(int workerID) {
         if(workerID < 0 || workerID >= workerList.size()){
@@ -73,7 +73,7 @@ public class Player {
 
     /**
     * Get the chosen worker in this turn
-    * @returns worker that has been chosen this turn
+    * @return worker that has been chosen this turn
     */
     public Worker getCurrentWorker() {
         return this.currentWorker;
@@ -85,7 +85,7 @@ public class Player {
     * @param board - game board that has boundary
     * @param x - the targeted x location
     * @param y - the targeted y location
-    * @returns boolean that demonstrates whether the player move the worker successfully
+    * @return boolean that demonstrates whether the player move the worker successfully
     */
     public boolean moveWorker(Validator validator, Board board, int x, int y) {
         if(!(validator.isValidMove(board, currentWorker, x, y))) {
@@ -108,7 +108,7 @@ public class Player {
     * @param board - game board that has boundary
     * @param x - the targeted x location
     * @param y - the targeted y location
-    * @returns boolean that demonstrates whether the player successfully build
+    * @return boolean that demonstrates whether the player successfully build
     */
     public boolean build(Validator validator, Board board, int x, int y){
         if(!(validator.isValidBuild(board, currentWorker, x, y))) {

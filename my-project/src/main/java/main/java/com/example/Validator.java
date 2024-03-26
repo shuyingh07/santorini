@@ -14,7 +14,7 @@ public class Validator {
     * @param board - game board that has boundary
     * @param x - specified x location
     * @param y - specified y location
-    * @returns boolean that demonstrates whether the specified location is in the boundary
+    * @return boolean that demonstrates whether the specified location is in the boundary
     */
     public boolean isInBoundary(Board board, int x, int y) {
         if(x < board.getRowLen() && y < board.getColLen() && x >= 0 && y >= 0) {
@@ -30,7 +30,7 @@ public class Validator {
     * @param Worker - the worker that player chooses this turn
     * @param x - specified x location
     * @param y - specified y location
-    * @returns boolean that demonstrates whether the specified location is adjacent to the worker
+    * @return boolean that demonstrates whether the specified location is adjacent to the worker
     */
     public boolean isAdjacentGrid(Worker worker, int x, int y) {
         int workerX = worker.getX();
@@ -50,7 +50,7 @@ public class Validator {
     * @param Worker - the worker that player chooses this turn
     * @param x - specified x location
     * @param y - specified y location
-    * @returns boolean that demonstrates whether the worker can move to a specified location successfully
+    * @return boolean that demonstrates whether the worker can move to a specified location successfully
     */
     public boolean isValidMove(Board board, Worker worker, int x, int y) {
         if(!isInBoundary(board, x, y)){
@@ -83,7 +83,7 @@ public class Validator {
     * @param Worker - the worker that player chooses this turn
     * @param x - specified x location
     * @param y - specified y location
-    * @returns boolean that demonstrates whether the worker can build in a specified location successfully
+    * @return boolean that demonstrates whether the worker can build in a specified location successfully
     */
     public boolean isValidBuild(Board board, Worker worker, int x, int y) {
         if(!isInBoundary(board, x, y)){
@@ -108,7 +108,7 @@ public class Validator {
     * Check whether the game has a winner
     * @param board - game board that has boundary
     * @param Worker - the worker that player chooses this turn
-    * @returns boolean that demonstrates whether the game has a winner
+    * @return boolean that demonstrates whether the game has a winner
     */
     public boolean isWin(Board board, Worker worker) {
         int workerX = worker.getX();

@@ -23,7 +23,7 @@ public class Grid {
 
     /**
     * Get the position of a specified grid
-    * @returns an arraylist that demonstrates the position of the grid
+    * @return an arraylist that demonstrates the position of the grid
     */
     public ArrayList<Integer> getPosition() {
         ArrayList<Integer> position = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Grid {
 
     /**
     * Get the height of a specified grid
-    * @returns the height of the grid
+    * @return the height of the grid
     */
     public int getHeight() {
         return this.height;
@@ -42,7 +42,7 @@ public class Grid {
 
     /**
     * Plus 1 to height of a specified grid
-    * @returns boolean that demonstrates whether the height of grid increases successfully
+    * @return boolean that demonstrates whether the height of grid increases successfully
     */
     public boolean addBrick() {
         if(this.height >= MAX_HEIGHT){
@@ -56,7 +56,7 @@ public class Grid {
 
     /**
     * Get the occupid status of a specified grid
-    * @returns the occupid status of the grid
+    * @return the occupid status of the grid
     */
     public boolean getOccupy() {
         return this.occupy;
@@ -64,7 +64,7 @@ public class Grid {
     
     /**
     * Set the occupid status of a specified grid after it has been occupied by a new worker
-    * @returns boolean that demonstrates whether the occupied status of grid changes successfully
+    * @return boolean that demonstrates whether the occupied status of grid changes successfully
     */
     public boolean setOccupy() {
         if(this.occupy) {
@@ -78,7 +78,7 @@ public class Grid {
 
     /**
     * Set the occupid status of a specified grid to false after the worker on it move to a other location
-    * @returns boolean that demonstrates whether the occupied status of grid clears successfully
+    * @return boolean that demonstrates whether the occupied status of grid clears successfully
     */
     public boolean clearOccupy() {
         if(!this.occupy) {

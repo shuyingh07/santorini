@@ -18,7 +18,7 @@ public class Worker {
 
     /**
     * Get x location of the worker
-    * @returns the x location of the worker
+    * @return the x location of the worker
     */
     public int getX() {
         return this.x;
@@ -26,7 +26,7 @@ public class Worker {
 
     /**
     * Get y location of the worker
-    * @returns the y location of the worker
+    * @return the y location of the worker
     */
     public int getY() {
         return this.y;
@@ -36,7 +36,7 @@ public class Worker {
     * Move worker to a specified location
     * @param x - specified x location
     * @param y - specified y location
-    * @returns boolean that demonstrates a successful move
+    * @return boolean that demonstrates a successful move
     */
     public boolean move(int x, int y) {
         this.x = x;
