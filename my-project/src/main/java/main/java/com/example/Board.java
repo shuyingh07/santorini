@@ -9,8 +9,8 @@ public class Board {
 
     /**
     * Initialize board with specified row and column length
-    * @param row - specified row length of the board
-    * @param col - specified column length of the board
+    * @param rows - specified row length of the board
+    * @param cols - specified column length of the board
     */
     public Board(int rows, int cols) {
         this.rows = rows;
