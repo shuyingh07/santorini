@@ -79,12 +79,4 @@ public class Game {
             return true;
         }
     }
-
-    /**
-    * End game when there is a winner
-    */
-    public void gameEnd() {
-        System.out.println("Game end! The winner is" + this.currentPlayer);
-        System.exit(0);
-    }
 }

@@ -52,7 +52,7 @@ public class GameTest {
         game.gameStart(player1, playerList);
         assertNull(game.getWinner());
 
-        game.setWinner(player1);
+        game.setWinner();
         assertEquals(player1, game.getWinner());
     }
 

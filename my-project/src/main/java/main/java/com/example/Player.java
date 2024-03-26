@@ -88,7 +88,7 @@ public class Player {
     * @param game - current game
     * @return boolean that demonstrates whether the player move the worker successfully
     */
-    public boolean moveWorker(Validator validator, Board board, int x, int y, Game game) {
+    public boolean moveWorker(Validator validator, Board board, int x, int y) {
         if(!(validator.isValidMove(board, currentWorker, x, y))) {
             return false;
         }
@@ -100,7 +100,10 @@ public class Player {
             targetGrid.setOccupy();
             this.currentWorker.move(x, y);
 
-            validator.isWin(board, currentWorker, game);
+            if(validator.isWin(board, currentWorker)){
+                System.out.println("You win the game");
+                System.exit(0);
+            }
             return true;
         }
     }
