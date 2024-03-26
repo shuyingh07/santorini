@@ -110,13 +110,15 @@ public class Validator {
     * @param worker - the worker that player chooses this turn
     * @return boolean that demonstrates whether the game has a winner
     */
-    public boolean isWin(Board board, Worker worker) {
+    public boolean isWin(Board board, Worker worker, Game game) {
         int workerX = worker.getX();
         int workerY = worker.getY();
 
         Grid grid = board.getGrid(workerX, workerY);
 
         if(grid.getHeight() == MAX_HEIGHT - 1) {
+            game.setWinner();
+            game.gameEnd();
             return true;
         }
         else{

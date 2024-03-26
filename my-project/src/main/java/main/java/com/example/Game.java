@@ -67,16 +67,15 @@ public class Game {
     }
 
     /**
-    * Set winner when a player wins the game
-    * @param player - player that wins the game
+    * Set current player as winner
     * @return boolean that demonstrates whether the winner sets successfully
     */
-    public boolean setWinner(Player player) {
+    public boolean setWinner() {
         if(this.winner != null){
             return false;
         }
         else{
-            this.winner = player;
+            this.winner = this.currentPlayer;
             return true;
         }
     }
