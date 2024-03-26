@@ -85,7 +85,6 @@ public class Player {
     * @param board - game board that has boundary
     * @param x - the targeted x location
     * @param y - the targeted y location
-    * @param game - current game
     * @return boolean that demonstrates whether the player move the worker successfully
     */
     public boolean moveWorker(Validator validator, Board board, int x, int y) {
