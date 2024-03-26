@@ -121,9 +121,7 @@ public class Player {
         }
 
         else{
-            Grid targetGrid = board.getGrid(x, y);
-            targetGrid.addBrick();
-            return true;
+            return this.currentWorker.build(board, x, y);
         }
     }
 }

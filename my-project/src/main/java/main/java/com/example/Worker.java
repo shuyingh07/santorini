@@ -43,4 +43,17 @@ public class Worker {
         this.y = y;
         return true;
     }
+
+    /**
+    * Build in a specified location
+    * @param board - the game board
+    * @param x - specified x location
+    * @param y - specified y location
+    * @return boolean that demonstrates a successful build
+    */
+    public boolean build(Board board, int x, int y) {
+        Grid targetGrid = board.getGrid(x, y);
+        targetGrid.addBrick();
+        return true;
+    }
 }
