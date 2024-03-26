@@ -15,6 +15,16 @@ public class Player {
         this.workerList.add(new Worker(1));
     }
 
+    /**
+    * Initialize two workers
+    * @param validator - check whether the location that player choose is validated
+    * @param board - game board that has boundary
+    * @param x1 - the x location of the worker1
+    * @param y1 - the y location of the worker1
+    * @param x2 - the x location of the worker2
+    * @param y2 - the y location of the worker2
+    * @returns boolean that demonstrates whether the player intializes workers successfuly
+    */
     public boolean workerInit(Validator validator, Board board, int x1, int y1, int x2, int y2) {
         if(x1 == x2 && y1 ==y2){
             return false;
@@ -44,6 +54,11 @@ public class Player {
 
     }
     
+    /**
+    * Choose worker to do operations in this turn
+    * @param workerID - the worker that need to operate this turn
+    * @returns boolean that demonstrates whether the player choose the worker successfully
+    */
     public boolean chooseWorker(int workerID) {
         if(workerID < 0 || workerID >= workerList.size()){
             return false;
@@ -56,10 +71,22 @@ public class Player {
         }
     }
 
+    /**
+    * Get the chosen worker in this turn
+    * @returns worker that has been chosen this turn
+    */
     public Worker getCurrentWorker() {
         return this.currentWorker;
     }
 
+     /**
+    * Move the chosen worker to a specified location
+    * @param validator - check whether the location that player choose is validated
+    * @param board - game board that has boundary
+    * @param x - the targeted x location
+    * @param y - the targeted y location
+    * @returns boolean that demonstrates whether the player move the worker successfully
+    */
     public boolean moveWorker(Validator validator, Board board, int x, int y) {
         if(!(validator.isValidMove(board, currentWorker, x, y))) {
             return false;
@@ -75,6 +102,14 @@ public class Player {
         }
     }
 
+    /**
+    * Build brick in a specified location
+    * @param validator - check whether the location that player choose is validated
+    * @param board - game board that has boundary
+    * @param x - the targeted x location
+    * @param y - the targeted y location
+    * @returns boolean that demonstrates whether the player successfully build
+    */
     public boolean build(Validator validator, Board board, int x, int y){
         if(!(validator.isValidBuild(board, currentWorker, x, y))) {
             return false;

@@ -13,6 +13,12 @@ public class Game {
         this.playerList = null;
     }
 
+    /**
+    * Start the game with chosen currentPlayer, and get the playerlist
+    * @param currentPlayer - the player that play game at first
+    * @param playerlist - a list that contains two players who play the game
+    * @returns boolean that demonstrates whether the game starts successfully
+    */
     public boolean gameStart(Player currenPlayer, ArrayList<Player> playerlist) {
         if(currenPlayer == null){
             return false;
@@ -26,10 +32,18 @@ public class Game {
         return true;
     }
 
+    /**
+    * Get the player in current turn
+    * @returns player that need to operate in this turn
+    */
     public Player getCurrentPlayer() {
         return this.currentPlayer;
     }
     
+    /**
+    * Change the player that need to operate their worker
+    * @returns boolean that demonstrates whether player changes successfully
+    */
     public boolean changeCurrentPlayer() {
         if(this.currentPlayer == null){
             return false;
@@ -44,10 +58,19 @@ public class Game {
         return true;
     }
 
+    /**
+    * Get the winner of the game
+    * @returns the player that wins the game
+    */
     public Player getWinner() {
         return this.winner;
     }
 
+    /**
+    * Set winner when a player wins the game
+    * @param player - player that wins the game
+    * @returns boolean that demonstrates whether the winner sets successfully
+    */
     public boolean setWinner(Player player) {
         if(this.winner != null){
             return false;

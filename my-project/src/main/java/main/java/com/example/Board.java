@@ -7,6 +7,11 @@ public class Board {
     private int cols;
     private ArrayList<ArrayList<Grid>> grids;
 
+    /**
+    * Initialize board with specified row and column length
+    * @param row - specified row length of the board
+    * @param col - specified column length of the board
+    */
     public Board(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -22,6 +27,12 @@ public class Board {
 
     }
 
+    /**
+    * Get the grid in a specified location
+    * @param x - specified x location
+    * @param y - specified y location
+    * @returns the specified grid
+    */
     public Grid getGrid(int x,  int y) {
         if (x < 0 || y < 0){
             return null;
@@ -35,10 +46,18 @@ public class Board {
         }
     }
 
+    /**
+    * Get the row length of the board
+    * @returns row length of the board
+    */
     public int getRowLen() {
         return this.rows;
     }
 
+    /**
+    * Get the column length of the board
+    * @returns column length of the board
+    */
     public int getColLen() {
         return this.cols;
     }
