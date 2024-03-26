@@ -108,6 +108,7 @@ public class Validator {
     * Check whether the game has a winner
     * @param board - game board that has boundary
     * @param worker - the worker that player chooses this turn
+    * @param game - current game
     * @return boolean that demonstrates whether the game has a winner
     */
     public boolean isWin(Board board, Worker worker, Game game) {
