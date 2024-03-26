@@ -26,7 +26,7 @@ Below, describe where you stored each of the following states and justify your a
 `Worker locations` is stored in the `Worker` class, I use two integer variables `x` and `y` to represent the current location.
 
 - Justification: 
-    - Encapsulation: Placing the location information of a Worker within its own class helps to encapsulate the data and behavior related to the Worker together. This ensures the privacy and integrity of the object's state, allowing modifications to its location information only through methods of the Worker class.
+    - Cohesion: Placing the location information of a Worker within its own class helps to operate the location data and behavior related to the Worker together. This ensures the privacy and integrity of the object's state, allowing modifications to its location information only through methods of the Worker class.
     - Information Expert：Worker is the information expert regarding its own location, so it should be responsible for handling the logic related to its position, such as movement.
 - Alternatives & Trade-offs:
     - A alternative method is to track the positions of all his workers in the `Player` class. This may help the `Player` class better coordinate the actions of its workers. However, it may make the `Player` class overly large and complex, handling logic that does not belong to it, thus reducing its clarity and cohesion.
