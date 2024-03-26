@@ -19,15 +19,15 @@ public class Game {
     * @param playerlist - a list that contains two players who play the game
     * @return boolean that demonstrates whether the game starts successfully
     */
-    public boolean gameStart(Player currenPlayer, ArrayList<Player> playerlist) {
-        if(currenPlayer == null){
+    public boolean gameStart(Player currentPlayer, ArrayList<Player> playerlist) {
+        if(currentPlayer == null){
             return false;
         }
         if(playerlist.size() != 2){
             return false;
         }
 
-        this.currentPlayer = currenPlayer;
+        this.currentPlayer = currentPlayer;
         this.playerList = playerlist;
         return true;
     }
