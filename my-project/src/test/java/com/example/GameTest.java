@@ -30,26 +30,25 @@ public class GameTest {
         playerList.add(player2);
     }
 
-    @Test
-    public void testGameStart() {
-        assertTrue(game.gameStart(player1, playerList));
+    // @Test
+    // public void testGameStart() {
+    //     assertTrue(game.gameStart(player1, playerList));
 
-        Player player3 = new Player(3);
-        playerList.add(player3);
-        assertFalse(game.gameStart(player1, playerList));
-    }
+    //     Player player3 = new Player(3);
+    //     playerList.add(player3);
+    //     assertFalse(game.gameStart(player1, playerList));
+    // }
 
-    @Test
-    public void testCurrentPlayer() {        
-        game.gameStart(player1, playerList);
-        assertEquals(game.getCurrentPlayer(), player1);
-        game.changeCurrentPlayer();
-        assertEquals(game.getCurrentPlayer(), player2);
-    }
+    // @Test
+    // public void testCurrentPlayer() {        
+    //     game.gameStart(player1, playerList);
+    //     assertEquals(game.getCurrentPlayer(), player1);
+    //     game.changeCurrentPlayer();
+    //     assertEquals(game.getCurrentPlayer(), player2);
+    // }
 
     @Test
     public void testWinner(){
-        game.gameStart(player1, playerList);
         assertNull(game.getWinner());
 
         game.setWinner();

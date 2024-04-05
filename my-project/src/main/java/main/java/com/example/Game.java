@@ -5,12 +5,22 @@ import java.util.ArrayList;
 public class Game {
     private Player currentPlayer;
     private Player winner;
+
+    private Player player1;
+    private Player player2;
     private ArrayList<Player> playerList;
 
     public Game() {
         this.currentPlayer = null;
         this.winner = null;
-        this.playerList = null;
+
+        player1 = new Player(0);
+        player2 = new Player(1);
+        playerList = new ArrayList<>();
+        playerList.add(player1);
+        playerList.add(player2);
+
+        this.currentPlayer = player1;
     }
 
     /**
@@ -19,17 +29,8 @@ public class Game {
     * @param playerlist - a list that contains two players who play the game
     * @return boolean that demonstrates whether the game starts successfully
     */
-    public boolean gameStart(Player currentPlayer, ArrayList<Player> playerlist) {
-        if(currentPlayer == null){
-            return false;
-        }
-        if(playerlist.size() != 2){
-            return false;
-        }
-
-        this.currentPlayer = currentPlayer;
-        this.playerList = playerlist;
-        return true;
+    public void gameStart() {
+        ;
     }
 
     /**
