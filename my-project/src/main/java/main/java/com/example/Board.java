@@ -1,65 +1,102 @@
 package main.java.com.example;
 
-import java.util.ArrayList;
-
+/**
+ * Represents the game board in the board game.
+ * This class is responsible for managing the state and interactions of the game's physical components,
+ * including the grid that represents the playing area, the workers on the board, and any other elements specific to the game's design.
+ * The Board class also collaborates with various strategy classes (e.g., move, build, win strategies) to enforce game rules
+ * and validate player actions according to the current game state.
+ */
 public class Board {
-    private int rows;
-    private int cols;
-    private ArrayList<ArrayList<Grid>> grids;
 
-    /**
-    * Initialize board with specified row and column length
-    * @param rows - specified row length of the board
-    * @param cols - specified column length of the board
-    */
-    public Board(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
+    private final Grid[][] grids = new Grid[5][5]; // A 5x5 grid representing the game board. Each cell's value represents the height of towers.
 
-        grids = new ArrayList<>();
-        for (int i = 0; i < rows; i++) {
-            ArrayList<Grid> row = new ArrayList<>();
-            for (int j = 0; j < cols; j++) {
-                row.add(new Grid(i, j));
+    private final Worker[] workers = new Worker[4]; // An array to store up to four workers on the board.
+
+    Board(){
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                grids[i][j] = new Grid();  // 假设Grid有无参构造器
             }
-            grids.add(row);
-        }
-
-    }
-
-    /**
-    * Get the grid in a specified location
-    * @param x - specified x location
-    * @param y - specified y location
-    * @return the specified grid
-    */
-    public Grid getGrid(int x,  int y) {
-        if (x < 0 || y < 0){
-            return null;
-        }
-        if(x >= this.rows || y >= this.cols){
-            return null;
-        }
-        else{
-            ArrayList<Grid> row = this.grids.get(x);
-            return row.get(y);
         }
     }
 
     /**
-    * Get the row length of the board
-    * @return row length of the board
-    */
-    public int getRowLen() {
-        return this.rows;
+     * Find the worker, place it to a new position and set isMoved attribute of this worker to true
+     * @param fromX position x of the original worker
+     * @param fromY position y of the original worker
+     * @param toX position x of the moved worker
+     * @param toY position y of the moved worker
+     * @param playerId the player id of current player
+     */
+    public void findAndPlaceWorker(int fromX, int fromY, int toX, int toY,  int playerId) {
+        for(Worker worker : workers) {
+            if (fromX == worker.getX() && fromY == worker.getY() && worker.getPlayerId() == playerId) {
+                worker.setX(toX);
+                worker.setY(toY);
+                worker.setIsMoved(true);
+            }
+        }
     }
 
     /**
-    * Get the column length of the board
-    * @return column length of the board
-    */
-    public int getColLen() {
-        return this.cols;
+     * Place the two worker to the required position
+     * @param x1 position x of desired position of worker 1
+     * @param y1 position y of desired position of worker 1
+     * @param x2 position x of desired position of worker 2
+     * @param y2 position y of desired position of worker 2
+     * @param playerId the player id of current player
+     */
+    public void initializeWorker(int x1, int y1, int x2, int y2, int playerId) {
+        int counter1 = 0;
+        int counter2 = 0;
+        for(Worker worker : workers) {
+            if(worker == null) {
+                if (counter2 == 0){
+                    workers[counter1] = new Worker(x1, y1, playerId);
+                    counter2 += 1;
+                } else {
+                    workers[counter1] = new Worker(x2, y2, playerId);
+                    break;
+                }
+            }
+            counter1 += 1;
+        }
     }
 
+    /**
+     * Build a block or dome on the board by adding one on the grid in position x,y
+     * @param x position x
+     * @param y position y
+     */
+    public void buildBlock(int x, int y) {
+        grids[x][y].addHeight();
+    }
+
+    /**
+     * Gets the height of the tower located at a specific position on the grid.
+     *
+     * @param x The x-coordinate of the tower's location.
+     * @param y The y-coordinate of the tower's location.
+     * @return The height of the tower at the specified position.
+     */
+    public int getTowerHeight(int x, int y) {
+        return grids[x][y].getHeight();
+    }
+
+    /**
+     * Retrieves the array of workers.
+     * @return An array of Worker objects.
+     */
+    public Worker[] getWorkers() {
+        return workers;
+    }
+
+    /**
+     * Retrieves the grid.
+     * @return The grid.
+     */
+    public Grid[][] getGrids() {
+        return grids;
+    }
 }
