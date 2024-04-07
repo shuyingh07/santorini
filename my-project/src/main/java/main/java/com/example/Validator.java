@@ -5,7 +5,7 @@ package main.java.com.example;
  * This class contains methods to ensure that actions such as initializing a worker, moving a worker, and building on the board comply with the game's rules.
  */
 public class Validator {
-
+    private final static int MAX_HEIGHT = 4;
     /**
      * Check if the initial place is within the board boundaries, the cell is unoccupied
      * @param board board of the current game
@@ -14,7 +14,7 @@ public class Validator {
      * @return {@code true} if the position is valid to place the worker
      */
     public boolean isValidInitial(Board board, int toX, int toY) {
-        return isWithinBounds(toX, toY) && isCellFree(board, toX, toY);
+        return isWithinBounds(board, toX, toY) && isCellFree(board, toX, toY);
     }
 
     /**
@@ -36,7 +36,7 @@ public class Validator {
             }
         }
 
-        return isWithinBounds(toX, toY)
+        return isWithinBounds(board, toX, toY)
                 && workerBelongPlayer
                 && board.getTowerHeight(toX, toY) <= 3 && isCellFree(board, toX, toY)
                 && Math.abs(board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY)) <= 1
@@ -63,7 +63,7 @@ public class Validator {
             }
         }
 
-        return isWithinBounds(x, y) && board.getTowerHeight(x, y) < 4 &&
+        return isWithinBounds(board, x, y) && board.getTowerHeight(x, y) < MAX_HEIGHT &&
                 Math.abs(x - workerX) <= 1 && Math.abs(y - workerY) <= 1 &&
                 isCellFree(board, x, y) && hasMovedWorker &&
                 Math.abs(board.getTowerHeight(x, y) - board.getTowerHeight(workerX, workerY)) <= 1;
@@ -96,8 +96,8 @@ public class Validator {
      * @param y position y of the checked cell
      * @return {@code true} if the position within boundary
      */
-    private boolean isWithinBounds(int x, int y) {
-        return x >= 0 && x < 5 && y >= 0 && y < 5;
+    private boolean isWithinBounds(Board board, int x, int y) {
+        return x >= 0 && x < board.getROW() && y >= 0 && y < board.getCOL();
     }
 
     /**
