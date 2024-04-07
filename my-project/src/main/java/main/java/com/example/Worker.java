@@ -1,59 +1,84 @@
 package main.java.com.example;
 
 
+/**
+ * Represents a worker in the game.
+ * Workers are the game pieces controlled by players, capable of moving around the board and performing actions like building.
+ * This class holds the positional data of the worker and tracks its movements and association with a specific player.
+ */
 public class Worker {
-    private int x;
-    private int y;
-    private int workerID;
+    private int x, y; // position coordinate
+    private final int playerId; // corresponding playerId to the player
+    private boolean isMoved = false; // determine if this worker is moved in this round
 
-    /**
-    * Init worker with specified ID
-    * @param workerID - specified ID that refers to a worker
-    */
-    public Worker(int workerID) {
-        this.x = -1;
-        this.y = -1;
-        this.workerID = workerID;
-    }
-
-    /**
-    * Get x location of the worker
-    * @return the x location of the worker
-    */
-    public int getX() {
-        return this.x;
-    }
-
-    /**
-    * Get y location of the worker
-    * @return the y location of the worker
-    */
-    public int getY() {
-        return this.y;
-    }
-
-    /**
-    * Move worker to a specified location
-    * @param x - specified x location
-    * @param y - specified y location
-    * @return boolean that demonstrates a successful move
-    */
-    public boolean move(int x, int y) {
+    public Worker(int x, int y, int playerId) {
         this.x = x;
         this.y = y;
-        return true;
+        this.playerId = playerId;
     }
 
     /**
-    * Build in a specified location
-    * @param board - the game board
-    * @param x - specified x location
-    * @param y - specified y location
-    * @return boolean that demonstrates a successful build
-    */
-    public boolean build(Board board, int x, int y) {
-        Grid targetGrid = board.getGrid(x, y);
-        targetGrid.addBrick();
-        return true;
+     * Sets the x-coordinate of the worker.
+     *
+     * @param x The new x-coordinate to set.
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * Retrieves the x-coordinate of the worker.
+     *
+     * @return The x-coordinate value of the worker.
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Sets the y-coordinate of the worker.
+     *
+     * @param y The new y-coordinate to set.
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    /**
+     * Retrieves the y-coordinate of the worker.
+     *
+     * @return The y-coordinate value of the worker.
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Get the unique identifier for the player this worker belongs to.
+     *
+     * @return The unique identifier for the corresponding player.
+     */
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    /**
+     * Indicates whether the player has moved or not.
+     *
+     * @return True if the player has moved, otherwise false.
+     */
+    public boolean getIsMoved() {
+        return isMoved;
+    }
+
+    /**
+     * Sets the isMoved status of the work.
+     *
+     * @param moved The new isMoved status. True indicates the worker has moved in this round, and false indicates the opposite.
+     */
+    public void setIsMoved(boolean moved) {
+        isMoved = moved;
     }
 }
+
+
