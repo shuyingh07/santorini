@@ -8,17 +8,17 @@ package main.java.com.example;
  * and validate player actions according to the current game state.
  */
 public class Board {
-    private final int ROW = 5;
-    private final int COL = 5;
-    private final int WOKERNUM = 4;
+    private final int row = 5;
+    private final int col = 5;
+    private final int workerNum = 4;
 
-    private final Grid[][] grids = new Grid[ROW][COL]; // A 5x5 grid representing the game board. Each cell's value represents the height of towers.
+    private final Grid[][] grids = new Grid[row][col]; // A 5x5 grid representing the game board. Each cell's value represents the height of towers.
 
-    private final Worker[] workers = new Worker[WOKERNUM]; // An array to store up to four workers on the board.
+    private final Worker[] workers = new Worker[workerNum]; // An array to store up to four workers on the board.
 
     Board(){
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COL; j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 grids[i][j] = new Grid();  // 假设Grid有无参构造器
             }
         }
@@ -104,10 +104,10 @@ public class Board {
     }
 
     public int getROW() {
-        return this.ROW;
+        return this.row;
     }
 
     public int getCOL() {
-        return this.COL;
+        return this.col;
     }
 }
