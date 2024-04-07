@@ -44,6 +44,7 @@ public class GameState {
      */
     public void updateFromGame(Game game) {
         Board board = game.getBoard();
+        Validator validator = new Validator();
 
         // Update the current player, game status, winning condition, and message from the current game instance
         this.currentPlayer = game.getCurrentPlayerId();
@@ -53,9 +54,9 @@ public class GameState {
 
         // Reconstruct the grid representation of the game board
         this.grid = new ArrayList<>();
-        for (int x = 0; x < board.getGrids().length; x++) {
+        for (int x = 0; x < board.getROW(); x++) {
             List<Grid> row = new ArrayList<>();
-            for (int y = 0; y < board.getGrids()[0].length; y++) {
+            for (int y = 0; y < board.getCOL(); y++) {
                 // Create a new Grid object for each cell
                 Grid grid = new Grid();
                 // Set the height and dome presence based on the board's state
@@ -63,7 +64,7 @@ public class GameState {
                 // Set if this position has a dome
                 grid.setHasDome(!(board.getTowerHeight(x, y) < 4));
                 // Check if the cell is free or occupied by a worker
-                if(isCellFree(board, x, y)) {
+                if(validator.gridHasWorker(board, x, y)) {
                     grid.setOccupyStatus(-1); // 2 indicates a free cel
                 } else {
                     // Identify which player's worker occupies the cell
@@ -92,21 +93,6 @@ public class GameState {
             e.printStackTrace();
             return "{}";
         }
-    }
-
-    /**
-     * Check if the cell is free
-     * @param x position x of the checked cell
-     * @param y position y of the checked cell
-     * @return {@code true} if the position is free
-     */
-    private boolean isCellFree(Board board, int x, int y) {
-        for (Worker worker : board.getWorkers()) {
-            if (worker != null && worker.getX() == x && worker.getY() == y) {
-                return false;
-            }
-        }
-        return true;
     }
 
     // Getters and setters for GameState, this is required by jackson

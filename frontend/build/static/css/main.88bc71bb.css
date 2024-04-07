@@ -1,0 +1,2 @@
+#board{display:grid;grid-template-columns:repeat(5,15vmin);justify-content:center;padding-bottom:5vmin;padding-top:5vmin}.cell{background-color:#fffc;border:1px solid #000c;cursor:pointer;font-size:30px;height:10vmin;padding:10px;text-align:center}
+/*# sourceMappingURL=main.88bc71bb.css.map*/

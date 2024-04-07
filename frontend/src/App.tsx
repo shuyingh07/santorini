@@ -1,499 +1,155 @@
-// import Handlebars from "handlebars"
-// import { Component } from 'react'
-// import './App.css'
-
-// var oldHref = "http://localhost:3000"
-
-// var SETUP = 0;
-// var CHOOSEMOVE = 1;
-// var MOVE = 2;
-// var BUILD = 4;
-// var FINISH = 5;
-// var USEPOWER = 6;
-
-// interface Cell {
-//   levels: number;
-//   player: number;
-//   pos: String;
-//   text: String;
-//   chosen: number
-// }
-
-// interface GameCells {
-//   cells: Array<Cell>,
-//   template: HandlebarsTemplateDelegate<any>,
-//   nextPlayer: number,
-//   nextMove: number,
-//   linkheader: String,
-//   showError: boolean,
-//   instruction: String,
-//   finish: boolean,
-
-//   selectGod: boolean,
-//   selectGodError: boolean,
-
-//   god1msg: String,
-//   god2msg: String,
-
-//   canUse1: boolean,
-//   canUse2: boolean,
-
-// }
-
-// interface Props {
-// }
-
-// class App extends Component<Props, GameCells> {
-//   constructor(props: Props) {
-//     super(props);
-//     this.state = {
-//       cells: [
-//         { levels: 0, player: 0, pos: "x=0&y=0", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=0&y=1", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=0&y=2", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=0&y=3", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=0&y=4", text: "0", chosen: 0 },
-
-//         { levels: 0, player: 0, pos: "x=1&y=0", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=1&y=1", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=1&y=2", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=1&y=3", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=1&y=4", text: "0", chosen: 0 },
-
-//         { levels: 0, player: 0, pos: "x=2&y=0", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=2&y=1", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=2&y=2", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=2&y=3", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=2&y=4", text: "0", chosen: 0 },
-
-//         { levels: 0, player: 0, pos: "x=3&y=0", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=3&y=1", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=3&y=2", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=3&y=3", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=3&y=4", text: "0", chosen: 0 },
-
-//         { levels: 0, player: 0, pos: "x=4&y=0", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=4&y=1", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=4&y=2", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=4&y=3", text: "0", chosen: 0 },
-//         { levels: 0, player: 0, pos: "x=4&y=4", text: "0", chosen: 0 },
-//       ],
-//       showError: false,
-//       nextPlayer: 1,
-//       nextMove: 0,
-//       template: this.loadTemplate(),
-//       linkheader: "setup?",
-//       instruction: "choose the position of your worker",
-//       finish: false,
-
-//       selectGod: false,
-//       selectGodError: false,
-
-//       god1msg: "No God Mode",
-//       god2msg: "No God Mode",
-
-//       canUse1: false,
-//       canUse2: false,
-
-//     };
-//   }
-
-//   loadTemplate (): HandlebarsTemplateDelegate<any> {
-//     const src = document.getElementById("handlebars");
-//     return Handlebars.compile(src?.innerHTML, {});
-//   }
-
-//   /* modified */ 
-//   convertToCell(p: any, playerId: number): Array<Cell> {
-//     var NUMCOLS: number = 5;
-//     const newCells: Array<Cell> = [];
-//     for (var i = 0; i < p.length; i++) {
-//       var x: number = Math.floor(i / NUMCOLS);
-//       var y: number = i % NUMCOLS;
-      
-//       var gridLevels: number = p[i]["levels"];
-//       var gridPlayer: number = p[i]["player"];
-
-//       var textLeft: String = "";
-//       var textRight: String = "";
-//       if (gridPlayer === 1) {
-//         textLeft = "(";
-//         textRight = ")";
-//       } else if (gridPlayer === 2) {
-//         textLeft = "[";
-//         textRight = "]";
-//       } 
-//       var gridText = textLeft + gridLevels.toString() + textRight;
-//       var chosenVal = p[i]["chosen"] === 1 ? playerId : 0; 
-      
-//       var c: Cell = {
-//         levels: gridLevels,
-//         player: gridPlayer,
-//         pos: "x=" + x + "&y=" + y,
-//         text: gridText,
-//         chosen: chosenVal
-//       };
-//       newCells.push(c);
-//     }
-
-//     return newCells;
-//   }
-
-//   /* new */
-//   async newGame() {
-//     const href = "newgame";
-//     console.log(href);
-//     await fetch(href);
-//   }
-
-//   /* new */
-//   async selectGod(err: boolean) {
-//     console.log("entered");
-//     this.setState({selectGod: true})
-//     if (err) {
-//       this.setState({selectGodError: true})
-//     }
-//   }
-
-//   /* new */
-//   async newGodGame(url: String) {
-//     const params = (url.split("?")[1]).split("&");
-//     var godName1 = params[0].split("=")[1];
-//     var godName2 = params[1].split("=")[1];
-//     if (godName1 === godName2) {
-//       this.selectGod(true);
-//     } else {
-//       const href = "newgodgame?" + url.split("?")[1];
-//       console.log(href);
-//       await fetch(href);
-//       this.setState({ god1msg: godName1 })
-//       this.setState({ god2msg: godName2 })
-
-//     }
-    
-//   }
-
-//   /* new */
-//   async testAPI() {
-//     console.log("testing API connection...");
-//     const response = await fetch("test");
-//     const json = await response.json();
-//     console.log(json);
-//   };
-
-//   /* new */
-//   async setAllStates(json: any) {
-//     console.log(json);
-
-//     if (json["status"] !== 0) {
-//       this.setState({showError: true});
-//     } else {
-//       this.setState({showError: false});
-//     }
-
-//     var playerId = json["playerId"];
-//     var nextAction = json["nextAction"];
-
-//     const newCells: Array<Cell> = this.convertToCell(json["board"], playerId);
-//     this.setState({ cells: newCells });
-//     this.setState({ nextPlayer: playerId});
-//     this.setState({ nextMove: nextAction});
-//     this.setState({ finish: false});
-
-//     if (nextAction === SETUP) {
-//       this.setState({ linkheader: "setup?"});
-//       this.setState({ instruction: "choose the position of your worker"});
-//     } else if (nextAction === CHOOSEMOVE) {
-//       this.setState({ linkheader: "choosemove?"});
-//       this.setState({ instruction: "select one of your workers to move"});
-//     } else if (nextAction === MOVE) {
-//       this.setState({ linkheader: "move?"});
-//       this.setState({ instruction: "select the target position of your move"});
-//     } else if (nextAction === BUILD) {
-//       this.setState({ linkheader: "build?"});
-//       this.setState({ instruction: "select the target position of your build"});
-//     } else if (nextAction === FINISH) {
-//       this.setState({ linkheader: ""});
-//       this.setState({ instruction: "YOU WON!"});
-//       this.setState({ finish: true});
-//     } else if (nextAction === USEPOWER) {
-//       this.setState({ linkheader: "usepoweraction?"});
-//       this.setState({ instruction: "Player Using God Power..."});
-//     } else {
-//       console.log("err: nextAction not specified or unexpected value!")
-//     }
-
-//     if (json.hasOwnProperty('god1')) {
-//       this.setState({ god1msg: json["god1"]});
-//     }
-//     if (json.hasOwnProperty('god2')) {
-//       this.setState({ god2msg: json["god2"]});
-//     }
-
-//     if (json.hasOwnProperty('canUse1')) {
-//       this.setState({ canUse1: json["canUse1"]});
-//     }
-//     if (json.hasOwnProperty('canUse2')) {
-//       this.setState({ canUse2: json["canUse2"]});
-//     }
-
-
-//   }
-
-//   /* new */
-//   async setUp(url: String) {
-//     const href = "setup?" + url.split("?")[1];
-//     console.log(href);
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-
-//   }
-
-//   /* new */
-//   async chooseMove(url: String) {
-//     const href = "choosemove?" + url.split("?")[1];
-//     console.log(href);
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-
-//   }
-
-//   /* new */
-//   async move(url: String) {
-//     const href = "move?" + url.split("?")[1];
-//     console.log(href);
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-
-//   }
-
-//   /* new */
-//   async build(url: String) {
-//     const href = "build?" + url.split("?")[1];
-//     console.log(href);
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-
-//   }
-
-//   /* new */
-//   async preparePower1() {
-//     const href = "preparepower1"
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-//   }
-
-//   /* new */
-//   async preparePower2() {
-//     const href = "preparepower2"
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-//   }
-
-//   /* new */
-//   async usePower(url: String) {
-//     const href = "usepower?" + url.split("?")[1];
-//     console.log(href);
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-
-//   }
-
-//   /* new */
-//   async undo(url: String) {
-//     const href = "undo";
-//     console.log(href);
-//     const response = await fetch(href);
-//     const json = await response.json();
-
-//     this.setAllStates(json);
-
-//   }
-  
-
-//   /* new */
-//   async step() {
-//     if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/setup" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.setUp(window.location.href);
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/choosemove" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.chooseMove(window.location.href);
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/move" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.move(window.location.href);
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/build" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.build(window.location.href);
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/newgame" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.newGame();
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/newgodgame" &&
-//       oldHref !== window.location.href
-//     ) {
-//       console.log("new god game!");
-//       this.selectGod(false);
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/startGodGame" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.newGodGame(window.location.href);
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/usepower1" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.preparePower1();
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/usepower2" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.preparePower2();
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/usepoweraction" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.usePower(window.location.href);
-//       oldHref = window.location.href;
-//     } else if (
-//       window.location.href.split("?")[0] === "http://localhost:3000/undo" &&
-//       oldHref !== window.location.href
-//     ) {
-//       this.undo(window.location.href);
-//       oldHref = window.location.href;
-//     } 
-//   }
-
-//   render() {
-  
-//     this.step()
-//     return (
-    
-//       <div className="App">
-//         <div
-//           dangerouslySetInnerHTML={{
-//             __html: this.state.template({ 
-//               cells: this.state.cells, 
-//               linkheader: this.state.linkheader, 
-//               showError: this.state.showError ? "error" : "noerror",
-//               instruction: this.state.instruction,
-//               player: this.state.nextPlayer === 1 ? "player1" : "player2",
-//               finish: this.state.finish,
-
-//               selectGod: this.state.selectGod ? "appear" : "disappear",
-//               selectGodError: this.state.selectGodError ? "appear" : "disappear",
-
-//               god1msg: this.state.god1msg,
-//               god2msg: this.state.god2msg,
-
-//               canUse1: this.state.canUse1 ? "appear" : "disappear",
-//               canUse2: this.state.canUse2 ? "appear" : "disappear",
-
-//             }), 
-//           }}
-//         />
-//       </div>
-//     )
-//   };
-// };
-
-// export default App;
-// 定义棋盘格子的类型
-import React, { useState } from 'react';
-import './App.css'; // 确保有CSS文件来进行基本的样式设置
-// 定义棋盘格子的类型
-interface Cell {
-    hasWorker: boolean;
-    workerPlayer: number | null;
-  }
-  
-  // 定义棋盘状态的类型
-  type Board = Cell[][];
-  // 初始化棋盘的函数
-const createInitialBoard = (): Board => {
-    const board: Board = [];
-    for (let i = 0; i < 5; i++) {
-      const row: Cell[] = [];
-      for (let j = 0; j < 5; j++) {
-        row.push({ hasWorker: false, workerPlayer: null });
-      }
-      board.push(row);
-    }
-    return board;
-  };
-  
-  const App: React.FC = () => {
-    const [board, setBoard] = useState<Board>(createInitialBoard());
-  
-    // 处理点击棋盘格子的事件
-    const handleCellClick = async (x: number, y: number): Promise<void> => {
-      const url = `http://localhost:8080/setup?x1=${x}&y1=${y}&x2=${x}&y2=${y}`;
-      try {
-        const response = await fetch(url, { method: 'POST' });
-        const data = await response.json();
-        if (data.success) {
-          const newBoard: Board = [...board];
-          newBoard[x][y] = { hasWorker: true, workerPlayer: data.player };
-          setBoard(newBoard);
-        } else {
-          console.error('Error placing worker:', data.error);
-        }
-      } catch (error) {
-        console.error('Failed to place worker:', error);
-      }
+import React, {useState} from 'react';
+import {Grid, GameState} from './game.tsx';
+import Cell from './Cell.tsx'
+import './App.css';
+
+/**
+ * The main React functional component for the board game.
+ * It handles the game state, player actions, and rendering of the game board.
+ * The component manages the initialization, movement, and building actions,
+ * as well as the handling and selection of god cards.
+ */
+const App: React.FC = () => {
+    /**
+     * Initialize the game grid with a default structure for each cell.
+     * Cells have properties: level, dome status, and occupation status.
+     */
+    const initialGrid: Grid[][] = Array.from({ length: 5 }, () =>
+        Array.from({ length: 5 }, () => ({
+            height: 0, // Initial level of construction
+            hasDome: false, // Dome status, false initially
+            occupyStatus: -1, // 2 means not occupied, 0 means occupied by player 0, 1 means occupied by player 1
+        }))
+    );
+
+    /**
+     * Set up the initial game state with default values.
+     * Includes grid, current player, game status, winning condition, and message.
+     */
+    const initialGameState: GameState = {
+        grid: initialGrid,
+        currentPlayer: 0, // Start with player 0
+        status: 'initialize', // Initial status for game setup
+        isWinning: false, // Flag to track if winning condition is met
+        message: "" // Game state message
     };
+
+    // State hooks for managing game state
+    const [gameState, setGameState] = useState<GameState>(initialGameState);
+    const [selectedPiece, setSelectedPiece] = useState<{ x: number, y: number } | null>(null); // Track selected piece
+    const [gameStarted, setGameStarted] = useState<boolean>(false); // Flag to track if the game has started
   
+
+    /**
+     * Function to handle passing an action.
+     * Sends a request to pass the current action and updates the game state.
+     */
+    const handlePassAction = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/passAction?`);
+            await checkAndSetResponse(response);
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
+    };
+
+
+    /**
+     * Handle clicks on cells in the game grid.
+     * Depending on the game state, different actions are triggered (initialize, move, build).
+     */
+    const handleCellClick = async (x: number, y: number) => {
+        console.log(`Cell clicked: (${x}, ${y})`);
+        try {
+            // No action if the game is over
+            if (gameState.isWinning) {
+                return;
+            }
+
+            if (selectedPiece === null) {
+                // Perform build action if status is build
+                if (gameState.status === 'build') {
+                    const response = await fetch(`http://localhost:8080/api/build?x1=${x}&y1=${y}`);
+                    await checkAndSetResponse(response);
+                } else {
+                    // set the selected cell, which will be highlighted
+                    setSelectedPiece({x, y});
+                }
+            } else {
+                // Coordinates of the previously selected piece
+                let x1: number = selectedPiece.x;
+                let y1: number = selectedPiece.y;
+                // Perform actions based on the game's current status
+                if(gameState.status === 'initialize') {
+                    // Initialize worker positions on the board
+                    const response = await fetch(`http://localhost:8080/api/initialize?x1=${x1}&y1=${y1}&x2=${x}&y2=${y}`);
+                    await checkAndSetResponse(response);
+                } else if (gameState.status === 'move') {
+                    // Move worker from selected position to clicked position
+                    const response = await fetch(`http://localhost:8080/api/move?x1=${x1}&y1=${y1}&x2=${x}&y2=${y}`);
+                    await checkAndSetResponse(response);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
+    };
+
+
+    /**
+     * Starts a new game.
+     * Resets the game state and fetches the initial state from the server.
+     */
+    const newGame = async () => {
+        // Set the game as started and reset god cards state
+        setGameStarted(true)
+
+        // Fetch the initial game state from the server
+        const response = await fetch(`http://localhost:8080/api/newGame`);
+        await checkAndSetResponse(response);
+    };
+
+    /**
+     * Helper function to check the server response and update the game state.
+     */
+    const checkAndSetResponse = async (response: Response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        // If the response is OK, parse it as JSON which returns the new game state
+        const newGameState: GameState = await response.json();
+        setGameState(newGameState); // Update game state with response data
+        setSelectedPiece(null); // Reset selected piece after state update
+    };
+
     return (
-        <div id="board"> {/* 从 className="gameBoard" 改为 id="board" */}
-          {board.map((row, rowIndex) => (
-            <div key={rowIndex} className="boardRow">
-              {row.map((cell, cellIndex) => (
-                <div
-                  key={`${rowIndex}-${cellIndex}`}
-                  className={`cell ${cell.hasWorker ? 'hasWorker' : ''}`}
-                  onClick={() => handleCellClick(rowIndex, cellIndex)}
-                >
-                  {cell.hasWorker ? `Player ${cell.workerPlayer}` : ''}
-                </div>
+      <div>
+          <button onClick={newGame} className="new-game-button">New Game</button>
+          <div className="game-board">
+              {gameState.grid.map((row, rowIndex) => (
+                  <div key={rowIndex} className="board-row">
+                      {row.map((grid, colIndex) => (
+                          <Cell
+                              key={`${rowIndex}-${colIndex}`}
+                              grid={grid}
+                              onCellClick={handleCellClick}
+                              x={rowIndex}
+                              y={colIndex}
+                              className={selectedPiece && selectedPiece.x === rowIndex && selectedPiece.y === colIndex ? 'selected-cell' : ''}
+                          />
+                      ))}
+                  </div>
               ))}
-            </div>
-          ))}
-        </div>
-      );
-  }
-  
-  export default App;
-  
+          </div>
+          <div className="game-state-message">
+              {'Message: ' + gameState.message}
+          </div>
+          <div className="game-info">
+              {gameState.isWinning ? `Player ${gameState.currentPlayer} wins!` : `Player ${gameState.currentPlayer}'s Turn, Status: ${gameState.status}`}
+          </div>
+      </div>
+  );
+}
+
+
+export default App;
