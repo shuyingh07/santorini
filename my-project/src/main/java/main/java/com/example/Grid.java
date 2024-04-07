@@ -1,93 +1,82 @@
 package main.java.com.example;
 
-import java.util.ArrayList;
-
 public class Grid {
-    private int x;
-    private int y;
-    private int height;
-    private boolean occupy;
-    private static final int MAX_HEIGHT = 4;
+        private int height;
+        private int occupyStatus;
+        private boolean hasDome;
 
-    /**
-    * Initialize the grid in specified location with height = 0 and occupy = false
-    * @param x - the x location
-    * @param y - the y location
-    */
-    public Grid(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.height = 0;
-        this.occupy = false;
-    }
-
-    /**
-    * Get the position of a specified grid
-    * @return an arraylist that demonstrates the position of the grid
-    */
-    public ArrayList<Integer> getPosition() {
-        ArrayList<Integer> position = new ArrayList<>();
-        position.add(this.x);
-        position.add(this.y);
-        return position;
-    }
-
-    /**
-    * Get the height of a specified grid
-    * @return the height of the grid
-    */
-    public int getHeight() {
-        return this.height;
-    }
-
-    /**
-    * Plus 1 to height of a specified grid
-    * @return boolean that demonstrates whether the height of grid increases successfully
-    */
-    public boolean addBrick() {
-        if(this.height >= MAX_HEIGHT){
-            return false;
+        /**
+         * Default constructor for Grid.
+         * Initializes the cell data with default values.
+         */
+        public Grid() {
+            this.height = 0;
+            this.hasDome = false;
+            this.occupyStatus = -1;
         }
-        else{
+
+        // Getters and setters
+        /**
+         * Retrieves the height of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return The height of the cell.
+         */
+        public int getHeight() {
+            return height;
+        }
+
+        // Getters and setters
+        /**
+         * Retrieves the height of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return The height of the cell.
+         */
+        public void addHeight() {
             this.height += 1;
-            return true;
         }
-    }
 
-    /**
-    * Get the occupid status of a specified grid
-    * @return the occupid status of the grid
-    */
-    public boolean getOccupy() {
-        return this.occupy;
-    }
-    
-    /**
-    * Set the occupid status of a specified grid after it has been occupied by a new worker
-    * @return boolean that demonstrates whether the occupied status of grid changes successfully
-    */
-    public boolean setOccupy() {
-        if(this.occupy) {
-            return false;
+        /**
+         * Sets the height of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @param height The height to set for the cell.
+         */
+        public void setHeight(int height) {
+            this.height = height;
         }
-        else{
-            this.occupy =true;
-            return true;
-        }
-    }
 
-    /**
-    * Set the occupid status of a specified grid to false after the worker on it move to a other location
-    * @return boolean that demonstrates whether the occupied status of grid clears successfully
-    */
-    public boolean clearOccupy() {
-        if(!this.occupy) {
-            return false;
+        /**
+         * Checks if the cell is occupied.
+         * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return The occupation status of the cell.
+         */
+        public int getOccupyStatus() {
+            return this.occupyStatus;
         }
-        else{
-            this.occupy = false;
-            return true;
-        }
-    }
 
+        /**
+         * Sets the occupation status of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @param occupy_status The occupation status to set for the cell.
+         */
+        public void setOccupyStatus(int occupyStatus) {
+            this.occupyStatus = occupyStatus;
+        }
+
+        /**
+         * Checks if the cell has a dome.
+         * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return {@code true} if the cell has a dome, otherwise {@code false}.
+         */
+        public boolean isHasDome() {
+            return hasDome;
+        }
+
+        /**
+         * Sets whether the cell has a dome.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @param hasDome {@code true} if the cell has a dome, otherwise {@code false}.
+         */
+        public void setHasDome(boolean hasDome) {
+            this.hasDome = hasDome;
+        }
 }
