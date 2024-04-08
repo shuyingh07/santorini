@@ -11,7 +11,7 @@ import java.util.Map;
  * This class serve frontend requests and return responses to update the ga
  */
 public class App extends SimpleWebServer {
-    private static int PORT = 8080;
+    private static int port = 8080;
     private Game game;
 
     /**
@@ -30,7 +30,7 @@ public class App extends SimpleWebServer {
      * Start the server at :8080 port.
      */
     public App() throws IOException {
-        super(null, PORT, new File("/var/www/html"), true);
+        super(null, port, new File("/var/www/html"), true);
         this.game = new Game(); // Initialize the game
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         System.out.println("\nRunning!\n");
