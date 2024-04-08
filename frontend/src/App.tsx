@@ -65,7 +65,7 @@ const App: React.FC = () => {
 
             if (selectedPiece === null) {
                 if (gameState.status === 'build') {
-                    const response = await fetch(`http://localhost:8080/api/build?x1=${x}&y1=${y}`);
+                    const response = await fetch(`http://localhost:8080/build?x1=${x}&y1=${y}`);
                     await checkAndSetResponse(response);
                 } else {
                     setSelectedPiece({x, y});
@@ -74,10 +74,10 @@ const App: React.FC = () => {
                 let x1: number = selectedPiece.x;
                 let y1: number = selectedPiece.y;
                 if(gameState.status === 'initialize') {
-                    const response = await fetch(`http://localhost:8080/api/initialize?x1=${x1}&y1=${y1}&x2=${x}&y2=${y}`);
+                    const response = await fetch(`http://localhost:8080/initialize?x1=${x1}&y1=${y1}&x2=${x}&y2=${y}`);
                     await checkAndSetResponse(response);
                 } else if (gameState.status === 'move') {
-                    const response = await fetch(`http://localhost:8080/api/move?x1=${x1}&y1=${y1}&x2=${x}&y2=${y}`);
+                    const response = await fetch(`http://localhost:8080/move?x1=${x1}&y1=${y1}&x2=${x}&y2=${y}`);
                     await checkAndSetResponse(response);
                 }
             }
@@ -92,7 +92,7 @@ const App: React.FC = () => {
      */
     const newGame = async () => {
 
-        const response = await fetch(`http://localhost:8080/api/newGame`);
+        const response = await fetch(`http://localhost:8080/newGame`);
         await checkAndSetResponse(response);
     };
 

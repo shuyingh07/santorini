@@ -11,7 +11,7 @@ import java.util.Map;
  * This class serve frontend requests and return responses to update the ga
  */
 public class App extends SimpleWebServer {
-    private final static int PORT = 8080;
+    private static int PORT = 8080;
     private Game game;
 
     /**
@@ -50,40 +50,35 @@ public class App extends SimpleWebServer {
         Map<String, String> params = session.getParms();
         GameState gameState = new GameState();
 
-        if (uri.startsWith("/api/")) {
-            // System.out.println(uri); // Test URL
-            switch (uri) {
-                case "/api/newGame":
-                    this.game = new Game();
-                    break;
-                case "/api/initialize":
-                    this.game = this.game.initializeWorker(
-                            Integer.parseInt(params.get("x1")), Integer.parseInt(params.get("y1")),
-                            Integer.parseInt(params.get("x2")), Integer.parseInt(params.get("y2")));
-                    break;
-                case "/api/move":
-                    this.game = this.game.move(
-                            Integer.parseInt(params.get("x1")), Integer.parseInt(params.get("y1")),
-                            Integer.parseInt(params.get("x2")), Integer.parseInt(params.get("y2")));
-                    break;
-                case "/api/build":
-                    this.game = this.game.build(
-                            Integer.parseInt(params.get("x1")), Integer.parseInt(params.get("y1")));
-                    break;
-                default:
-                    return super.serve(session);
-            }
-
-            gameState.updateFromGame(this.game);
-            // System.out.println(gameState.toJson()); // Test current game state
-            Response response = newFixedLengthResponse(Response.Status.OK, "application/json", gameState.toJson());
-            response.addHeader("Access-Control-Allow-Origin", "*");
-            response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-            return response;
+        switch (uri) {
+            case "/newGame":
+                this.game = new Game();
+                break;
+            case "/initialize":
+                this.game = this.game.initializeWorker(
+                        Integer.parseInt(params.get("x1")), Integer.parseInt(params.get("y1")),
+                        Integer.parseInt(params.get("x2")), Integer.parseInt(params.get("y2")));
+                break;
+            case "/move":
+                this.game = this.game.move(
+                        Integer.parseInt(params.get("x1")), Integer.parseInt(params.get("y1")),
+                        Integer.parseInt(params.get("x2")), Integer.parseInt(params.get("y2")));
+                break;
+            case "/build":
+                this.game = this.game.build(
+                        Integer.parseInt(params.get("x1")), Integer.parseInt(params.get("y1")));
+                break;
+            default:
+                return super.serve(session);
         }
 
-        return super.serve(session);
+        gameState.updateFromGame(this.game);
+        // System.out.println(gameState.toJson()); // Test current game state
+        Response response = newFixedLengthResponse(Response.Status.OK, "application/json", gameState.toJson());
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        return response;
     }
 
 }
