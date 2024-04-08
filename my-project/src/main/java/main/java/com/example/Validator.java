@@ -4,7 +4,7 @@ package main.java.com.example;
  * This class contains methods to validate actions in the game of Santorini.
  */
 public class Validator {
-    private static final int maxHeight = 4;
+    private static final int MaxHeight = 4;
 
     Validator(){
     }
@@ -51,7 +51,7 @@ public class Validator {
         if (!workerBelongPlayer) {
             return false;
         }
-        if (board.getTowerHeight(toX, toY) > maxHeight-1 || !gridIsFree(board, toX, toY) || 
+        if (board.getTowerHeight(toX, toY) > MaxHeight-1 || !gridIsFree(board, toX, toY) || 
             board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) > 1 || 
             Math.abs(fromX - toX) > 1 || Math.abs(fromY - toY) > 1) {
             return false;
@@ -82,7 +82,7 @@ public class Validator {
         if (!isWithinBounds(board, x, y)) {
             return false;
         }
-        if (board.getTowerHeight(x, y) >= maxHeight || Math.abs(x - workerX) > 1 || Math.abs(y - workerY) > 1 || !gridIsFree(board, x, y) || !hasMovedWorker) {
+        if (board.getTowerHeight(x, y) >= MaxHeight || Math.abs(x - workerX) > 1 || Math.abs(y - workerY) > 1 || !gridIsFree(board, x, y) || !hasMovedWorker) {
             return false;
         }
         return true;
@@ -95,7 +95,7 @@ public class Validator {
      */
     public boolean isWinningMove(Board board) {
         for (Worker worker : board.getWorkers()) {
-            if (worker.getIsMoved() && board.getTowerHeight(worker.getX(), worker.getY()) == maxHeight - 1) {
+            if (worker.getIsMoved() && board.getTowerHeight(worker.getX(), worker.getY()) == MaxHeight - 1) {
                 return true;
             }
         }

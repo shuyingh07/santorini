@@ -19,7 +19,7 @@ public class GameState {
 
     private String message;
 
-    private static final int maxHeight = 4;
+    private static final int MaxHeight = 4;
 
     public GameState() {
         this.grid = new ArrayList<>();
@@ -50,7 +50,7 @@ public class GameState {
 
                 Grid grid = new Grid();
                 grid.setHeight(board.getTowerHeight(x, y));
-                grid.setHasDome(!(board.getTowerHeight(x, y) < maxHeight));
+                grid.setHasDome(!(board.getTowerHeight(x, y) < MaxHeight));
                 if(validator.gridIsFree(board, x, y)) {
                     grid.setOccupyStatus(-1);
                 } else {
