@@ -3,12 +3,13 @@ package main.java.com.example;
 public class Worker {
     private int x, y; 
     private final int playerId;
-    private boolean isMoved = false;
+    private boolean isMoved;
 
     public Worker(int x, int y, int playerId) {
         this.x = x;
         this.y = y;
         this.playerId = playerId;
+        this.isMoved = false;
     }
 
     /**
