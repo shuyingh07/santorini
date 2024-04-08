@@ -22,8 +22,6 @@ public class Grid {
 
         /**
          * Increases the height of the grid by one.
-         * 
-         * @return The updated height of the grid.
          */
         public void addHeight() {
             this.height += 1;
