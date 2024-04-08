@@ -52,7 +52,9 @@ public class Validator {
         if (!workerBelongPlayer) {
             return false;
         }
-        if (board.getTowerHeight(toX, toY) > maxHeight-1 || !gridIsFree(board, toX, toY) || board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) > 1 || Math.abs(fromX - toX) > 1 || Math.abs(fromY - toY) > 1) {
+        if (board.getTowerHeight(toX, toY) > maxHeight-1 || !gridIsFree(board, toX, toY) || 
+            board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) > 1 || 
+            Math.abs(fromX - toX) > 1 || Math.abs(fromY - toY) > 1) {
             return false;
         }
         return true;
