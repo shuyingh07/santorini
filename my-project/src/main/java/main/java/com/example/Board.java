@@ -3,6 +3,11 @@ package main.java.com.example;
 import java.util.List;
 import java.util.ArrayList;
 
+
+/**
+ * The board for a game
+ * This class manages the board status, including its size, grid list and worker list.
+ */
 public class Board {
     private final int row = 5;
     private final int col = 5;
@@ -40,11 +45,11 @@ public class Board {
     }
 
     /**
-     * Place the two worker to the required position
-     * @param x1 position x of desired position of worker 1
-     * @param y1 position y of desired position of worker 1
-     * @param x2 position x of desired position of worker 2
-     * @param y2 position y of desired position of worker 2
+     * Place two workers of specified player
+     * @param x1 targeted x position of worker 1
+     * @param y1 targeted y position of worker 1
+     * @param x2 targeted x position of worker 2
+     * @param y2 targeted y position  of worker 2
      * @param playerId the player id of current player
      */
     public void initializeWorker(int x1, int y1, int x2, int y2, int playerId) {
@@ -53,7 +58,7 @@ public class Board {
     }
 
     /**
-     * Build a block or dome on the board by adding one on the grid in position x,y
+     * Building at specified position, the height of this grid will plus 1.
      * @param x position x
      * @param y position y
      */
@@ -64,9 +69,9 @@ public class Board {
     /**
      * Gets the height of the tower located at a specific position on the grid.
      *
-     * @param x The x-coordinate of the tower's location.
-     * @param y The y-coordinate of the tower's location.
-     * @return The height of the tower at the specified position.
+     * @param x The x location of the grid.
+     * @param y The y location of the grid.
+     * @return The height of the tower at the specified grid.
      */
     public int getTowerHeight(int x, int y) {
         return grids.get(x).get(y).getHeight();
@@ -88,20 +93,34 @@ public class Board {
         return this.grids;
     }
 
+    /**
+     * Retrieves the row length of the board.
+     * @return The row length of the board.
+     */
     public int getROW() {
         return this.row;
     }
 
+    /**
+     * Retrieves the column length of the board.
+     * @return The column length of the board.
+     */
     public int getCOL() {
         return this.col;
     }
 
+    /**
+     * Check whether the specified grid is occupied by a worker.
+     * @param x The x location of the grid.
+     * @param y The y location of the grid.
+     * @return True if the grid is occupied by a worker.
+     */
     public boolean hasWorker(int x, int y){
         for (Worker worker : workers) {
             if (worker != null && worker.getX() == x && worker.getY() == y) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }
