@@ -12,18 +12,17 @@ public class Grid {
         }
 
         /**
-         * Retrieves the height of the cell.
-         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * Gets the height of the cell.
+         * 
          * @return The height of the cell.
          */
         public int getHeight() {
             return height;
         }
 
-        // Getters and setters
         /**
-         * Retrieves the height of the cell.
-         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * Gets the height of the cell.
+         * 
          * @return The height of the cell.
          */
         public void addHeight() {
@@ -32,7 +31,7 @@ public class Grid {
 
         /**
          * Sets the height of the cell.
-         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * 
          * @param height The height to set for the cell.
          */
         public void setHeight(int height) {
@@ -41,7 +40,7 @@ public class Grid {
 
         /**
          * Checks if the cell is occupied.
-         * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * 
          * @return The occupation status of the cell.
          */
         public int getOccupyStatus() {
@@ -50,7 +49,7 @@ public class Grid {
 
         /**
          * Sets the occupation status of the cell.
-         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * 
          * @param occupyStatus The occupation status to set for the cell.
          */
         public void setOccupyStatus(int occupyStatus) {
@@ -59,7 +58,7 @@ public class Grid {
 
         /**
          * Checks if the cell has a dome.
-         * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * 
          * @return {@code true} if the cell has a dome, otherwise {@code false}.
          */
         public boolean isHasDome() {
@@ -68,7 +67,7 @@ public class Grid {
 
         /**
          * Sets whether the cell has a dome.
-         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * 
          * @param hasDome {@code true} if the cell has a dome, otherwise {@code false}.
          */
         public void setHasDome(boolean hasDome) {
