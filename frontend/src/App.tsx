@@ -1,7 +1,18 @@
 import React, {useState} from 'react';
-import {Grid, GameState} from './game.tsx';
-import Cell from './Cell.tsx'
+import {Grid, Cell} from './Cell.tsx'
 import './App.css';
+
+/**
+ * GameState interface defines the structure of the overall state of the game.
+ * It includes properties that represent the current state of the game.
+ */
+interface GameState {
+    grid: Grid[][]; // A 2D array representing the game grid, where each cell is represented by CellData.
+    currentPlayer: number; // The ID of the current player, 0 or 1.
+    status: string; // A string representing the current status of the game.
+    isWinning: boolean; // A boolean indicating whether a winning condition has been met.
+    message: string; // A messages about the game state.
+}
 
 /**
  * The main React functional component for the board game.
@@ -12,11 +23,11 @@ import './App.css';
 const App: React.FC = () => {
     /**
      * Initialize the game grid with a default structure for each cell.
-     * Cells have properties: level, dome status, and occupation status.
+     * Cells have properties: height, dome status, and occupation status.
      */
     const initialGrid: Grid[][] = Array.from({ length: 5 }, () =>
         Array.from({ length: 5 }, () => ({
-            height: 0, // Initial level of construction
+            height: 0, // Initial height of construction
             hasDome: false, // Dome status, false initially
             occupyStatus: -1, // 2 means not occupied, 0 means occupied by player 0, 1 means occupied by player 1
         }))
@@ -123,32 +134,40 @@ const App: React.FC = () => {
     };
 
     return (
-      <div>
-          <button onClick={newGame} className="new-game-button">New Game</button>
-          <div className="game-board">
-              {gameState.grid.map((row, rowIndex) => (
-                  <div key={rowIndex} className="board-row">
-                      {row.map((grid, colIndex) => (
-                          <Cell
-                              key={`${rowIndex}-${colIndex}`}
-                              grid={grid}
-                              onCellClick={handleCellClick}
-                              x={rowIndex}
-                              y={colIndex}
-                              className={selectedPiece && selectedPiece.x === rowIndex && selectedPiece.y === colIndex ? 'selected-cell' : ''}
-                          />
-                      ))}
-                  </div>
-              ))}
-          </div>
-          <div className="game-state-message">
-              {'Message: ' + gameState.message}
-          </div>
-          <div className="game-info">
-              {gameState.isWinning ? `Player ${gameState.currentPlayer} wins!` : `Player ${gameState.currentPlayer}'s Turn, Status: ${gameState.status}`}
-          </div>
-      </div>
-  );
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ width: '200px', padding: '10px', backgroundColor: '#f0f0f0', borderRight: '1px solid #ccc' }}>
+                <h4>Tips</h4>
+                <p><span style={{ color: 'yellow', fontWeight: 'bold' }}>Yellow:</span> Player1</p>
+                <p><span style={{ color: 'lightblue', fontWeight: 'bold' }}>Blue:</span> Player2</p>
+                <p><span style={{ color: 'purple', fontWeight: 'bold' }}>Purple:</span> Selected Grid</p>
+            </div>
+            <div style={{ flexGrow: 1 }}>
+                <button onClick={newGame} className="new-game-button">New Game</button>
+                <div className="game-board">
+                    {gameState.grid.map((row, rowIndex) => (
+                        <div key={rowIndex} className="board-row">
+                            {row.map((grid, colIndex) => (
+                                <Cell
+                                    key={`${rowIndex}-${colIndex}`}
+                                    grid={grid}
+                                    onCellClick={handleCellClick}
+                                    x={rowIndex}
+                                    y={colIndex}
+                                    className={selectedPiece && selectedPiece.x === rowIndex && selectedPiece.y === colIndex ? 'selected-grid' : ''}
+                                />
+                            ))}
+                        </div>
+                    ))}
+                </div>
+                <div className="game-state-message">
+                    {'Message: ' + gameState.message}
+                </div>
+                <div className="game-info">
+                    {gameState.isWinning ? `Player ${gameState.currentPlayer} wins!` : `Player ${gameState.currentPlayer}'s Turn, Status: ${gameState.status}`}
+                </div>
+            </div>
+        </div>
+    );
 }
 
 
