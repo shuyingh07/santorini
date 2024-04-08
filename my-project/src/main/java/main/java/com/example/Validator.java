@@ -1,30 +1,41 @@
 package main.java.com.example;
 
 /**
- * This class contains methods to check whether an action is valid.
+ * This class contains methods to validate actions in the game of Santorini.
  */
 public class Validator {
-    private int maxHeight = 4;
-    /**
-     * Check if the initial place is within the board boundaries, the cell is unoccupied
-     * @param board board of the current game
-     * @param toX initial position x of worker
-     * @param toY initial position y of worker
-     * @return {@code true} if the position is valid to place the worker
-     */
-    public boolean isValidInitial(Board board, int toX, int toY) {
-        return isWithinBounds(board, toX, toY) && gridIsFree(board, toX, toY);
+    private int maxHeight;
+
+    Validator(){
+        this.maxHeight =4;
     }
 
     /**
-     * Check if the moving position is within the board boundaries, the cell is unoccupied, the height is valid, etc.
+     * Checks if the initial placement of a worker is valid.
+     * @param board board of the current game
+     * @param toX initial position x of worker
+     * @param toY initial position y of worker
+     * @return {@code true} if the placement is valid, {@code false} otherwise.
+     */
+    public boolean isValidInitial(Board board, int toX, int toY) {
+        if (!isWithinBounds(board, toX, toY)) {
+            return false;
+        }
+        if (!gridIsFree(board, toX, toY)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a move of a worker is valid.
      * @param board board of the current game
      * @param fromX position x of the original worker
      * @param fromY position y of the original worker
      * @param toX position x of the moved worker
      * @param toY position y of the moved worker
      * @param playerId the player id of current player
-     * @return {@code true} if the position is valid to move the worker from the original position
+     * @return {@code true} if the move is valid, {@code false} otherwise.
      */
     public boolean isValidMove(Board board, int fromX, int fromY, int toX, int toY, int playerId) {
         boolean workerBelongPlayer = false;
@@ -35,19 +46,24 @@ public class Validator {
             }
         }
 
-        return isWithinBounds(board, toX, toY)
-                && workerBelongPlayer
-                && board.getTowerHeight(toX, toY) <= maxHeight-1 && gridIsFree(board, toX, toY)
-                && board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) <= 1
-                && Math.abs(fromX - toX) <= 1 && Math.abs(fromY - toY) <= 1;
+        if (!isWithinBounds(board, toX, toY)) {
+            return false;
+        }
+        if (!workerBelongPlayer) {
+            return false;
+        }
+        if (board.getTowerHeight(toX, toY) > maxHeight-1 || !gridIsFree(board, toX, toY) || board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) > 1 || Math.abs(fromX - toX) > 1 || Math.abs(fromY - toY) > 1) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Check if the build position is within the board boundaries, the height is less than 4, the cell neighbored with moved worker, etc.
+     * Checks if building at a position is valid.
      * @param board board of the current game
-     * @param x position x of the block or dome
-     * @param y position y of the block or dome
-     * @return {@code true} if the position is valid to build block or dome
+     * @param x position x to build
+     * @param y position y to build
+     * @return {@code true} if building is valid, {@code false} otherwise.
      */
     public boolean isValidBuild(Board board, int x, int y) {
         int workerX = -1;
@@ -62,50 +78,56 @@ public class Validator {
             }
         }
 
-        return isWithinBounds(board, x, y) && board.getTowerHeight(x, y) < maxHeight &&
-                Math.abs(x - workerX) <= 1 && Math.abs(y - workerY) <= 1 &&
-                gridIsFree(board, x, y) && hasMovedWorker;
+        if (!isWithinBounds(board, x, y)) {
+            return false;
+        }
+        if (board.getTowerHeight(x, y) >= maxHeight || Math.abs(x - workerX) > 1 || Math.abs(y - workerY) > 1 || !gridIsFree(board, x, y) || !hasMovedWorker) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Determines if a move results in a winning condition.
-     * This method checks for default winning conditions (reaching a level 3 tower on the board).
-     * If any worker belongs to current player has moved to a position meeting the winning criteria, the move is considered a winning move.
-     *
-     * @param board The game board on which the move is being made.
-     * @return {@code true} if the move results in a win, otherwise {@code false}.
+     * Checks if a move results in a win.
+     * @param board The game board.
+     * @return {@code true} if the move results in a win, {@code false} otherwise.
      */
     public boolean isWinningMove(Board board) {
-        boolean ifWin = false;
-
-        // Check standard winning condition: any worker reaching the third level
         for (Worker worker : board.getWorkers()) {
             if (worker.getIsMoved() && board.getTowerHeight(worker.getX(), worker.getY()) == maxHeight - 1) {
-                ifWin = true;
-                break;
+                return true;
             }
         }
-        return ifWin;
+        return false;
     }
 
     /**
-     * Check if the cell is within boundary
-     * @param x position x of the checked cell
-     * @param y position y of the checked cell
-     * @return {@code true} if the position within boundary
+     * Checks if a cell is within the board boundaries.
+     * @param board The game board.
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return {@code true} if the cell is within bounds, {@code false} otherwise.
      */
     public boolean isWithinBounds(Board board, int x, int y) {
-        return x >= 0 && x < board.getROW() && y >= 0 && y < board.getCOL();
+        if (x >= 0 && x < board.getROW() && y >= 0 && y < board.getCOL()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
-     * Check if the cell is free
-     * @param x position x of the checked cell
-     * @param y position y of the checked cell
-     * @return {@code true} if the position is free
+     * Checks if a cell is unoccupied by a worker.
+     * @param board The game board.
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return {@code true} if the cell is unoccupied, {@code false} otherwise.
      */
     public boolean gridIsFree(Board board, int x, int y) {
-        
-        return !board.hasWorker(x, y);
+        if (!board.hasWorker(x, y)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
