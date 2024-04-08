@@ -5,6 +5,13 @@ public class Worker {
     private final int playerId;
     private boolean isMoved;
 
+    /**
+     * Default Constructor
+     * 
+     * @param x The x position for the worker.
+     * @param y The y position for the worker.
+     * @param playerId The playerId the worker belongs to.
+     */
     public Worker(int x, int y, int playerId) {
         this.x = x;
         this.y = y;
@@ -32,7 +39,10 @@ public class Worker {
     }
 
     /**
-     * Move the worker to a specified position(x,u)
+     * Move the worker to a specified position(x,y)
+     * 
+     *  @param x The new x position of the worker.
+     * @param y The new y position of the worker.
      */
     public void move(int x, int y){
         this.x = x;
