@@ -4,7 +4,7 @@ package main.java.com.example;
  * This class contains methods to validate actions in the game of Santorini.
  */
 public class Validator {
-    private int maxHeight = 4;
+    private static final int maxHeight = 4;
 
     Validator(){
     }

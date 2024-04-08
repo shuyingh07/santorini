@@ -19,7 +19,7 @@ public class GameState {
 
     private String message;
 
-    private int maxHeight = 4;
+    private static final int maxHeight = 4;
 
     public GameState() {
         this.grid = new ArrayList<>();
