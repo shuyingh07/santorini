@@ -102,22 +102,22 @@
     }
     .board {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 让每个格子平分可用空间 */
+    grid-template-columns: repeat(5, 1fr); /* Divide available space equally for each cell */
     grid-template-rows: repeat(5, 1fr);
-    gap: 0; /* 没有间隙 */
-    width: 100vmin; /* 根据需要调整宽度，保持棋盘的正方形 */
-    height: 100vmin; /* 保持高度与宽度相同 */
-    margin: auto; /* 水平居中对齐 */
+    gap: 0; /* No gap between cells */
+    width: 100vmin; /* Adjust width as needed to maintain square shape of the board */
+    height: 100vmin; /* Keep height same as width */
+    margin: auto; /* Align center horizontally */
     }
 
     .cell {
-    border: 1px solid black; /* 单元格边框 */
+    border: 1px solid black; /* Cell border */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0; /* 移除内间距 */
-    margin: 0; /* 移除外间距 */
-    cursor: pointer; /* 指示可点击 */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    cursor: pointer; /* Indicate clickable */
     }
   </style>
 </head>
