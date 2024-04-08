@@ -23,13 +23,13 @@ interface GridInfo {
 const Cell: React.FC<GridInfo> = ({ grid, onCellClick, x, y, className }) => {
     const { height, hasDome, occupyStatus } = grid;
     
-    let content = hasDome ? "Dome" : height.toString();  // 如果有圆顶，显示星号，否则显示高度
+    let content = hasDome ? "Dome" : height.toString();
     let cellStyle = className;
     
     if (occupyStatus === 0) {
-        cellStyle += " yellow-grid"; // 为黄色背景添加类
+        cellStyle += " yellow-grid";
     } else if (occupyStatus === 1) {
-        cellStyle += " blue-grid"; // 为蓝色背景添加类
+        cellStyle += " blue-grid"; 
     }
 
     return (
