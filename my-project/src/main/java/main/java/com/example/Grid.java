@@ -12,63 +12,63 @@ public class Grid {
         }
 
         /**
-         * Gets the height of the cell.
+         * Gets the height of the grid.
          * 
-         * @return The height of the cell.
+         * @return The height of the grid.
          */
         public int getHeight() {
             return height;
         }
 
         /**
-         * Gets the height of the cell.
+         * Increases the height of the grid by one.
          * 
-         * @return The height of the cell.
+         * @return The updated height of the grid.
          */
         public void addHeight() {
             this.height += 1;
         }
 
         /**
-         * Sets the height of the cell.
+         * Sets the height of the grid.
          * 
-         * @param height The height to set for the cell.
+         * @param height The height to set for the grid.
          */
         public void setHeight(int height) {
             this.height = height;
         }
 
         /**
-         * Checks if the cell is occupied.
+         * Checks if the grid is occupied.
          * 
-         * @return The occupation status of the cell.
+         * @return The occupation status of the grid.
          */
         public int getOccupyStatus() {
             return this.occupyStatus;
         }
 
         /**
-         * Sets the occupation status of the cell.
+         * Sets the occupation status of the grid.
          * 
-         * @param occupyStatus The occupation status to set for the cell.
+         * @param occupyStatus The occupation status to set for the grid.
          */
         public void setOccupyStatus(int occupyStatus) {
             this.occupyStatus = occupyStatus;
         }
 
         /**
-         * Checks if the cell has a dome.
+         * Checks if the grid has a dome.
          * 
-         * @return {@code true} if the cell has a dome, otherwise {@code false}.
+         * @return {@code true} if the grid has a dome, otherwise {@code false}.
          */
         public boolean isHasDome() {
             return hasDome;
         }
 
         /**
-         * Sets whether the cell has a dome.
+         * Sets whether the grid has a dome.
          * 
-         * @param hasDome {@code true} if the cell has a dome, otherwise {@code false}.
+         * @param hasDome {@code true} if the grid has a dome, otherwise {@code false}.
          */
         public void setHasDome(boolean hasDome) {
             this.hasDome = hasDome;
