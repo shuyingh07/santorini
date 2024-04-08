@@ -1,29 +1,14 @@
 package main.java.com.example;
 
-
-/**
- * Represents a worker in the game.
- * Workers are the game pieces controlled by players, capable of moving around the board and performing actions like building.
- * This class holds the positional data of the worker and tracks its movements and association with a specific player.
- */
 public class Worker {
-    private int x, y; // position coordinate
-    private final int playerId; // corresponding playerId to the player
+    private int x, y; 
+    private final int playerId;
     private boolean isMoved = false; // determine if this worker is moved in this round
 
     public Worker(int x, int y, int playerId) {
         this.x = x;
         this.y = y;
         this.playerId = playerId;
-    }
-
-    /**
-     * Sets the x-coordinate of the worker.
-     *
-     * @param x The new x-coordinate to set.
-     */
-    public void setX(int x) {
-        this.x = x;
     }
 
     /**
@@ -35,14 +20,6 @@ public class Worker {
         return x;
     }
 
-    /**
-     * Sets the y-coordinate of the worker.
-     *
-     * @param y The new y-coordinate to set.
-     */
-    public void setY(int y) {
-        this.y = y;
-    }
 
     /**
      * Retrieves the y-coordinate of the worker.
@@ -51,6 +28,11 @@ public class Worker {
      */
     public int getY() {
         return y;
+    }
+
+    public void move(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
     /**

@@ -2,32 +2,29 @@ package main.java.com.example;
 import java.util.Objects;
 
 /**
- * Represents the game controller for the board game.
- * This class manages the game state at the backend, including the board, players, and game rules.
- * The front-end will call methods in this class to control the state of the game.
+ * This class manages the entire game flow, including the board, players, and validator to check player actions.
  */
 public class Game {
 
-    private Board board; // The game board object, managing the grid, workers, and their interactions.
+    private Board board; // The game board
 
-    private final Player[] players = new Player[2]; // An array to hold the two players participating in the game.
+    private final Player[] players = new Player[2];
 
-    private int currentPlayerId = 0; // The ID of the current player. This is used to track whose turn it is, toggling between 0 and 1.
+    private int currentPlayerId = 0;
 
-    private boolean isWinning = false; // A flag to indicate whether the current game state meets a winning condition.
+    private boolean isWinning = false; 
 
-    private String message; // A message related to the current state of the game, used to provide feedback, instructions, or game results to players.
+    private String message; // A message related to the current state of the game.
 
     /**
-     * Default constructor for the Game class.
-     * Initializes the game with default board and players.
+     * Default constructor.
      */
     public Game() {
         this(new Board(), new Player(0), new Player(1), 0, false, "");
     }
 
     /**
-     * Constructor for the Game class.
+     * Constructor for the Game with specified status.
      * @param board The game board.
      * @param player1 The first player.
      * @param player2 The second player.
@@ -45,21 +42,19 @@ public class Game {
     }
 
     /**
-     * Initializes a worker on the board at a specified location.
-     * This method is responsible for placing a player's worker on the board at the beginning of the game.
-     * It validates the initial position and updates the game state accordingly.
+     * Initializes a worker on the board at a specified position.
      *
      * @param fromX The original X position.
      * @param fromY The original Y position.
-     * @param toX The target X position for the worker.
-     * @param toY The target Y position for the worker.
-     * @return A new instance of Game reflecting the updated state.
+     * @param toX The targetd X position for the worker.
+     * @param toY The targetd Y position for the worker.
+     * @return A new instance of Game reflecting the updated status.
      */
     public Game initializeWorker(int fromX, int fromY, int toX, int toY) {
         boolean actionSuccess = this.players[currentPlayerId].initializeWorker(this.board, fromX, fromY, toX, toY);
         if(actionSuccess) {
-            this.message = "Player " + this.getCurrentPlayerId() + " initialization Successful!";
-            switchPlayer();
+            this.message = "Player " + this.getCurrentPlayerId() + " initialize Successfully!";
+            changeCurrentPlayer();
         } else {
             this.message = "Error: Invalid initialization, please try again!";
         }
@@ -67,9 +62,8 @@ public class Game {
     }
 
     /**
-     * Moves a worker on the board from one position to another.
-     * This method checks the validity of the move, updates the game state, and determines if the move results in a winning condition.
-     * If the move is successful and results in a win, the winning status is set and a victory message is assigned.
+     * Moves a worker on the board to the targeted position.
+     * If the move is successful and it is a wining move, the winning status is set and send a winning message.
      * Otherwise, a success or error message is set based on the move's validity.
      *
      * @param fromX The original X position.
@@ -81,12 +75,10 @@ public class Game {
     public Game move(int fromX, int fromY, int toX, int toY) {
         boolean actionSuccess = this.players[currentPlayerId].move(this.board, fromX, fromY, toX, toY);
 
-        // Check if the move results in a winning condition
         this.isWinning = this.players[currentPlayerId].isWinningMove(board, fromX, fromY, toX, toY);
 
-        // Update message based on game state
         if (this.isWinning) {
-            this.message = "Player " + this.getCurrentPlayerId() + " win this game!!!";
+            this.message = "Player " + this.getCurrentPlayerId() + " win!";
         } else if(actionSuccess) {
             this.message = "Player " + this.getCurrentPlayerId() + " successfully move the worker!";
         } else {
@@ -112,47 +104,17 @@ public class Game {
             this.message = "Player " + this.getCurrentPlayerId() + " building Success! Please continue to build!";
         } else if (actionSuccess && Objects.equals(this.players[currentPlayerId].getStatus(), "move")) {
             this.message = "Player " + this.getCurrentPlayerId() + " building Success! Switch player!";
-            switchPlayer();
+            changeCurrentPlayer();
         } else {
             this.message = "Error: Invalid building, please try again!";
         }
         return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);
     }
 
-
     /**
-     * Handles the passing of an action by the current player.
-     * This method allows a player to skip their current action (move or build) if certain conditions are met.
-     * It checks the current player's status and action execution state, then updates the status accordingly.
-     * The method also resets certain states of the player and switches to the next player.
-     * A success message is set if the action is successfully passed, otherwise, an error message is generated.
-     *
-     * @return A new instance of Game reflecting the updated state after the action is passed.
+     * Change current player.
      */
-    public Game passAction() {
-        // Check if the current player has executed an action and has a build strategy
-        if(this.players[currentPlayerId].getIsExecuted()) {
-            // Update the player's status based on the current action
-            if(Objects.equals(this.players[currentPlayerId].getStatus(), "move")) {
-                this.players[currentPlayerId].setStatus("build");
-            } else if(Objects.equals(this.players[currentPlayerId].getStatus(), "build")) {
-                this.players[currentPlayerId].setStatus("move");
-            }
-
-            // Reset executed state and perform pass action on the build strategy
-            this.players[currentPlayerId].setExecuted(false);
-        } else {
-            // Set error message if pass action is not allowed
-            this.message = "Error: Cannot pass this action!";
-        }
-        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);
-    }
-
-
-    /**
-     * Switches the current player to next player.
-     */
-    private void switchPlayer() {
+    private void changeCurrentPlayer() {
         this.currentPlayerId = (currentPlayerId + 1) % 2;
     }
 
@@ -161,7 +123,7 @@ public class Game {
      * @return The current game board.
      */
     public Board getBoard() {
-        return board;
+        return this.board;
     }
 
     /**
@@ -190,8 +152,8 @@ public class Game {
     }
 
     /**
-     * Checks if the game is in a winning state.
-     * @return {@code true} if the game is in a winning state, otherwise {@code false}.
+     * Checks if one player has won the game.
+     * @return {@code true} if one player won the game, otherwise {@code false}.
      */
     public boolean getIsWinning() {
         return this.isWinning;
