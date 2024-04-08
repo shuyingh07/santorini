@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package main.java.com.example;
+import java.util.Objects;
+
+/**
+ * This class manages the entire game flow, including the board, players, and validator to check player actions.
+ */
+public class Game {
+
+    private Board board; // The game board
+
+<span class="nc" id="L11">    private final Player[] players = new Player[2];</span>
+
+<span class="nc" id="L13">    private int currentPlayerId = 0;</span>
+
+<span class="nc" id="L15">    private boolean isWinning = false; </span>
+
+    private String message; // A message related to the current state of the game.
+
+    /**
+     * Default constructor.
+     */
+    public Game() {
+<span class="nc" id="L23">        this(new Board(), new Player(0), new Player(1), 0, false, &quot;&quot;);</span>
+<span class="nc" id="L24">    }</span>
+
+    /**
+     * Constructor for the Game with specified status.
+     * @param board The game board.
+     * @param player1 The first player.
+     * @param player2 The second player.
+     * @param currentPlayerId The ID of the current player.
+     * @param isWinning The winning status of the game.
+     * @param message A message related to the game state.
+     */
+<span class="nc" id="L35">    public Game(Board board, Player player1, Player player2, int currentPlayerId, boolean isWinning, String message) {</span>
+<span class="nc" id="L36">        this.board = board;</span>
+<span class="nc" id="L37">        this.players[0] = player1;</span>
+<span class="nc" id="L38">        this.players[1] = player2;</span>
+<span class="nc" id="L39">        this.currentPlayerId = currentPlayerId;</span>
+<span class="nc" id="L40">        this.isWinning = isWinning;</span>
+<span class="nc" id="L41">        this.message = message;</span>
+<span class="nc" id="L42">    }</span>
+
+    /**
+     * Initializes a worker on the board at a specified position.
+     *
+     * @param fromX The original X position.
+     * @param fromY The original Y position.
+     * @param toX The targetd X position for the worker.
+     * @param toY The targetd Y position for the worker.
+     * @return A new instance of Game reflecting the updated status.
+     */
+    public Game initializeWorker(int fromX, int fromY, int toX, int toY) {
+<span class="nc" id="L54">        boolean actionSuccess = this.players[currentPlayerId].initializeWorker(this.board, fromX, fromY, toX, toY);</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if(actionSuccess) {</span>
+<span class="nc" id="L56">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; initialize Successfully!&quot;;</span>
+<span class="nc" id="L57">            changeCurrentPlayer();</span>
+        } else {
+<span class="nc" id="L59">            this.message = &quot;Error: Invalid initialization, please try again!&quot;;</span>
+        }
+<span class="nc" id="L61">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
+    }
+
+    /**
+     * Moves a worker on the board to the targeted position.
+     * If the move is successful and it is a wining move, the winning status is set and send a winning message.
+     * Otherwise, a success or error message is set based on the move's validity.
+     *
+     * @param fromX The original X position.
+     * @param fromY The original Y position.
+     * @param toX The target X position for the worker.
+     * @param toY The target Y position for the worker.
+     * @return A new instance of Game reflecting the updated state.
+     */
+    public Game move(int fromX, int fromY, int toX, int toY) {
+<span class="nc" id="L76">        boolean actionSuccess = this.players[currentPlayerId].move(this.board, fromX, fromY, toX, toY);</span>
+
+<span class="nc" id="L78">        this.isWinning = this.players[currentPlayerId].isWinningMove(board, fromX, fromY, toX, toY);</span>
+
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (this.isWinning) {</span>
+<span class="nc" id="L81">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; win!&quot;;</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        } else if(actionSuccess) {</span>
+<span class="nc" id="L83">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; successfully move the worker!&quot;;</span>
+        } else {
+<span class="nc" id="L85">            this.message = &quot;Error: Invalid movement, please try again!&quot;;</span>
+        }
+
+<span class="nc" id="L88">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
+    }
+
+    /**
+     * Builds a structure on the board at a specified position.
+     * This method enables a player to construct a block or dome on the game board.
+     * It checks the validity of the build location and updates the game state to reflect the new structure.
+     * A success or error message is set based on the build action's outcome.
+     *
+     * @param toX The X position to build.
+     * @param toY The Y position to build.
+     * @return A new instance of Game reflecting the updated state.
+     */
+    public Game build(int toX, int toY) {
+<span class="nc" id="L102">        boolean actionSuccess = this.players[currentPlayerId].build(this.board, toX, toY);</span>
+<span class="nc bnc" id="L103" title="All 4 branches missed.">        if(actionSuccess &amp;&amp; Objects.equals(this.players[currentPlayerId].getStatus(), &quot;build&quot;)) {</span>
+<span class="nc" id="L104">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; building Success! Please continue to build!&quot;;</span>
+<span class="nc bnc" id="L105" title="All 4 branches missed.">        } else if (actionSuccess &amp;&amp; Objects.equals(this.players[currentPlayerId].getStatus(), &quot;move&quot;)) {</span>
+<span class="nc" id="L106">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; building Success! Switch player!&quot;;</span>
+<span class="nc" id="L107">            changeCurrentPlayer();</span>
+        } else {
+<span class="nc" id="L109">            this.message = &quot;Error: Invalid building, please try again!&quot;;</span>
+        }
+<span class="nc" id="L111">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
+    }
+
+    /**
+     * Change current player.
+     */
+    private void changeCurrentPlayer() {
+<span class="nc" id="L118">        this.currentPlayerId = (currentPlayerId + 1) % 2;</span>
+<span class="nc" id="L119">    }</span>
+
+    /**
+     * Retrieves the current game board.
+     * @return The current game board.
+     */
+    public Board getBoard() {
+<span class="nc" id="L126">        return this.board;</span>
+    }
+
+    /**
+     * Sets the game board.
+     * @param board The board to set.
+     */
+    public void setBoard(Board board) {
+<span class="nc" id="L134">        this.board = board;</span>
+<span class="nc" id="L135">    }</span>
+
+    /**
+     * Retrieves a player by ID.
+     * @param currentPlayerId The ID of the player to retrieve.
+     * @return The player with the specified ID.
+     */
+    public Player getPlayers(int currentPlayerId) {
+<span class="nc" id="L143">        return players[currentPlayerId];</span>
+    }
+
+    /**
+     * Retrieves the ID of the current player.
+     * @return The ID of the current player.
+     */
+    public int getCurrentPlayerId() {
+<span class="nc" id="L151">        return currentPlayerId;</span>
+    }
+
+    /**
+     * Checks if one player has won the game.
+     * @return {@code true} if one player won the game, otherwise {@code false}.
+     */
+    public boolean getIsWinning() {
+<span class="nc" id="L159">        return this.isWinning;</span>
+    }
+
+    /**
+     * Retrieves the current game message.
+     * @return The current game message.
+     */
+    public String getMessage() {
+<span class="nc" id="L167">        return message;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

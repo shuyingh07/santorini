@@ -5,17 +5,12 @@ public class Grid {
         private int occupyStatus;
         private boolean hasDome;
 
-        /**
-         * Default constructor for Grid.
-         * Initializes the cell data with default values.
-         */
         public Grid() {
             this.height = 0;
             this.hasDome = false;
             this.occupyStatus = -1;
         }
 
-        // Getters and setters
         /**
          * Retrieves the height of the cell.
          * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
@@ -56,7 +51,7 @@ public class Grid {
         /**
          * Sets the occupation status of the cell.
          * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
-         * @param occupy_status The occupation status to set for the cell.
+         * @param occupyStatus The occupation status to set for the cell.
          */
         public void setOccupyStatus(int occupyStatus) {
             this.occupyStatus = occupyStatus;

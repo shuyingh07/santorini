@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Grid.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example</a> &gt; <span class="el_source">Grid.java</span></div><h1>Grid.java</h1><pre class="source lang-java linenums">package main.java.com.example;
+
+public class Grid {
+        private int height;
+        private int occupyStatus;
+        private boolean hasDome;
+
+<span class="nc" id="L8">        public Grid() {</span>
+<span class="nc" id="L9">            this.height = 0;</span>
+<span class="nc" id="L10">            this.hasDome = false;</span>
+<span class="nc" id="L11">            this.occupyStatus = -1;</span>
+<span class="nc" id="L12">        }</span>
+
+        /**
+         * Retrieves the height of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return The height of the cell.
+         */
+        public int getHeight() {
+<span class="nc" id="L20">            return height;</span>
+        }
+
+        // Getters and setters
+        /**
+         * Retrieves the height of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return The height of the cell.
+         */
+        public void addHeight() {
+<span class="nc" id="L30">            this.height += 1;</span>
+<span class="nc" id="L31">        }</span>
+
+        /**
+         * Sets the height of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @param height The height to set for the cell.
+         */
+        public void setHeight(int height) {
+<span class="nc" id="L39">            this.height = height;</span>
+<span class="nc" id="L40">        }</span>
+
+        /**
+         * Checks if the cell is occupied.
+         * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return The occupation status of the cell.
+         */
+        public int getOccupyStatus() {
+<span class="nc" id="L48">            return this.occupyStatus;</span>
+        }
+
+        /**
+         * Sets the occupation status of the cell.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @param occupyStatus The occupation status to set for the cell.
+         */
+        public void setOccupyStatus(int occupyStatus) {
+<span class="nc" id="L57">            this.occupyStatus = occupyStatus;</span>
+<span class="nc" id="L58">        }</span>
+
+        /**
+         * Checks if the cell has a dome.
+         * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @return {@code true} if the cell has a dome, otherwise {@code false}.
+         */
+        public boolean isHasDome() {
+<span class="nc" id="L66">            return hasDome;</span>
+        }
+
+        /**
+         * Sets whether the cell has a dome.
+         * * (This method is not a dead method, it is required by Jackson to be present in order to convert the GameState object to a JSON string.)
+         * @param hasDome {@code true} if the cell has a dome, otherwise {@code false}.
+         */
+        public void setHasDome(boolean hasDome) {
+<span class="nc" id="L75">            this.hasDome = hasDome;</span>
+<span class="nc" id="L76">        }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

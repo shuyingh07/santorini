@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package main.java.com.example;
+
+
+/**
+ * Represents a player in the game.
+ * This class manages the plauer status, including its playerID, initialize and move workers, build in a specified position.
+ */
+public class Player {
+    private final int playerId;
+
+<span class="nc" id="L11">    private String status = &quot;initialize&quot;;  // The current status of the player, including &quot;initialize&quot;, &quot;move&quot;, &quot;build&quot;.</span>
+
+<span class="nc" id="L13">    private final Validator validator = new Validator(); // Default validation strategy for initialization, building and moving.</span>
+
+    /**
+     * Constructor for the Player class.
+     * Initializes a new player with a unique identifier.
+     * This ID is used to distinguish the player throughout the game.
+     *
+     * @param playerId The unique identifier for the player.
+     */
+
+<span class="nc" id="L23">    public Player(int playerId) {</span>
+<span class="nc" id="L24">        this.playerId = playerId;</span>
+<span class="nc" id="L25">    }</span>
+
+    /**
+     * First, it allows player to choose the initial position for two workers
+     * Second, check if the position is valid and status is &quot;initialize&quot;. If not, it will return false and end.
+     * If it is valid, place the two workers.
+     * @param board board of the current game
+     * @param x1 position x of worker one
+     * @param y1 position y of worker two
+     * @param x2 position x of worker two
+     * @param y2 position y of worker two
+     * @return {@code true} if successfully initialized the two workers
+     */
+    public boolean initializeWorker(Board board, int x1, int y1, int x2, int y2) {
+        // Check if the current status is 'initialize' and the first position is valid
+        // Validate the second position and ensure it's not the same as the first
+<span class="nc bnc" id="L41" title="All 10 branches missed.">        if (status.equals(&quot;initialize&quot;) &amp;&amp; validator.isValidInitial(board, x1, y1) &amp;&amp; validator.isValidInitial(board, x2, y2) &amp;&amp; !(x1 == x2 &amp;&amp; y1 == y2)) {</span>
+            // Update status to 'move' and initialize the two workers
+<span class="nc" id="L43">            this.status = &quot;move&quot;;</span>
+<span class="nc" id="L44">            board.initializeWorker(x1, y1, x2, y2, playerId);</span>
+<span class="nc" id="L45">            return true;</span>
+        } else {
+            // Output error message if the first initialization is invalid
+<span class="nc" id="L48">            System.out.println(&quot;Invalid initialization. Try again.&quot;);</span>
+<span class="nc" id="L49">            return false;</span>
+        }
+    }
+
+    /**
+     * First, it allows player to choose the worker to move according to the position.
+     * Second, it allows player to choose the desired position to move.
+     * Third, it will check if this player has god card that implements move strategy
+     * if true, validation obey the god card rule will be executed, otherwise, the default validation will be executed.
+     * (The extra action for god card like pushing other workers will be implemented directly in god card validator)
+     * Forth, without god card, it will check if the steps above is valid and if the status is &quot;move&quot;. If not, return false and end.
+     * With god card allows second move, it will check if this god card allows second move.
+     * If it is valid, move the worker to the desired place.
+     *
+     * @param board board of the current game
+     * @param fromX position x of the original worker
+     * @param fromY position y of the original worker
+     * @param toX position x of the moved worker
+     * @param toY position y of the moved worker
+     * @return {@code true} if the worker is moved successfully
+     */
+    public boolean move(Board board, int fromX, int fromY, int toX, int toY) {
+        // Check the validity of the move, either through the standard rules or a specific move strategy
+<span class="nc bnc" id="L72" title="All 4 branches missed.">        if ((status.equals(&quot;move&quot;) &amp;&amp; validator.isValidMove(board, fromX, fromY, toX, toY, playerId))) {</span>
+            // Update the worker's position on the board and change the status to 'build'
+<span class="nc" id="L74">            board.findAndPlaceWorker(fromX, fromY, toX, toY, playerId);</span>
+<span class="nc" id="L75">            this.status = &quot;build&quot;;</span>
+<span class="nc" id="L76">            return true;</span>
+        } else {
+            // Output error message if the move is invalid
+<span class="nc" id="L79">            System.out.println(&quot;Invalid move. Try again.&quot;);</span>
+<span class="nc" id="L80">            return false;</span>
+        }
+    }
+
+    /**
+     * First, it allows player to choose the position to build a block or dome.
+     * Second, it will check if this player has god card that implements build strategy
+     * if true, validation obey the god card rule will be executed,
+     * if false, the default validation will be executed.
+     * Third, it will check if the position is valid and the status is &quot;build&quot;. If not, return false.
+     * Forth, without god card, it will build a block or dome.
+     * With god card allows second build, it will check if this god card allows second build.
+     * If true, check if this player has built once or not to decide if the status needs to be changed to 'move', then build a block or dome.
+     * if not, change the status to 'move' and build a block or dome.
+     * @param board board of the current game
+     * @param buildX the X position required to build a block or dome
+     * @param buildY the Y position required to build a block or dome
+     * @return {@code true} if the block or dome is successfully built
+     */
+    public boolean build(Board board, int buildX, int buildY) {
+        // Check if the build is valid under standard rules or a specific build strategy
+<span class="nc bnc" id="L101" title="All 4 branches missed.">        if((status.equals(&quot;build&quot;) &amp;&amp; validator.isValidBuild(board, buildX, buildY))) {</span>
+            // Execute the build action and update the status
+<span class="nc" id="L103">            this.status = &quot;move&quot;;</span>
+<span class="nc" id="L104">            board.buildBlock(buildX, buildY);</span>
+<span class="nc" id="L105">            resetIsMoved(board);</span>
+<span class="nc" id="L106">            return true;</span>
+        } else {
+            // Output error message if the build action is invalid
+<span class="nc" id="L109">            System.out.println(&quot;Invalid build. Try again.&quot;);</span>
+<span class="nc" id="L110">            return false;</span>
+        }
+    }
+
+    /**
+     * Determines if a move results in a winning condition.
+     * This method checks for standard winning conditions and any additional conditions specified by a win strategy.
+     * If any worker has moved to a position meeting the winning criteria, or if the win strategy's conditions are met, the move is considered a winning move.
+     *
+     * @param board The game board on which the move is being made.
+     * @param fromX The original X coordinate of the worker.
+     * @param fromY The original Y coordinate of the worker.
+     * @param toX The target X coordinate for the worker.
+     * @param toY The target Y coordinate for the worker.
+     * @return {@code true} if the move results in a win, otherwise {@code false}.
+     */
+    public boolean isWinningMove(Board board, int fromX, int fromY, int toX, int toY) {
+<span class="nc" id="L127">        boolean isWin = validator.isWinningMove(board);</span>
+
+<span class="nc" id="L129">        return isWin;</span>
+    }
+
+    /**
+     * Resets the movement state of all workers on the board.
+     * This method iterates through all workers on the board and sets their 'isMoved' state to false.
+     * It is used to reset the state at the end of a turn or after a specific action has been completed,
+     * ensuring that the movement state of each worker is accurately reflected for the next turn.
+     *
+     * @param board The game board whose workers' movement states are to be reset.
+     */
+    public void resetIsMoved(Board board) {
+        // Iterate through all workers on the board
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        for(Worker worker : board.getWorkers()) {</span>
+            // Reset the 'isMoved' state to false if it's currently true
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if(worker.getIsMoved()) {</span>
+<span class="nc" id="L145">                worker.setIsMoved(false);</span>
+            }
+<span class="nc" id="L147">        }</span>
+<span class="nc" id="L148">    }</span>
+
+    /**
+     * Retrieves the status of player.
+     * @return The status of player.
+     */
+    public String getStatus() {
+<span class="nc" id="L155">        return status;</span>
+    }
+    
+
+    /**
+     * Sets the current status of the player.
+     * This status represents the current phase or action the player is in.
+     *
+     * @param status The status to be set for the player.
+     */
+    public void setStatus(String status) {
+<span class="nc" id="L166">        this.status = status;</span>
+<span class="nc" id="L167">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

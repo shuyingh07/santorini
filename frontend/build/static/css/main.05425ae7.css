@@ -1,0 +1,2 @@
+.game-board{grid-gap:0;display:grid;gap:0;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);height:500px;margin:0 auto;width:500px}.board-row{display:contents}.selected-grid{background-color:purple}.yellow-grid{background-color:#ff0}.blue-grid{background-color:#add8e6}.grid{background-color:#fff;border:1px solid #000;font-size:20px;padding:10px;text-align:center}
+/*# sourceMappingURL=main.05425ae7.css.map*/

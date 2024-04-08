@@ -3,18 +3,14 @@ package main.java.com.example;
 
 /**
  * Represents a player in the game.
- * This class encapsulates all the properties and actions of a player, including their unique identifier, status, and strategies influenced by god cards.
- * It handles key gameplay actions like initializing workers, moving them on the board, building structures, and determining win conditions.
- * The class also maintains the player's current status in the game and interacts with the game board to execute player actions.
+ * This class manages the plauer status, including its playerID, initialize and move workers, build in a specified position.
  */
 public class Player {
-    private final int playerId;  // The unique identifier for the player.
+    private final int playerId;
 
-    private String status = "initialize";  // The current status of the player, indicating the phase of their turn (e.g., 'initialize', 'move', 'build').
+    private String status = "initialize";  // The current status of the player, including "initialize", "move", "build".
 
     private final Validator validator = new Validator(); // Default validation strategy for initialization, building and moving.
-
-    private boolean isExecuted = false;  // Indicates whether a specific action (like a build) has been executed in the current turn.
 
     /**
      * Constructor for the Player class.
@@ -159,13 +155,6 @@ public class Player {
         return status;
     }
     
-    /**
-     * Checks if a specific action has been executed by the player.
-     * @return {@code true} if the action has been executed, otherwise {@code false}.
-     */
-    public boolean getIsExecuted() {
-        return isExecuted;
-    }
 
     /**
      * Sets the current status of the player.
@@ -175,15 +164,5 @@ public class Player {
      */
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    /**
-     * Sets the executed state for a specific action.
-     * This is used to track whether a certain action has been performed.
-     *
-     * @param executed The executed state to be set.
-     */
-    public void setExecuted(boolean executed) {
-        isExecuted = executed;
     }
 }
