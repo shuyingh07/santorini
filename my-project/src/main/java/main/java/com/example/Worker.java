@@ -3,7 +3,7 @@ package main.java.com.example;
 public class Worker {
     private int x, y; 
     private final int playerId;
-    private boolean isMoved = false; // determine if this worker is moved in this round
+    private boolean isMoved = false;
 
     public Worker(int x, int y, int playerId) {
         this.x = x;
@@ -12,9 +12,9 @@ public class Worker {
     }
 
     /**
-     * Retrieves the x-coordinate of the worker.
+     * Get the x position of the worker.
      *
-     * @return The x-coordinate value of the worker.
+     * @return The x position value of the worker.
      */
     public int getX() {
         return x;
@@ -22,32 +22,35 @@ public class Worker {
 
 
     /**
-     * Retrieves the y-coordinate of the worker.
+     * Get the y position of the worker.
      *
-     * @return The y-coordinate value of the worker.
+     * @return The y position value of the worker.
      */
     public int getY() {
         return y;
     }
 
+    /**
+     * Move the worker to a specified position(x,u)
+     */
     public void move(int x, int y){
         this.x = x;
         this.y = y;
     }
 
     /**
-     * Get the unique identifier for the player this worker belongs to.
+     * Get the playerId this worker belongs to.
      *
-     * @return The unique identifier for the corresponding player.
+     * @return The playerId this worker belongs to.
      */
     public int getPlayerId() {
         return playerId;
     }
 
     /**
-     * Indicates whether the player has moved or not.
+     * Indicates whether the worker has moved or not.
      *
-     * @return True if the player has moved, otherwise false.
+     * @return {@code}true if the worker has moved, otherwise false.
      */
     public boolean getIsMoved() {
         return isMoved;
