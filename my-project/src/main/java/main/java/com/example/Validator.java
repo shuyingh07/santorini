@@ -1,11 +1,10 @@
 package main.java.com.example;
 
 /**
- * Provides default strategy for validating various actions in the game.
- * This class contains methods to ensure that actions such as initializing a worker, moving a worker, and building on the board comply with the game's rules.
+ * This class contains methods to check whether an action is valid.
  */
 public class Validator {
-    private final static int MAX_HEIGHT = 4;
+    private int maxHeight = 4;
     /**
      * Check if the initial place is within the board boundaries, the cell is unoccupied
      * @param board board of the current game
@@ -14,7 +13,7 @@ public class Validator {
      * @return {@code true} if the position is valid to place the worker
      */
     public boolean isValidInitial(Board board, int toX, int toY) {
-        return isWithinBounds(board, toX, toY) && isCellFree(board, toX, toY);
+        return isWithinBounds(board, toX, toY) && gridIsFree(board, toX, toY);
     }
 
     /**
@@ -38,8 +37,8 @@ public class Validator {
 
         return isWithinBounds(board, toX, toY)
                 && workerBelongPlayer
-                && board.getTowerHeight(toX, toY) <= 3 && isCellFree(board, toX, toY)
-                && Math.abs(board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY)) <= 1
+                && board.getTowerHeight(toX, toY) <= maxHeight-1 && gridIsFree(board, toX, toY)
+                && board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) <= 1
                 && Math.abs(fromX - toX) <= 1 && Math.abs(fromY - toY) <= 1;
     }
 
@@ -63,10 +62,9 @@ public class Validator {
             }
         }
 
-        return isWithinBounds(board, x, y) && board.getTowerHeight(x, y) < MAX_HEIGHT &&
+        return isWithinBounds(board, x, y) && board.getTowerHeight(x, y) < maxHeight &&
                 Math.abs(x - workerX) <= 1 && Math.abs(y - workerY) <= 1 &&
-                isCellFree(board, x, y) && hasMovedWorker &&
-                Math.abs(board.getTowerHeight(x, y) - board.getTowerHeight(workerX, workerY)) <= 1;
+                gridIsFree(board, x, y) && hasMovedWorker;
     }
 
     /**
@@ -82,7 +80,7 @@ public class Validator {
 
         // Check standard winning condition: any worker reaching the third level
         for (Worker worker : board.getWorkers()) {
-            if (worker.getIsMoved() && board.getTowerHeight(worker.getX(), worker.getY()) == 3) {
+            if (worker.getIsMoved() && board.getTowerHeight(worker.getX(), worker.getY()) == maxHeight - 1) {
                 ifWin = true;
                 break;
             }
@@ -96,7 +94,7 @@ public class Validator {
      * @param y position y of the checked cell
      * @return {@code true} if the position within boundary
      */
-    private boolean isWithinBounds(Board board, int x, int y) {
+    public boolean isWithinBounds(Board board, int x, int y) {
         return x >= 0 && x < board.getROW() && y >= 0 && y < board.getCOL();
     }
 
@@ -106,12 +104,8 @@ public class Validator {
      * @param y position y of the checked cell
      * @return {@code true} if the position is free
      */
-    private boolean isCellFree(Board board, int x, int y) {
-        for (Worker worker : board.getWorkers()) {
-            if (worker != null && worker.getX() == x && worker.getY() == y) {
-                return false;
-            }
-        }
-        return true;
+    public boolean gridIsFree(Board board, int x, int y) {
+        
+        return !board.hasWorker(x, y);
     }
 }
