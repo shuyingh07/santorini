@@ -79,6 +79,8 @@ public class Board {
 
     /**
      * Check whether the grid has a dome.
+     * @param x position x
+     * @param y position y
      * @return {@code true} if the grid has a dome, {@code false} otherwise
      */
     public Boolean getGridDome(int x, int y) {
