@@ -2,7 +2,14 @@ package main.java.com.example;
 import java.util.Objects;
 
 
-import main.java.com.example.GodClass.*;
+import main.java.com.example.GodClass.BuildStrategy;
+import main.java.com.example.GodClass.MoveStrategy;
+import main.java.com.example.GodClass.WinStrategy;
+import main.java.com.example.GodClass.Apollo;
+import main.java.com.example.GodClass.Demeter;
+import main.java.com.example.GodClass.Hephaestus;
+import main.java.com.example.GodClass.Minotaur;
+import main.java.com.example.GodClass.Pan;
 
 /**
  * This class manages the entire game flow, including the board, players, and validator to check player actions.
