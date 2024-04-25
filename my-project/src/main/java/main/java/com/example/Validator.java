@@ -107,7 +107,7 @@ public class Validator {
     }
 
     /**
-     * Checks if a cell is within the board boundaries.
+     * Checks if a geid is within the board boundaries.
      * @param board The game board.
      * @param x The x-coordinate of the cell.
      * @param y The y-coordinate of the cell.
@@ -122,7 +122,7 @@ public class Validator {
     }
 
     /**
-     * Checks if a cell is unoccupied by a worker.
+     * Checks if a grid is unoccupied by a worker.
      * @param board The game board.
      * @param x The x-coordinate of the cell.
      * @param y The y-coordinate of the cell.
@@ -130,6 +130,21 @@ public class Validator {
      */
     public boolean gridIsFree(Board board, int x, int y) {
         if (!board.hasWorker(x, y)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks if a grid has reached max height.
+     * @param board The game board.
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return {@code true} if the cell is unoccupied, {@code false} otherwise.
+     */
+    public boolean gridIsMaxHeight(Board board, int x, int y) {
+        if (board.getTowerHeight(x, y) == MAXHEIGHT) {
             return true;
         } else {
             return false;

@@ -33,7 +33,7 @@ public class Hephaestus implements BuildStrategy {
         
         // Check if the space is free (no dome) and within height limits
         boolean canBuildAgain = hasBuiltOnce ? board.getTowerHeight(x, y) < Validator.getMaxHeight()-1 && !board.getGridDome(x, y) : true;
-        boolean isValid = canBuildAgain && validator.gridIsFree(board, x, y) && validator.isWithinBounds(board, x, y);
+        boolean isValid = canBuildAgain && validator.gridIsFree(board, x, y) && validator.isWithinBounds(board, x, y) && !validator.gridIsMaxHeight(board, x, y);
 
         // If valid, update the build state
         if (isValid) {

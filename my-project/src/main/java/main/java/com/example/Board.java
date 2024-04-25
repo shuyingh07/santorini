@@ -63,6 +63,7 @@ public class Board {
      * @param y position y
      */
     public void buildBlock(int x, int y) {
+        Grid grid = grids.get(x).get(y);
         grids.get(x).get(y).addHeight();
     }
 
