@@ -13,6 +13,8 @@ import main.java.com.example.Worker;
  */
 public class Minotaur implements MoveStrategy{
     private static final int MAXHEIGHT = 4;
+
+    private static final int BOUND = 5;
     private Validator validator = new Validator();
     /**
      * Determines if a move action is valid for a player with the Minotaur god card.
@@ -98,6 +100,6 @@ public class Minotaur implements MoveStrategy{
      * @return {@code true} if the position within boundary
      */
     private boolean isWithinBounds(int x, int y) {
-        return x >= 0 && x < 5 && y >= 0 && y < 5;
+        return x >= 0 && x < BOUND && y >= 0 && y < BOUND;
     }
 }
