@@ -17,7 +17,7 @@ public class Board {
 
     private final List<Worker> workers = new ArrayList<>(workerNum); // Store the 4 workers status.
 
-    Board(){
+    public Board(){
         for (int i = 0; i < row; i++) {
             List<Grid> rowList = new ArrayList<>(col);
             for (int j = 0; j < col; j++) {
@@ -67,6 +67,26 @@ public class Board {
     }
 
     /**
+     * Retrieves the grid.
+     * 
+     * @param x position x
+     * @param y position y
+     * @return The grid.
+     */
+    public Grid getGrid(int x, int y) {
+        return grids.get(x).get(y);
+    }
+
+    /**
+     * Check whether the grid has a dome.
+     * @return {@code true} if the grid has a dome, {@code false} otherwise
+     */
+    public Boolean getGridDome(int x, int y) {
+        Grid grid = grids.get(x).get(y);
+        return grid.isHasDome();
+    }
+
+    /**
      * Gets the height of the tower located at a specific position on the grid.
      *
      * @param x The x location of the grid.
@@ -86,12 +106,13 @@ public class Board {
     }
 
     /**
-     * Retrieves the grid.
-     * @return The grid.
+     * Retrieves the grid list.
+     * @return The grid list.
      */
     public List<List<Grid>> getGrids() {
         return this.grids;
     }
+
 
     /**
      * Retrieves the row length of the board.
