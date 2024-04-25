@@ -7,7 +7,7 @@ import main.java.com.example.Board;
  * Pan wins if a worker moves down two or more levels.
  */
 public class Pan implements WinStrategy{
-    private final static int winningHeight = 2;
+    private static final int WINNINGHEIGHT = 2;
 
     /**
      * Determines if a move action constitutes a winning move according to Pan's win condition.
@@ -21,6 +21,6 @@ public class Pan implements WinStrategy{
      */
     @Override
     public boolean isWinningMove(Board board, int fromX, int fromY, int toX, int toY) {
-        return (board.getTowerHeight(fromX, fromY) - board.getTowerHeight(toX, toY)) >= winningHeight;
+        return (board.getTowerHeight(fromX, fromY) - board.getTowerHeight(toX, toY)) >= WINNINGHEIGHT;
     }
 }

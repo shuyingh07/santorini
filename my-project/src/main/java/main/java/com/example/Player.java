@@ -37,7 +37,10 @@ public class Player {
      * @return {@code true} if workers are successfully initialized, {@code false} otherwise.
      */
     public boolean initializeWorker(Board board, int x1, int y1, int x2, int y2) {
-        if (status.equals("initialize") && defaultStrategy.isValidInitial(board, x1, y1) && defaultStrategy.isValidInitial(board, x2, y2) && !(x1 == x2 && y1 == y2)) {
+        if (status.equals("initialize")
+                && defaultStrategy.isValidInitial(board, x1, y1)
+                && defaultStrategy.isValidInitial(board, x2, y2)
+                && !(x1 == x2 && y1 == y2)) {
             this.status = "move";
             board.initializeWorker(x1, y1, x2, y2, playerId);
             return true;

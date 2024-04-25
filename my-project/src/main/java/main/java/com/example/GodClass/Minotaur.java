@@ -12,6 +12,7 @@ import main.java.com.example.Worker;
  * Implements the MoveStrategy interface, altering standard movement rules.
  */
 public class Minotaur implements MoveStrategy{
+    private static final int MAXHEIGHT = 4;
     private Validator validator = new Validator();
     /**
      * Determines if a move action is valid for a player with the Minotaur god card.
@@ -37,16 +38,17 @@ public class Minotaur implements MoveStrategy{
         }
 
         // Check basic move conditions
+        // Different from others, Minotaur don't need the grid is free
         boolean isValid = isWithinBounds(toX, toY)
                 && workerBelongPlayer
-                && board.getTowerHeight(toX, toY) <= 3
+                && board.getTowerHeight(toX, toY) <= MAXHEIGHT-1
                 && Math.abs(board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY)) <= 1
                 && Math.abs(fromX - toX) <= 1 && Math.abs(fromY - toY) <= 1;
 
         // If the destination is free and the movement is valid, return true.
-        if(isValid && isCellFree(board, toX, toY)) {
+        if(isValid && validator.gridIsFree(board, toX, toY)) {
             return true;
-        } else if(isValid && !isCellFree(board, toX, toY)) {
+        } else if(isValid && !validator.gridIsFree(board, toX, toY)) {
             // check if the target position has opponent's worker
             for (Worker worker : board.getWorkers()) {
                 if (toX == worker.getX() && toY == worker.getY() &&
@@ -57,7 +59,7 @@ public class Minotaur implements MoveStrategy{
                     int pushY = toY + (toY - fromY);
 
                     // Check that the rear square is on the board and not occupied
-                    if (isWithinBounds(pushX, pushY) && isCellFree(board, pushX, pushY)) {
+                    if (isWithinBounds(pushX, pushY) && validator.gridIsFree(board, pushX, pushY)) {
                         // Pushing opponent worker
                         worker.move(pushX, pushY);
                         return true;
@@ -97,20 +99,5 @@ public class Minotaur implements MoveStrategy{
      */
     private boolean isWithinBounds(int x, int y) {
         return x >= 0 && x < 5 && y >= 0 && y < 5;
-    }
-
-    /**
-     * Check if the cell is free
-     * @param x position x of the checked cell
-     * @param y position y of the checked cell
-     * @return {@code true} if the position is free
-     */
-    public boolean isCellFree(Board board, int x, int y) {
-        for (Worker worker : board.getWorkers()) {
-            if (worker != null && worker.getX() == x && worker.getY() == y) {
-                return false;
-            }
-        }
-        return true;
     }
 }
