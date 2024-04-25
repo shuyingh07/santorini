@@ -9,23 +9,23 @@ import java.util.ArrayList;
  * This class manages the board status, including its size, grid list and worker list.
  */
 public class Board {
-<span class="nc" id="L12">    private final int row = 5;</span>
-<span class="nc" id="L13">    private final int col = 5;</span>
-<span class="nc" id="L14">    private final int workerNum = 4;</span>
+<span class="fc" id="L12">    private final int row = 5;</span>
+<span class="fc" id="L13">    private final int col = 5;</span>
+<span class="fc" id="L14">    private final int workerNum = 4;</span>
 
-<span class="nc" id="L16">    private final List&lt;List&lt;Grid&gt;&gt; grids = new ArrayList&lt;&gt;(row); // A 5x5 grid representing the game board.</span>
+<span class="fc" id="L16">    private final List&lt;List&lt;Grid&gt;&gt; grids = new ArrayList&lt;&gt;(row); // A 5x5 grid representing the game board.</span>
 
-<span class="nc" id="L18">    private final List&lt;Worker&gt; workers = new ArrayList&lt;&gt;(workerNum); // Store the 4 workers status.</span>
+<span class="fc" id="L18">    private final List&lt;Worker&gt; workers = new ArrayList&lt;&gt;(workerNum); // Store the 4 workers status.</span>
 
-<span class="nc" id="L20">    Board(){</span>
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        for (int i = 0; i &lt; row; i++) {</span>
-<span class="nc" id="L22">            List&lt;Grid&gt; rowList = new ArrayList&lt;&gt;(col);</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">            for (int j = 0; j &lt; col; j++) {</span>
-<span class="nc" id="L24">                rowList.add(new Grid());</span>
+<span class="fc" id="L20">    public Board(){</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        for (int i = 0; i &lt; row; i++) {</span>
+<span class="fc" id="L22">            List&lt;Grid&gt; rowList = new ArrayList&lt;&gt;(col);</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">            for (int j = 0; j &lt; col; j++) {</span>
+<span class="fc" id="L24">                rowList.add(new Grid());</span>
             }
-<span class="nc" id="L26">            grids.add(rowList);</span>
+<span class="fc" id="L26">            grids.add(rowList);</span>
         }
-<span class="nc" id="L28">    }</span>
+<span class="fc" id="L28">    }</span>
 
     /**
      * Find the worker, place it to a new position and set isMoved attribute of this worker to true
@@ -36,13 +36,13 @@ public class Board {
      * @param playerId the player id of current player
      */
     public void findAndPlaceWorker(int fromX, int fromY, int toX, int toY,  int playerId) {
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        for(Worker worker : workers) {</span>
-<span class="nc bnc" id="L40" title="All 6 branches missed.">            if (fromX == worker.getX() &amp;&amp; fromY == worker.getY() &amp;&amp; worker.getPlayerId() == playerId) {</span>
-<span class="nc" id="L41">                worker.move(toX, toY);</span>
-<span class="nc" id="L42">                worker.setIsMoved(true);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        for(Worker worker : workers) {</span>
+<span class="pc bpc" id="L40" title="2 of 6 branches missed.">            if (fromX == worker.getX() &amp;&amp; fromY == worker.getY() &amp;&amp; worker.getPlayerId() == playerId) {</span>
+<span class="fc" id="L41">                worker.move(toX, toY);</span>
+<span class="fc" id="L42">                worker.setIsMoved(true);</span>
             }
-<span class="nc" id="L44">        }</span>
-<span class="nc" id="L45">    }</span>
+        }
+<span class="fc" id="L45">    }</span>
 
     /**
      * Place two workers of specified player
@@ -53,9 +53,9 @@ public class Board {
      * @param playerId the player id of current player
      */
     public void initializeWorker(int x1, int y1, int x2, int y2, int playerId) {
-<span class="nc" id="L56">        workers.add(new Worker(x1, y1, playerId));</span>
-<span class="nc" id="L57">        workers.add(new Worker(x2, y2, playerId));</span>
-<span class="nc" id="L58">    }</span>
+<span class="fc" id="L56">        workers.add(new Worker(x1, y1, playerId));</span>
+<span class="fc" id="L57">        workers.add(new Worker(x2, y2, playerId));</span>
+<span class="fc" id="L58">    }</span>
 
     /**
      * Building at specified position, the height of this grid will plus 1.
@@ -63,8 +63,30 @@ public class Board {
      * @param y position y
      */
     public void buildBlock(int x, int y) {
-<span class="nc" id="L66">        grids.get(x).get(y).addHeight();</span>
-<span class="nc" id="L67">    }</span>
+<span class="fc" id="L66">        grids.get(x).get(y).addHeight();</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * Retrieves the grid.
+     * 
+     * @param x position x
+     * @param y position y
+     * @return The grid.
+     */
+    public Grid getGrid(int x, int y) {
+<span class="fc" id="L77">        return grids.get(x).get(y);</span>
+    }
+
+    /**
+     * Check whether the grid has a dome.
+     * @param x position x
+     * @param y position y
+     * @return {@code true} if the grid has a dome, {@code false} otherwise
+     */
+    public Boolean getGridDome(int x, int y) {
+<span class="fc" id="L87">        Grid grid = grids.get(x).get(y);</span>
+<span class="fc" id="L88">        return grid.isHasDome();</span>
+    }
 
     /**
      * Gets the height of the tower located at a specific position on the grid.
@@ -74,7 +96,7 @@ public class Board {
      * @return The height of the tower at the specified grid.
      */
     public int getTowerHeight(int x, int y) {
-<span class="nc" id="L77">        return grids.get(x).get(y).getHeight();</span>
+<span class="fc" id="L99">        return grids.get(x).get(y).getHeight();</span>
     }
 
     /**
@@ -82,23 +104,24 @@ public class Board {
      * @return An array of Worker objects.
      */
     public List&lt;Worker&gt; getWorkers() {
-<span class="nc" id="L85">        return this.workers;</span>
+<span class="fc" id="L107">        return this.workers;</span>
     }
 
     /**
-     * Retrieves the grid.
-     * @return The grid.
+     * Retrieves the grid list.
+     * @return The grid list.
      */
     public List&lt;List&lt;Grid&gt;&gt; getGrids() {
-<span class="nc" id="L93">        return this.grids;</span>
+<span class="fc" id="L115">        return this.grids;</span>
     }
+
 
     /**
      * Retrieves the row length of the board.
      * @return The row length of the board.
      */
     public int getROW() {
-<span class="nc" id="L101">        return this.row;</span>
+<span class="fc" id="L124">        return this.row;</span>
     }
 
     /**
@@ -106,7 +129,7 @@ public class Board {
      * @return The column length of the board.
      */
     public int getCOL() {
-<span class="nc" id="L109">        return this.col;</span>
+<span class="fc" id="L132">        return this.col;</span>
     }
 
     /**
@@ -116,12 +139,12 @@ public class Board {
      * @return True if the grid is occupied by a worker.
      */
     public boolean hasWorker(int x, int y){
-<span class="nc bnc" id="L119" title="All 2 branches missed.">        for (Worker worker : workers) {</span>
-<span class="nc bnc" id="L120" title="All 6 branches missed.">            if (worker != null &amp;&amp; worker.getX() == x &amp;&amp; worker.getY() == y) {</span>
-<span class="nc" id="L121">                return true;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        for (Worker worker : workers) {</span>
+<span class="pc bpc" id="L143" title="2 of 6 branches missed.">            if (worker != null &amp;&amp; worker.getX() == x &amp;&amp; worker.getY() == y) {</span>
+<span class="fc" id="L144">                return true;</span>
             }
-<span class="nc" id="L123">        }</span>
-<span class="nc" id="L124">        return false;</span>
+        }
+<span class="fc" id="L147">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

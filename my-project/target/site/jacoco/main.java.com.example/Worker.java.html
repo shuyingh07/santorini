@@ -3,54 +3,68 @@
 public class Worker {
     private int x, y; 
     private final int playerId;
-<span class="nc" id="L6">    private boolean isMoved = false; // determine if this worker is moved in this round</span>
-
-<span class="nc" id="L8">    public Worker(int x, int y, int playerId) {</span>
-<span class="nc" id="L9">        this.x = x;</span>
-<span class="nc" id="L10">        this.y = y;</span>
-<span class="nc" id="L11">        this.playerId = playerId;</span>
-<span class="nc" id="L12">    }</span>
+    private boolean isMoved;
 
     /**
-     * Retrieves the x-coordinate of the worker.
+     * Default Constructor
+     * 
+     * @param x The x position for the worker.
+     * @param y The y position for the worker.
+     * @param playerId The playerId the worker belongs to.
+     */
+<span class="fc" id="L15">    public Worker(int x, int y, int playerId) {</span>
+<span class="fc" id="L16">        this.x = x;</span>
+<span class="fc" id="L17">        this.y = y;</span>
+<span class="fc" id="L18">        this.playerId = playerId;</span>
+<span class="fc" id="L19">        this.isMoved = false;</span>
+<span class="fc" id="L20">    }</span>
+
+    /**
+     * Get the x position of the worker.
      *
-     * @return The x-coordinate value of the worker.
+     * @return The x position value of the worker.
      */
     public int getX() {
-<span class="nc" id="L20">        return x;</span>
+<span class="fc" id="L28">        return x;</span>
     }
 
 
     /**
-     * Retrieves the y-coordinate of the worker.
+     * Get the y position of the worker.
      *
-     * @return The y-coordinate value of the worker.
+     * @return The y position value of the worker.
      */
     public int getY() {
-<span class="nc" id="L30">        return y;</span>
+<span class="fc" id="L38">        return y;</span>
     }
 
+    /**
+     * Move the worker to a specified position(x,y)
+     * 
+     *  @param x The new x position of the worker.
+     * @param y The new y position of the worker.
+     */
     public void move(int x, int y){
-<span class="nc" id="L34">        this.x = x;</span>
-<span class="nc" id="L35">        this.y = y;</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L48">        this.x = x;</span>
+<span class="fc" id="L49">        this.y = y;</span>
+<span class="fc" id="L50">    }</span>
 
     /**
-     * Get the unique identifier for the player this worker belongs to.
+     * Get the playerId this worker belongs to.
      *
-     * @return The unique identifier for the corresponding player.
+     * @return The playerId this worker belongs to.
      */
     public int getPlayerId() {
-<span class="nc" id="L44">        return playerId;</span>
+<span class="fc" id="L58">        return playerId;</span>
     }
 
     /**
-     * Indicates whether the player has moved or not.
+     * Indicates whether the worker has moved or not.
      *
-     * @return True if the player has moved, otherwise false.
+     * @return {@code}true if the worker has moved, otherwise false.
      */
     public boolean getIsMoved() {
-<span class="nc" id="L53">        return isMoved;</span>
+<span class="fc" id="L67">        return isMoved;</span>
     }
 
     /**
@@ -59,8 +73,8 @@ public class Worker {
      * @param moved The new isMoved status. True indicates the worker has moved in this round, and false indicates the opposite.
      */
     public void setIsMoved(boolean moved) {
-<span class="nc" id="L62">        isMoved = moved;</span>
-<span class="nc" id="L63">    }</span>
+<span class="fc" id="L76">        isMoved = moved;</span>
+<span class="fc" id="L77">    }</span>
 }
 
 

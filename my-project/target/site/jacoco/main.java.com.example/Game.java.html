@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package main.java.com.example;
 import java.util.Objects;
 
+
+import main.java.com.example.GodClass.BuildStrategy;
+import main.java.com.example.GodClass.Demeter;
+import main.java.com.example.GodClass.Hephaestus;
+import main.java.com.example.GodClass.Minotaur;
+import main.java.com.example.GodClass.MoveStrategy;
+import main.java.com.example.GodClass.Pan;
+import main.java.com.example.GodClass.WinStrategy;
+
 /**
  * This class manages the entire game flow, including the board, players, and validator to check player actions.
  */
@@ -8,11 +17,11 @@ public class Game {
 
     private Board board; // The game board
 
-<span class="nc" id="L11">    private final Player[] players = new Player[2];</span>
+<span class="nc" id="L20">    private final Player[] players = new Player[2];</span>
 
-<span class="nc" id="L13">    private int currentPlayerId = 0;</span>
+<span class="nc" id="L22">    private int currentPlayerId = 0;</span>
 
-<span class="nc" id="L15">    private boolean isWinning = false; </span>
+<span class="nc" id="L24">    private boolean isWinning = false; </span>
 
     private String message; // A message related to the current state of the game.
 
@@ -20,8 +29,8 @@ public class Game {
      * Default constructor.
      */
     public Game() {
-<span class="nc" id="L23">        this(new Board(), new Player(0), new Player(1), 0, false, &quot;&quot;);</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L32">        this(new Board(), new Player(0), new Player(1), 0, false, &quot;&quot;);</span>
+<span class="nc" id="L33">    }</span>
 
     /**
      * Constructor for the Game with specified status.
@@ -32,14 +41,14 @@ public class Game {
      * @param isWinning The winning status of the game.
      * @param message A message related to the game state.
      */
-<span class="nc" id="L35">    public Game(Board board, Player player1, Player player2, int currentPlayerId, boolean isWinning, String message) {</span>
-<span class="nc" id="L36">        this.board = board;</span>
-<span class="nc" id="L37">        this.players[0] = player1;</span>
-<span class="nc" id="L38">        this.players[1] = player2;</span>
-<span class="nc" id="L39">        this.currentPlayerId = currentPlayerId;</span>
-<span class="nc" id="L40">        this.isWinning = isWinning;</span>
-<span class="nc" id="L41">        this.message = message;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L44">    public Game(Board board, Player player1, Player player2, int currentPlayerId, boolean isWinning, String message) {</span>
+<span class="nc" id="L45">        this.board = board;</span>
+<span class="nc" id="L46">        this.players[0] = player1;</span>
+<span class="nc" id="L47">        this.players[1] = player2;</span>
+<span class="nc" id="L48">        this.currentPlayerId = currentPlayerId;</span>
+<span class="nc" id="L49">        this.isWinning = isWinning;</span>
+<span class="nc" id="L50">        this.message = message;</span>
+<span class="nc" id="L51">    }</span>
 
     /**
      * Initializes a worker on the board at a specified position.
@@ -51,14 +60,14 @@ public class Game {
      * @return A new instance of Game reflecting the updated status.
      */
     public Game initializeWorker(int fromX, int fromY, int toX, int toY) {
-<span class="nc" id="L54">        boolean actionSuccess = this.players[currentPlayerId].initializeWorker(this.board, fromX, fromY, toX, toY);</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        if(actionSuccess) {</span>
-<span class="nc" id="L56">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; initialize Successfully!&quot;;</span>
-<span class="nc" id="L57">            changeCurrentPlayer();</span>
-        } else {
-<span class="nc" id="L59">            this.message = &quot;Error: Invalid initialization, please try again!&quot;;</span>
+<span class="nc" id="L63">        boolean actionSuccess = this.players[currentPlayerId].initializeWorker(this.board, fromX, fromY, toX, toY);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if(actionSuccess) {</span>
+<span class="nc" id="L65">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; initialize Successfully!&quot;;</span>
+<span class="nc" id="L66">            changeCurrentPlayer();</span>
+<span class="nc" id="L67">        } else {</span>
+<span class="nc" id="L68">            this.message = &quot;Error: Invalid initialization, please try again!&quot;;</span>
         }
-<span class="nc" id="L61">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
+<span class="nc" id="L70">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
     }
 
     /**
@@ -73,19 +82,19 @@ public class Game {
      * @return A new instance of Game reflecting the updated state.
      */
     public Game move(int fromX, int fromY, int toX, int toY) {
-<span class="nc" id="L76">        boolean actionSuccess = this.players[currentPlayerId].move(this.board, fromX, fromY, toX, toY);</span>
+<span class="nc" id="L85">        boolean actionSuccess = this.players[currentPlayerId].move(this.board, fromX, fromY, toX, toY);</span>
 
-<span class="nc" id="L78">        this.isWinning = this.players[currentPlayerId].isWinningMove(board, fromX, fromY, toX, toY);</span>
+<span class="nc" id="L87">        this.isWinning = this.players[currentPlayerId].isWinningMove(board, fromX, fromY, toX, toY);</span>
 
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (this.isWinning) {</span>
-<span class="nc" id="L81">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; win!&quot;;</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        } else if(actionSuccess) {</span>
-<span class="nc" id="L83">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; successfully move the worker!&quot;;</span>
-        } else {
-<span class="nc" id="L85">            this.message = &quot;Error: Invalid movement, please try again!&quot;;</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (this.isWinning) {</span>
+<span class="nc" id="L90">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; win!&quot;;</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        } else if(actionSuccess) {</span>
+<span class="nc" id="L92">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; successfully move the worker!&quot;;</span>
+<span class="nc" id="L93">        } else {</span>
+<span class="nc" id="L94">            this.message = &quot;Error: Invalid movement, please try again!&quot;;</span>
         }
 
-<span class="nc" id="L88">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
+<span class="nc" id="L97">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
     }
 
     /**
@@ -99,31 +108,31 @@ public class Game {
      * @return A new instance of Game reflecting the updated state.
      */
     public Game build(int toX, int toY) {
-<span class="nc" id="L102">        boolean actionSuccess = this.players[currentPlayerId].build(this.board, toX, toY);</span>
-<span class="nc bnc" id="L103" title="All 4 branches missed.">        if(actionSuccess &amp;&amp; Objects.equals(this.players[currentPlayerId].getStatus(), &quot;build&quot;)) {</span>
-<span class="nc" id="L104">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; building Success! Please continue to build!&quot;;</span>
-<span class="nc bnc" id="L105" title="All 4 branches missed.">        } else if (actionSuccess &amp;&amp; Objects.equals(this.players[currentPlayerId].getStatus(), &quot;move&quot;)) {</span>
-<span class="nc" id="L106">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; building Success! Switch player!&quot;;</span>
-<span class="nc" id="L107">            changeCurrentPlayer();</span>
-        } else {
-<span class="nc" id="L109">            this.message = &quot;Error: Invalid building, please try again!&quot;;</span>
+<span class="nc" id="L111">        boolean actionSuccess = this.players[currentPlayerId].build(this.board, toX, toY);</span>
+<span class="nc bnc" id="L112" title="All 4 branches missed.">        if(actionSuccess &amp;&amp; Objects.equals(this.players[currentPlayerId].getStatus(), &quot;build&quot;)) {</span>
+<span class="nc" id="L113">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; building Success! Please continue to build!&quot;;</span>
+<span class="nc bnc" id="L114" title="All 4 branches missed.">        } else if (actionSuccess &amp;&amp; Objects.equals(this.players[currentPlayerId].getStatus(), &quot;move&quot;)) {</span>
+<span class="nc" id="L115">            this.message = &quot;Player &quot; + this.getCurrentPlayerId() + &quot; building Success! Switch player!&quot;;</span>
+<span class="nc" id="L116">            changeCurrentPlayer();</span>
+<span class="nc" id="L117">        } else {</span>
+<span class="nc" id="L118">            this.message = &quot;Error: Invalid building, please try again!&quot;;</span>
         }
-<span class="nc" id="L111">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
+<span class="nc" id="L120">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
     }
 
     /**
      * Change current player.
      */
     private void changeCurrentPlayer() {
-<span class="nc" id="L118">        this.currentPlayerId = (currentPlayerId + 1) % 2;</span>
-<span class="nc" id="L119">    }</span>
+<span class="nc" id="L127">        this.currentPlayerId = (currentPlayerId + 1) % 2;</span>
+<span class="nc" id="L128">    }</span>
 
     /**
      * Retrieves the current game board.
      * @return The current game board.
      */
     public Board getBoard() {
-<span class="nc" id="L126">        return this.board;</span>
+<span class="nc" id="L135">        return this.board;</span>
     }
 
     /**
@@ -131,8 +140,8 @@ public class Game {
      * @param board The board to set.
      */
     public void setBoard(Board board) {
-<span class="nc" id="L134">        this.board = board;</span>
-<span class="nc" id="L135">    }</span>
+<span class="nc" id="L143">        this.board = board;</span>
+<span class="nc" id="L144">    }</span>
 
     /**
      * Retrieves a player by ID.
@@ -140,7 +149,7 @@ public class Game {
      * @return The player with the specified ID.
      */
     public Player getPlayers(int currentPlayerId) {
-<span class="nc" id="L143">        return players[currentPlayerId];</span>
+<span class="nc" id="L152">        return players[currentPlayerId];</span>
     }
 
     /**
@@ -148,7 +157,7 @@ public class Game {
      * @return The ID of the current player.
      */
     public int getCurrentPlayerId() {
-<span class="nc" id="L151">        return currentPlayerId;</span>
+<span class="nc" id="L160">        return currentPlayerId;</span>
     }
 
     /**
@@ -156,7 +165,7 @@ public class Game {
      * @return {@code true} if one player won the game, otherwise {@code false}.
      */
     public boolean getIsWinning() {
-<span class="nc" id="L159">        return this.isWinning;</span>
+<span class="nc" id="L168">        return this.isWinning;</span>
     }
 
     /**
@@ -164,7 +173,97 @@ public class Game {
      * @return The current game message.
      */
     public String getMessage() {
-<span class="nc" id="L167">        return message;</span>
+<span class="nc" id="L176">        return message;</span>
+    }
+
+    /**
+    * This method sets the god class for the current player based on the given god class name.
+    * It initializes the corresponding god card strategy for the player, such as Demeter, Hephaestus, Minotaur, or Pan.
+    * After setting the god class, it switches to the next player.
+    * If the given god class name does not match any known god cards, it returns the current state without changing the player.
+    *
+    * @param godClassName The name of the god class to be set for the player.
+    * @return A new instance of Game reflecting the updated state after setting the god class.
+    */
+    public Game setGodClass(String godClassName) {
+<span class="nc" id="L189">        System.out.println(godClassName);</span>
+    
+<span class="nc bnc" id="L191" title="All 5 branches missed.">        switch (godClassName) {</span>
+            case &quot;Demeter&quot;:
+<span class="nc" id="L193">                BuildStrategy demeter = new Demeter();</span>
+<span class="nc" id="L194">                this.players[currentPlayerId].setBuildStrategy(demeter);</span>
+<span class="nc" id="L195">                this.message = &quot;Player &quot; + currentPlayerId + &quot; set Demeter as god card successfully!&quot;;</span>
+<span class="nc" id="L196">                break;</span>
+            case &quot;Hephaestus&quot;:
+<span class="nc" id="L198">                BuildStrategy hephaestus = new Hephaestus();</span>
+<span class="nc" id="L199">                this.players[currentPlayerId].setBuildStrategy(hephaestus);</span>
+<span class="nc" id="L200">                this.message = &quot;Player &quot; + currentPlayerId + &quot; set Hephaestus as god card successfully!&quot;;</span>
+<span class="nc" id="L201">                break;</span>
+            case &quot;Minotaur&quot;:
+<span class="nc" id="L203">                MoveStrategy minotaur = new Minotaur();</span>
+<span class="nc" id="L204">                this.players[currentPlayerId].setMoveStrategy(minotaur);</span>
+<span class="nc" id="L205">                this.message = &quot;Player &quot; + currentPlayerId + &quot; set Minotaur as god card successfully!&quot;;</span>
+<span class="nc" id="L206">                break;</span>
+            case &quot;Pan&quot;:
+<span class="nc" id="L208">                WinStrategy pan = new Pan();</span>
+<span class="nc" id="L209">                this.players[currentPlayerId].setWinStrategy(pan);</span>
+<span class="nc" id="L210">                this.message = &quot;Player &quot; + currentPlayerId + &quot; set Pan as god card successfully!&quot;;</span>
+<span class="nc" id="L211">                break;</span>
+            default:
+                // Set error message if the god card name does not match any known god cards
+<span class="nc" id="L214">                this.message = &quot;Error: Cannot set god card, please try again!&quot;;</span>
+<span class="nc" id="L215">                return this; // Return the current state without changing the player</span>
+        }
+    
+        // Switch to the next player after successfully setting the god card
+<span class="nc" id="L219">        changeCurrentPlayer();</span>
+<span class="nc" id="L220">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
+    }
+
+    /**
+     * Handles the passing of an action by the current player.
+     * This method allows a player to skip their current action (move or build) if certain conditions are met.
+     * It checks the current player's status and action execution state, then updates the status accordingly.
+     * The method also resets certain states of the player and switches to the next player.
+     * A success message is set if the action is successfully passed, otherwise, an error message is generated.
+     *
+     * @return A new instance of Game reflecting the updated state after the action is passed.
+     */
+    public Game passAction() {
+        // Check if the current player has executed an action and has a build strategy
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        if(this.players[currentPlayerId].getIsExecuted()) {</span>
+            // Update the player's status based on the current action
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            if(Objects.equals(this.players[currentPlayerId].getStatus(), &quot;move&quot;)) {</span>
+<span class="nc" id="L237">                this.players[currentPlayerId].setStatus(&quot;build&quot;);</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            } else if(Objects.equals(this.players[currentPlayerId].getStatus(), &quot;build&quot;)) {</span>
+<span class="nc" id="L239">                this.players[currentPlayerId].setStatus(&quot;move&quot;);</span>
+            }
+
+            // Reset executed state and perform pass action on the build strategy
+<span class="nc" id="L243">            this.players[currentPlayerId].setExecuted(false);</span>
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            if (this.players[currentPlayerId].getBuildStrategy() != null) {</span>
+                // pass build action
+<span class="nc" id="L247">                this.players[currentPlayerId].getBuildStrategy().passAction();</span>
+
+                // Reset move state and switch to the next player
+<span class="nc" id="L250">                this.players[currentPlayerId].resetIsMoved(board);</span>
+<span class="nc" id="L251">                changeCurrentPlayer();</span>
+
+                // Set success message
+<span class="nc" id="L254">                this.message = &quot;Pass Success! Current build action has been passed!&quot;;</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            } else if (this.players[currentPlayerId].getMoveStrategy() != null) {</span>
+                // pass move action
+<span class="nc" id="L257">                this.players[currentPlayerId].getMoveStrategy().passAction();</span>
+
+                // Set success message
+<span class="nc" id="L260">                this.message = &quot;Pass Success! Current move action has been passed!&quot;;</span>
+            }
+<span class="nc" id="L262">        } else {</span>
+            // Set error message if pass action is not allowed
+<span class="nc" id="L264">            this.message = &quot;Error: Cannot pass this action!&quot;;</span>
+        }
+<span class="nc" id="L266">        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

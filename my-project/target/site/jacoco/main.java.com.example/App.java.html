@@ -11,7 +11,7 @@ import java.util.Map;
  * This class serve frontend requests and return responses to update the ga
  */
 public class App extends SimpleWebServer {
-    private final static int PORT = 8080;
+    private static final int PORT = 8080;
     private Game game;
 
     /**
@@ -23,7 +23,7 @@ public class App extends SimpleWebServer {
 <span class="nc" id="L23">            new App();</span>
 <span class="nc" id="L24">        } catch (IOException ioe) {</span>
 <span class="nc" id="L25">            System.err.println(&quot;Couldn't start server:\n&quot; + ioe);</span>
-<span class="nc" id="L26">        }</span>
+        }
 <span class="nc" id="L27">    }</span>
 
     /**
@@ -50,40 +50,41 @@ public class App extends SimpleWebServer {
 <span class="nc" id="L50">        Map&lt;String, String&gt; params = session.getParms();</span>
 <span class="nc" id="L51">        GameState gameState = new GameState();</span>
 
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (uri.startsWith(&quot;/api/&quot;)) {</span>
-            // System.out.println(uri); // Test URL
-<span class="nc bnc" id="L55" title="All 5 branches missed.">            switch (uri) {</span>
-                case &quot;/api/newGame&quot;:
-<span class="nc" id="L57">                    this.game = new Game();</span>
-<span class="nc" id="L58">                    break;</span>
-                case &quot;/api/initialize&quot;:
-<span class="nc" id="L60">                    this.game = this.game.initializeWorker(</span>
-<span class="nc" id="L61">                            Integer.parseInt(params.get(&quot;x1&quot;)), Integer.parseInt(params.get(&quot;y1&quot;)),</span>
-<span class="nc" id="L62">                            Integer.parseInt(params.get(&quot;x2&quot;)), Integer.parseInt(params.get(&quot;y2&quot;)));</span>
-<span class="nc" id="L63">                    break;</span>
-                case &quot;/api/move&quot;:
-<span class="nc" id="L65">                    this.game = this.game.move(</span>
-<span class="nc" id="L66">                            Integer.parseInt(params.get(&quot;x1&quot;)), Integer.parseInt(params.get(&quot;y1&quot;)),</span>
-<span class="nc" id="L67">                            Integer.parseInt(params.get(&quot;x2&quot;)), Integer.parseInt(params.get(&quot;y2&quot;)));</span>
-<span class="nc" id="L68">                    break;</span>
-                case &quot;/api/build&quot;:
-<span class="nc" id="L70">                    this.game = this.game.build(</span>
-<span class="nc" id="L71">                            Integer.parseInt(params.get(&quot;x1&quot;)), Integer.parseInt(params.get(&quot;y1&quot;)));</span>
-<span class="nc" id="L72">                    break;</span>
-                default:
-<span class="nc" id="L74">                    return super.serve(session);</span>
-            }
-
-<span class="nc" id="L77">            gameState.updateFromGame(this.game);</span>
-            // System.out.println(gameState.toJson()); // Test current game state
-<span class="nc" id="L79">            Response response = newFixedLengthResponse(Response.Status.OK, &quot;application/json&quot;, gameState.toJson());</span>
-<span class="nc" id="L80">            response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);</span>
-<span class="nc" id="L81">            response.addHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, OPTIONS&quot;);</span>
-<span class="nc" id="L82">            response.addHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Origin, X-Requested-With, Content-Type, Accept, Authorization&quot;);</span>
-<span class="nc" id="L83">            return response;</span>
+<span class="nc bnc" id="L53" title="All 7 branches missed.">        switch (uri) {</span>
+            case &quot;/newGame&quot;:
+<span class="nc" id="L55">                this.game = new Game();</span>
+<span class="nc" id="L56">                break;</span>
+            case &quot;/initialize&quot;:
+<span class="nc" id="L58">                this.game = this.game.initializeWorker(</span>
+<span class="nc" id="L59">                        Integer.parseInt(params.get(&quot;x1&quot;)), Integer.parseInt(params.get(&quot;y1&quot;)),</span>
+<span class="nc" id="L60">                        Integer.parseInt(params.get(&quot;x2&quot;)), Integer.parseInt(params.get(&quot;y2&quot;)));</span>
+<span class="nc" id="L61">                break;</span>
+            case &quot;/move&quot;:
+<span class="nc" id="L63">                this.game = this.game.move(</span>
+<span class="nc" id="L64">                        Integer.parseInt(params.get(&quot;x1&quot;)), Integer.parseInt(params.get(&quot;y1&quot;)),</span>
+<span class="nc" id="L65">                        Integer.parseInt(params.get(&quot;x2&quot;)), Integer.parseInt(params.get(&quot;y2&quot;)));</span>
+<span class="nc" id="L66">                break;</span>
+            case &quot;/build&quot;:
+<span class="nc" id="L68">                this.game = this.game.build(</span>
+<span class="nc" id="L69">                        Integer.parseInt(params.get(&quot;x1&quot;)), Integer.parseInt(params.get(&quot;y1&quot;)));</span>
+<span class="nc" id="L70">                break;</span>
+            case &quot;/setGodClass&quot;:
+<span class="nc" id="L72">            this.game = this.game.setGodClass(params.get(&quot;godCard&quot;));</span>
+<span class="nc" id="L73">            break;</span>
+            case &quot;/passAction&quot;:
+<span class="nc" id="L75">                this.game = this.game.passAction();</span>
+<span class="nc" id="L76">                break;</span>
+            default:
+<span class="nc" id="L78">                return super.serve(session);</span>
         }
 
-<span class="nc" id="L86">        return super.serve(session);</span>
+<span class="nc" id="L81">        gameState.updateFromGame(this.game);</span>
+        // System.out.println(gameState.toJson()); // Test current game state
+<span class="nc" id="L83">        Response response = newFixedLengthResponse(Response.Status.OK, &quot;application/json&quot;, gameState.toJson());</span>
+<span class="nc" id="L84">        response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);</span>
+<span class="nc" id="L85">        response.addHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, OPTIONS&quot;);</span>
+<span class="nc" id="L86">        response.addHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;Origin, X-Requested-With, Content-Type, Accept, Authorization&quot;);</span>
+<span class="nc" id="L87">        return response;</span>
     }
 
 }

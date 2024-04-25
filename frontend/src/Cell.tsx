@@ -22,18 +22,37 @@ interface GridInfo {
 
 const Cell: React.FC<GridInfo> = ({ grid, onCellClick, x, y, className }) => {
     const { height, hasDome, occupyStatus } = grid;
-    
-    let content = hasDome ? "Dome" : height.toString();
-    let cellStyle = className;
-    
-    if (occupyStatus === 0) {
-        cellStyle += " yellow-grid";
-    } else if (occupyStatus === 1) {
-        cellStyle += " blue-grid"; 
+
+    let content;
+    if (hasDome) {
+        content = "Dome"; // 如果有穹顶，则显示 "Dome"
+    } else {
+        let playerSymbol = '';
+        if (occupyStatus === 0) {
+            playerSymbol = 'X'; // 玩家1占领
+        } else if (occupyStatus === 1) {
+            playerSymbol = 'O'; // 玩家2占领
+        }
+
+        // 根据高度决定显示的内容，同时加入玩家标记
+        switch (height) {
+            case 0:
+                content = playerSymbol; // 高度为 0，仅显示玩家标记
+                break;
+            case 1:
+                content = `[${playerSymbol}]`; // 高度为 1
+                break;
+            case 2:
+                content = `[[${playerSymbol}]]`; // 高度为 2
+                break;
+            default:
+                content = `[${"[".repeat(height - 1)}${playerSymbol}${"]".repeat(height - 1)}]`; // 更高的高度，使用重复的括号包围玩家标记
+                break;
+        }
     }
 
     return (
-        <button className={cellStyle} onClick={() => onCellClick(x, y)}>
+        <button className={className} onClick={() => onCellClick(x, y)}>
             {content}
         </button>
     );

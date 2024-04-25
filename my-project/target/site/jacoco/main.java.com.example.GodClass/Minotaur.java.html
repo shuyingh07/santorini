@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Minotaur.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example.GodClass</a> &gt; <span class="el_source">Minotaur.java</span></div><h1>Minotaur.java</h1><pre class="source lang-java linenums">package main.java.com.example.GodClass;
+
+import main.java.com.example.Board;
+import main.java.com.example.Player;
+import main.java.com.example.Validator;
+import main.java.com.example.Worker;
+
+/**
+ * Represents the Minotaur move strategy in the game.
+ * This class allows a player's worker to move into an opponent worker’s space,
+ * if the opponent's worker can be forced one space straight backwards to an unoccupied space at any level.
+ * Implements the MoveStrategy interface, altering standard movement rules.
+ */
+<span class="nc" id="L14">public class Minotaur implements MoveStrategy{</span>
+<span class="nc" id="L15">    private Validator validator = new Validator();</span>
+    /**
+     * Determines if a move action is valid for a player with the Minotaur god card.
+     * The Minotaur can move into an opponent's square if and only if the opponent can be pushed to the next space.
+     *
+     * @param board The game board.
+     * @param fromX The x-coordinate of the original position of the worker.
+     * @param fromY The y-coordinate of the original position of the worker.
+     * @param toX The x-coordinate of the target position for the worker.
+     * @param toY The y-coordinate of the target position for the worker.
+     * @param playerId The ID of the player attempting the move.
+     * @return {@code true} if the move is valid according to Minotaur's rules, otherwise {@code false}.
+     */
+    @Override
+    public boolean isValidMove(Board board, int fromX, int fromY, int toX, int toY, int playerId) {
+        // Check if the worker belongs to the current player
+<span class="nc" id="L31">        boolean workerBelongPlayer = false;</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        for (Worker worker : board.getWorkers()) {</span>
+<span class="nc bnc" id="L33" title="All 6 branches missed.">            if (fromX == worker.getX() &amp;&amp; fromY == worker.getY() &amp;&amp; playerId == worker.getPlayerId()) {</span>
+<span class="nc" id="L34">                workerBelongPlayer = true;</span>
+<span class="nc" id="L35">                break;</span>
+            }
+        }
+
+        // Check basic move conditions
+<span class="nc bnc" id="L40" title="All 4 branches missed.">        boolean isValid = isWithinBounds(toX, toY)</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">                &amp;&amp; workerBelongPlayer</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">                &amp;&amp; board.getTowerHeight(toX, toY) &lt;= 3</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                &amp;&amp; Math.abs(board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY)) &lt;= 1</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">                &amp;&amp; Math.abs(fromX - toX) &lt;= 1 &amp;&amp; Math.abs(fromY - toY) &lt;= 1;</span>
+
+        // If the destination is free and the movement is valid, return true.
+<span class="nc bnc" id="L47" title="All 4 branches missed.">        if(isValid &amp;&amp; isCellFree(board, toX, toY)) {</span>
+<span class="nc" id="L48">            return true;</span>
+<span class="nc bnc" id="L49" title="All 4 branches missed.">        } else if(isValid &amp;&amp; !isCellFree(board, toX, toY)) {</span>
+            // check if the target position has opponent's worker
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            for (Worker worker : board.getWorkers()) {</span>
+<span class="nc bnc" id="L52" title="All 4 branches missed.">                if (toX == worker.getX() &amp;&amp; toY == worker.getY() &amp;&amp;</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">                        worker.getPlayerId() != playerId) {</span>
+
+                    // Calculate the position of the opponent's worker's back
+<span class="nc" id="L56">                    int pushX = toX + (toX - fromX);</span>
+<span class="nc" id="L57">                    int pushY = toY + (toY - fromY);</span>
+
+                    // Check that the rear square is on the board and not occupied
+<span class="nc bnc" id="L60" title="All 4 branches missed.">                    if (isWithinBounds(pushX, pushY) &amp;&amp; isCellFree(board, pushX, pushY)) {</span>
+                        // Pushing opponent worker
+<span class="nc" id="L62">                        worker.move(pushX, pushY);</span>
+<span class="nc" id="L63">                        return true;</span>
+                    }
+                    break;
+                }
+            }
+        }
+
+<span class="nc" id="L70">        return false;</span>
+    }
+
+    /**
+     * Checks if the player can take another move.
+     * Always returns false for Minotaur as it cannot build twice.
+     *
+     * @param player The player performing the action.
+     * @return Always {@code false}.
+     */
+    @Override
+    public boolean canTakeAnotherAction(Player player) {
+<span class="nc" id="L82">        return false;</span>
+    }
+
+    /**
+     * Leave it empty since this god card does not allow additional action
+     */
+    @Override
+    public void passAction() {
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Check if the cell is within boundary
+     * @param x position x of the checked cell
+     * @param y position y of the checked cell
+     * @return {@code true} if the position within boundary
+     */
+    private boolean isWithinBounds(int x, int y) {
+<span class="nc bnc" id="L99" title="All 8 branches missed.">        return x &gt;= 0 &amp;&amp; x &lt; 5 &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; 5;</span>
+    }
+
+    /**
+     * Check if the cell is free
+     * @param x position x of the checked cell
+     * @param y position y of the checked cell
+     * @return {@code true} if the position is free
+     */
+    public boolean isCellFree(Board board, int x, int y) {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        for (Worker worker : board.getWorkers()) {</span>
+<span class="nc bnc" id="L110" title="All 6 branches missed.">            if (worker != null &amp;&amp; worker.getX() == x &amp;&amp; worker.getY() == y) {</span>
+<span class="nc" id="L111">                return false;</span>
+            }
+        }
+<span class="nc" id="L114">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

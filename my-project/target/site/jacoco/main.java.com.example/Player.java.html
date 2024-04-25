@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package main.java.com.example;
 
+import main.java.com.example.GodClass.BuildStrategy;
+import main.java.com.example.GodClass.MoveStrategy;
+import main.java.com.example.GodClass.WinStrategy;
 
 /**
  * Represents a player in the game.
@@ -7,58 +10,45 @@
  */
 public class Player {
     private final int playerId;
-
-<span class="nc" id="L11">    private String status = &quot;initialize&quot;;  // The current status of the player, including &quot;initialize&quot;, &quot;move&quot;, &quot;build&quot;.</span>
-
-<span class="nc" id="L13">    private final Validator validator = new Validator(); // Default validation strategy for initialization, building and moving.</span>
+    private String status;
+<span class="nc" id="L14">    private final Validator defaultStrategy = new Validator();</span>
+<span class="nc" id="L15">    private MoveStrategy moveStrategy = null;</span>
+<span class="nc" id="L16">    private BuildStrategy buildStrategy = null;</span>
+<span class="nc" id="L17">    private WinStrategy winStrategy = null;</span>
+<span class="nc" id="L18">    private boolean isExecuted = false;</span>
 
     /**
-     * Constructor for the Player class.
-     * Initializes a new player with a unique identifier.
-     * This ID is used to distinguish the player throughout the game.
-     *
-     * @param playerId The unique identifier for the player.
+     * Constructs a player with a unique identifier.
+     * @param playerId Id that represents a player
      */
-
-<span class="nc" id="L23">    public Player(int playerId) {</span>
-<span class="nc" id="L24">        this.playerId = playerId;</span>
-<span class="nc" id="L25">    }</span>
+<span class="nc" id="L24">    public Player(int playerId) {</span>
+<span class="nc" id="L25">        this.playerId = playerId;</span>
+<span class="nc" id="L26">        this.status = &quot;initialize&quot;;</span>
+<span class="nc" id="L27">    }</span>
 
     /**
-     * First, it allows player to choose the initial position for two workers
-     * Second, check if the position is valid and status is &quot;initialize&quot;. If not, it will return false and end.
-     * If it is valid, place the two workers.
+     * Initializes two workers for the player.
+     * 
      * @param board board of the current game
      * @param x1 position x of worker one
      * @param y1 position y of worker two
      * @param x2 position x of worker two
      * @param y2 position y of worker two
-     * @return {@code true} if successfully initialized the two workers
+     * @return {@code true} if workers are successfully initialized, {@code false} otherwise.
      */
     public boolean initializeWorker(Board board, int x1, int y1, int x2, int y2) {
-        // Check if the current status is 'initialize' and the first position is valid
-        // Validate the second position and ensure it's not the same as the first
-<span class="nc bnc" id="L41" title="All 10 branches missed.">        if (status.equals(&quot;initialize&quot;) &amp;&amp; validator.isValidInitial(board, x1, y1) &amp;&amp; validator.isValidInitial(board, x2, y2) &amp;&amp; !(x1 == x2 &amp;&amp; y1 == y2)) {</span>
-            // Update status to 'move' and initialize the two workers
-<span class="nc" id="L43">            this.status = &quot;move&quot;;</span>
-<span class="nc" id="L44">            board.initializeWorker(x1, y1, x2, y2, playerId);</span>
-<span class="nc" id="L45">            return true;</span>
+<span class="nc bnc" id="L40" title="All 10 branches missed.">        if (status.equals(&quot;initialize&quot;) &amp;&amp; defaultStrategy.isValidInitial(board, x1, y1) &amp;&amp; defaultStrategy.isValidInitial(board, x2, y2) &amp;&amp; !(x1 == x2 &amp;&amp; y1 == y2)) {</span>
+<span class="nc" id="L41">            this.status = &quot;move&quot;;</span>
+<span class="nc" id="L42">            board.initializeWorker(x1, y1, x2, y2, playerId);</span>
+<span class="nc" id="L43">            return true;</span>
         } else {
-            // Output error message if the first initialization is invalid
-<span class="nc" id="L48">            System.out.println(&quot;Invalid initialization. Try again.&quot;);</span>
-<span class="nc" id="L49">            return false;</span>
+<span class="nc" id="L45">            System.out.println(&quot;Invalid initialization. Try again.&quot;);</span>
+<span class="nc" id="L46">            return false;</span>
         }
     }
 
     /**
-     * First, it allows player to choose the worker to move according to the position.
-     * Second, it allows player to choose the desired position to move.
-     * Third, it will check if this player has god card that implements move strategy
-     * if true, validation obey the god card rule will be executed, otherwise, the default validation will be executed.
-     * (The extra action for god card like pushing other workers will be implemented directly in god card validator)
-     * Forth, without god card, it will check if the steps above is valid and if the status is &quot;move&quot;. If not, return false and end.
-     * With god card allows second move, it will check if this god card allows second move.
-     * If it is valid, move the worker to the desired place.
+     * Moves a worker (settele at fromX, fromY) to a specified position (toX, toY).
      *
      * @param board board of the current game
      * @param fromX position x of the original worker
@@ -68,29 +58,39 @@ public class Player {
      * @return {@code true} if the worker is moved successfully
      */
     public boolean move(Board board, int fromX, int fromY, int toX, int toY) {
-        // Check the validity of the move, either through the standard rules or a specific move strategy
-<span class="nc bnc" id="L72" title="All 4 branches missed.">        if ((status.equals(&quot;move&quot;) &amp;&amp; validator.isValidMove(board, fromX, fromY, toX, toY, playerId))) {</span>
-            // Update the worker's position on the board and change the status to 'build'
-<span class="nc" id="L74">            board.findAndPlaceWorker(fromX, fromY, toX, toY, playerId);</span>
-<span class="nc" id="L75">            this.status = &quot;build&quot;;</span>
-<span class="nc" id="L76">            return true;</span>
+<span class="nc bnc" id="L61" title="All 6 branches missed.">        if ((moveStrategy == null &amp;&amp; status.equals(&quot;move&quot;) &amp;&amp; defaultStrategy.isValidMove(board, fromX, fromY, toX, toY, playerId))) {</span>
+<span class="nc" id="L62">            board.findAndPlaceWorker(fromX, fromY, toX, toY, playerId);</span>
+<span class="nc" id="L63">            this.status = &quot;build&quot;;</span>
+<span class="nc" id="L64">            return true;</span>
+<span class="nc bnc" id="L65" title="All 6 branches missed.">        } else if ((moveStrategy != null &amp;&amp; status.equals(&quot;move&quot;) &amp;&amp; moveStrategy.isValidMove(board, fromX, fromY, toX, toY, playerId))) {</span>
+            // Handle move actions under a specific move strategy
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            if(moveStrategy.canTakeAnotherAction(this)) {</span>
+                // Execute the first or second build action based on the player's execution state
+<span class="nc bnc" id="L69" title="All 2 branches missed.">                if(!this.isExecuted) {</span>
+<span class="nc" id="L70">                    this.isExecuted = true;</span>
+<span class="nc" id="L71">                    board.findAndPlaceWorker(fromX, fromY, toX, toY, playerId);</span>
+<span class="nc" id="L72">                } else {</span>
+<span class="nc" id="L73">                    board.findAndPlaceWorker(fromX, fromY, toX, toY, playerId);</span>
+<span class="nc" id="L74">                    this.isExecuted = false;</span>
+<span class="nc" id="L75">                    this.status = &quot;build&quot;;</span>
+                }
+<span class="nc" id="L77">            } else {</span>
+                // Execute a single move action if the strategy does not allow a second action
+<span class="nc" id="L79">                board.findAndPlaceWorker(fromX, fromY, toX, toY, playerId);</span>
+<span class="nc" id="L80">                this.status = &quot;build&quot;;</span>
+            }
+
+<span class="nc" id="L83">            return true;</span>
         } else {
             // Output error message if the move is invalid
-<span class="nc" id="L79">            System.out.println(&quot;Invalid move. Try again.&quot;);</span>
-<span class="nc" id="L80">            return false;</span>
+<span class="nc" id="L86">            System.out.println(&quot;Invalid move. Try again.&quot;);</span>
+<span class="nc" id="L87">            return false;</span>
         }
     }
 
     /**
-     * First, it allows player to choose the position to build a block or dome.
-     * Second, it will check if this player has god card that implements build strategy
-     * if true, validation obey the god card rule will be executed,
-     * if false, the default validation will be executed.
-     * Third, it will check if the position is valid and the status is &quot;build&quot;. If not, return false.
-     * Forth, without god card, it will build a block or dome.
-     * With god card allows second build, it will check if this god card allows second build.
-     * If true, check if this player has built once or not to decide if the status needs to be changed to 'move', then build a block or dome.
-     * if not, change the status to 'move' and build a block or dome.
+     * Builds a block or dome at a specified position (buildX, buildY).
+     * 
      * @param board board of the current game
      * @param buildX the X position required to build a block or dome
      * @param buildY the Y position required to build a block or dome
@@ -98,23 +98,43 @@ public class Player {
      */
     public boolean build(Board board, int buildX, int buildY) {
         // Check if the build is valid under standard rules or a specific build strategy
-<span class="nc bnc" id="L101" title="All 4 branches missed.">        if((status.equals(&quot;build&quot;) &amp;&amp; validator.isValidBuild(board, buildX, buildY))) {</span>
+<span class="nc bnc" id="L101" title="All 6 branches missed.">        if((buildStrategy == null &amp;&amp; status.equals(&quot;build&quot;) &amp;&amp; defaultStrategy.isValidBuild(board, buildX, buildY))) {</span>
             // Execute the build action and update the status
 <span class="nc" id="L103">            this.status = &quot;move&quot;;</span>
 <span class="nc" id="L104">            board.buildBlock(buildX, buildY);</span>
 <span class="nc" id="L105">            resetIsMoved(board);</span>
 <span class="nc" id="L106">            return true;</span>
+<span class="nc bnc" id="L107" title="All 6 branches missed.">        } else if(buildStrategy != null &amp;&amp; status.equals(&quot;build&quot;) &amp;&amp; buildStrategy.isValidBuild(board, buildX, buildY)) {</span>
+            // Handle build actions under a specific build strategy
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if(buildStrategy.canTakeAnotherAction(this)) {</span>
+                // Execute the first or second build action based on the player's execution state
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                if(!this.isExecuted) {</span>
+<span class="nc" id="L112">                    this.isExecuted = true;</span>
+<span class="nc" id="L113">                    board.buildBlock(buildX, buildY);</span>
+<span class="nc" id="L114">                } else {</span>
+<span class="nc" id="L115">                    board.buildBlock(buildX, buildY);</span>
+<span class="nc" id="L116">                    this.isExecuted = false;</span>
+<span class="nc" id="L117">                    this.status = &quot;move&quot;;</span>
+<span class="nc" id="L118">                    resetIsMoved(board);</span>
+                }
+<span class="nc" id="L120">            } else {</span>
+                // Execute a single build action if the strategy does not allow a second action
+<span class="nc" id="L122">                this.status = &quot;move&quot;;</span>
+<span class="nc" id="L123">                board.buildBlock(buildX, buildY);</span>
+<span class="nc" id="L124">                resetIsMoved(board);</span>
+            }
+
+<span class="nc" id="L127">            return true;</span>
         } else {
             // Output error message if the build action is invalid
-<span class="nc" id="L109">            System.out.println(&quot;Invalid build. Try again.&quot;);</span>
-<span class="nc" id="L110">            return false;</span>
+<span class="nc" id="L130">            System.out.println(&quot;Invalid build. Try again.&quot;);</span>
+<span class="nc" id="L131">            return false;</span>
         }
     }
 
     /**
-     * Determines if a move results in a winning condition.
-     * This method checks for standard winning conditions and any additional conditions specified by a win strategy.
-     * If any worker has moved to a position meeting the winning criteria, or if the win strategy's conditions are met, the move is considered a winning move.
+     * Check if a move atcion leads to win.
+     * Both check default winning strategy (no god class) and special winning strategy (with god class)
      *
      * @param board The game board on which the move is being made.
      * @param fromX The original X coordinate of the worker.
@@ -124,35 +144,40 @@ public class Player {
      * @return {@code true} if the move results in a win, otherwise {@code false}.
      */
     public boolean isWinningMove(Board board, int fromX, int fromY, int toX, int toY) {
-<span class="nc" id="L127">        boolean isWin = validator.isWinningMove(board);</span>
-
-<span class="nc" id="L129">        return isWin;</span>
+        // Check if the default winning condition is met
+<span class="nc" id="L148">        boolean isDefaultWin = defaultStrategy.isWinningMove(board);</span>
+        
+        // Check if a custom winning strategy is set and its conditions are met
+<span class="nc" id="L151">        boolean isGodWin = false;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (winStrategy != null) {</span>
+<span class="nc" id="L153">            isGodWin = winStrategy.isWinningMove(board, fromX, fromY, toX, toY);</span>
+        }
+    
+        // Return true if either the default or custom winning conditions are met
+<span class="nc bnc" id="L157" title="All 4 branches missed.">        return isDefaultWin || isGodWin;</span>
     }
 
     /**
      * Resets the movement state of all workers on the board.
-     * This method iterates through all workers on the board and sets their 'isMoved' state to false.
-     * It is used to reset the state at the end of a turn or after a specific action has been completed,
-     * ensuring that the movement state of each worker is accurately reflected for the next turn.
-     *
+
      * @param board The game board whose workers' movement states are to be reset.
      */
     public void resetIsMoved(Board board) {
         // Iterate through all workers on the board
-<span class="nc bnc" id="L142" title="All 2 branches missed.">        for(Worker worker : board.getWorkers()) {</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        for(Worker worker : board.getWorkers()) {</span>
             // Reset the 'isMoved' state to false if it's currently true
-<span class="nc bnc" id="L144" title="All 2 branches missed.">            if(worker.getIsMoved()) {</span>
-<span class="nc" id="L145">                worker.setIsMoved(false);</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            if(worker.getIsMoved()) {</span>
+<span class="nc" id="L170">                worker.setIsMoved(false);</span>
             }
-<span class="nc" id="L147">        }</span>
-<span class="nc" id="L148">    }</span>
+        }
+<span class="nc" id="L173">    }</span>
 
     /**
-     * Retrieves the status of player.
+     * Get the status of player.
      * @return The status of player.
      */
     public String getStatus() {
-<span class="nc" id="L155">        return status;</span>
+<span class="nc" id="L180">        return status;</span>
     }
     
 
@@ -163,7 +188,67 @@ public class Player {
      * @param status The status to be set for the player.
      */
     public void setStatus(String status) {
-<span class="nc" id="L166">        this.status = status;</span>
-<span class="nc" id="L167">    }</span>
+<span class="nc" id="L191">        this.status = status;</span>
+<span class="nc" id="L192">    }</span>
+
+    /**
+     * Sets the movement strategy according to the god card.
+     *
+     * @param strategy The move strategy to be set.
+     */
+    public void setMoveStrategy(MoveStrategy strategy) { 
+<span class="nc" id="L200">        this.moveStrategy = strategy; </span>
+<span class="nc" id="L201">    }</span>
+
+    /**
+     * Sets the building strategy according to the god card.
+     *
+     * @param strategy The build strategy to be set.
+     */
+    public void setBuildStrategy(BuildStrategy strategy) { 
+<span class="nc" id="L209">        this.buildStrategy = strategy; </span>
+<span class="nc" id="L210">    }</span>
+
+    /**
+     * Sets the winning strategy according to the god card.
+     *
+     * @param strategy The win strategy to be set.
+     */
+    public void setWinStrategy(WinStrategy strategy) { 
+<span class="nc" id="L218">        this.winStrategy = strategy; </span>
+<span class="nc" id="L219">    }</span>
+
+    /**
+     * Gets the current building strategy of the player.
+     * @return The current build strategy.
+     */
+    public BuildStrategy getBuildStrategy() {
+<span class="nc" id="L226">        return buildStrategy;</span>
+    }
+
+    /**
+     * Gets the current moving strategy of the player.
+     * @return The current move strategy.
+     */
+    public MoveStrategy getMoveStrategy() {
+<span class="nc" id="L234">        return moveStrategy;</span>
+    }
+
+    /**
+     * Checks if a specific action has been executed by the player.
+     * @return {@code true} if the action has been executed, otherwise {@code false}.
+     */
+    public boolean getIsExecuted() {
+<span class="nc" id="L242">        return isExecuted;</span>
+    }
+    
+    /**
+     * Sets the executed state for a specific action.
+     *
+     * @param executed The executed state to be set.
+     */
+    public void setExecuted(boolean executed) {
+<span class="nc" id="L251">        isExecuted = executed;</span>
+<span class="nc" id="L252">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

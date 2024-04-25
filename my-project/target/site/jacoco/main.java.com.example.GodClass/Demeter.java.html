@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Demeter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example.GodClass</a> &gt; <span class="el_source">Demeter.java</span></div><h1>Demeter.java</h1><pre class="source lang-java linenums">package main.java.com.example.GodClass;
+
+import main.java.com.example.Worker;
+import main.java.com.example.Board;
+import main.java.com.example.Player;
+import main.java.com.example.Validator;
+
+/**
+ * Represents the Demeter build strategy in the game.
+ * As per Demeter's unique ability, this class allows a player to perform an additional build action,
+ * but not on the same space as the first build in a turn.
+ * Implements the BuildStrategy interface, defining customized building behavior.
+ */
+<span class="nc" id="L14">public class Demeter implements BuildStrategy {</span>
+<span class="nc" id="L15">    private int lastBuildX = -1; // The X coordinate of the last build action. Initialized to -1 to indicate no build has occurred yet.</span>
+<span class="nc" id="L16">    private int lastBuildY = -1; // The Y coordinate of the last build action. Initialized to -1 to indicate no build has occurred yet.</span>
+<span class="nc" id="L17">    private boolean hasBuiltOnce = false; // A flag to track if the player has already built once during their turn.</span>
+<span class="nc" id="L18">    private Validator validator = new Validator();</span>
+
+    /**
+     * Determines if a build action is valid for player with Demeter god card at a specified location on the board.
+     * This method allows player to build one additional time, but not on the same space
+     * in addition to the default 'isValidBuild' method.
+     * This method overrides the method in BuildStrategy interface.
+     * @param board The game board.
+     * @param x The x-coordinate where the build action is attempted.
+     * @param y The y-coordinate where the build action is attempted.
+     * @return {@code true} if the build action is valid and follows Demeter's building rules, otherwise {@code false}.
+     */
+    @Override
+    public boolean isValidBuild(Board board, int x, int y) {
+        // Rebuild in the same place is not allowed for second build
+<span class="nc bnc" id="L33" title="All 6 branches missed.">        if (hasBuiltOnce &amp;&amp; x == lastBuildX &amp;&amp; y == lastBuildY) {</span>
+<span class="nc" id="L34">            return false;</span>
+        }
+
+        // Use Validator to check move validity
+<span class="nc" id="L38">        boolean isValid = validator.isValidBuild(board, x, y);</span>
+
+        // Update build state if valid
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (isValid) {</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            if (!hasBuiltOnce) {</span>
+<span class="nc" id="L43">                lastBuildX = x;</span>
+<span class="nc" id="L44">                lastBuildY = y;</span>
+<span class="nc" id="L45">                hasBuiltOnce = true;</span>
+<span class="nc" id="L46">            } else {</span>
+<span class="nc" id="L47">                resetBuildState();</span>
+            }
+        }
+
+<span class="nc" id="L51">        return isValid;</span>
+    }
+
+
+    /**
+     * Checks if the player can take another action.
+     * Always returns true for Demeter as they can build twice.
+     *
+     * @param player The player performing the action.
+     * @return Always {@code true}.
+     */
+    @Override
+    public boolean canTakeAnotherAction(Player player) {
+<span class="nc" id="L64">        return true;</span>
+    }
+
+    /**
+     * Resets the build state for the next action.
+     * Invoked to signal completion of Demeter's building actions.
+     */
+    @Override
+    public void passAction() {
+<span class="nc" id="L73">        resetBuildState();</span>
+<span class="nc" id="L74">    }</span>
+
+    /**
+     * Resets the internal state tracking the last build action.
+     * Clears the coordinates and reset the hasBuiltOnce flag.
+     */
+    private void resetBuildState() {
+<span class="nc" id="L81">        lastBuildX = -1;</span>
+<span class="nc" id="L82">        lastBuildY = -1;</span>
+<span class="nc" id="L83">        hasBuiltOnce = false;</span>
+<span class="nc" id="L84">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

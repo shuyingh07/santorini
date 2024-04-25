@@ -1,112 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Validator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-project</a> &gt; <a href="index.source.html" class="el_package">main.java.com.example</a> &gt; <span class="el_source">Validator.java</span></div><h1>Validator.java</h1><pre class="source lang-java linenums">package main.java.com.example;
 
 /**
- * This class contains methods to check whether an action is valid.
+ * This class contains methods to validate actions in the game of Santorini.
  */
-<span class="nc" id="L6">public class Validator {</span>
-<span class="nc" id="L7">    private int maxHeight = 4;</span>
+public class Validator {
+    private static final int MAXHEIGHT = 4;
+
+<span class="nc" id="L9">    public Validator(){</span>
+<span class="nc" id="L10">    }</span>
+
     /**
-     * Check if the initial place is within the board boundaries, the cell is unoccupied
+     * Checks if the initial placement of a worker is valid.
      * @param board board of the current game
      * @param toX initial position x of worker
      * @param toY initial position y of worker
-     * @return {@code true} if the position is valid to place the worker
+     * @return {@code true} if the placement is valid, {@code false} otherwise.
      */
     public boolean isValidInitial(Board board, int toX, int toY) {
-<span class="nc bnc" id="L16" title="All 4 branches missed.">        return isWithinBounds(board, toX, toY) &amp;&amp; gridIsFree(board, toX, toY);</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if (!isWithinBounds(board, toX, toY)) {</span>
+<span class="nc" id="L21">            return false;</span>
+        }
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        if (!gridIsFree(board, toX, toY)) {</span>
+<span class="nc" id="L24">            return false;</span>
+        }
+<span class="nc" id="L26">        return true;</span>
     }
 
     /**
-     * Check if the moving position is within the board boundaries, the cell is unoccupied, the height is valid, etc.
+     * Checks if a move of a worker is valid.
      * @param board board of the current game
      * @param fromX position x of the original worker
      * @param fromY position y of the original worker
      * @param toX position x of the moved worker
      * @param toY position y of the moved worker
      * @param playerId the player id of current player
-     * @return {@code true} if the position is valid to move the worker from the original position
+     * @return {@code true} if the move is valid, {@code false} otherwise.
      */
     public boolean isValidMove(Board board, int fromX, int fromY, int toX, int toY, int playerId) {
-<span class="nc" id="L30">        boolean workerBelongPlayer = false;</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        for (Worker worker : board.getWorkers()) {</span>
-<span class="nc bnc" id="L32" title="All 6 branches missed.">            if (fromX == worker.getX() &amp;&amp; fromY == worker.getY() &amp;&amp; playerId == worker.getPlayerId()) {</span>
-<span class="nc" id="L33">                workerBelongPlayer = true;</span>
-<span class="nc" id="L34">                break;</span>
+<span class="nc" id="L40">        boolean workerBelongPlayer = false;</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        for (Worker worker : board.getWorkers()) {</span>
+<span class="nc bnc" id="L42" title="All 6 branches missed.">            if (fromX == worker.getX() &amp;&amp; fromY == worker.getY() &amp;&amp; playerId == worker.getPlayerId()) {</span>
+<span class="nc" id="L43">                workerBelongPlayer = true;</span>
+<span class="nc" id="L44">                break;</span>
             }
-<span class="nc" id="L36">        }</span>
+        }
 
-<span class="nc bnc" id="L38" title="All 4 branches missed.">        return isWithinBounds(board, toX, toY)</span>
-                &amp;&amp; workerBelongPlayer
-<span class="nc bnc" id="L40" title="All 4 branches missed.">                &amp;&amp; board.getTowerHeight(toX, toY) &lt;= maxHeight-1 &amp;&amp; gridIsFree(board, toX, toY)</span>
-<span class="nc bnc" id="L41" title="All 2 branches missed.">                &amp;&amp; board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) &lt;= 1</span>
-<span class="nc bnc" id="L42" title="All 4 branches missed.">                &amp;&amp; Math.abs(fromX - toX) &lt;= 1 &amp;&amp; Math.abs(fromY - toY) &lt;= 1;</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (!isWithinBounds(board, toX, toY)) {</span>
+<span class="nc" id="L49">            return false;</span>
+        }
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (!workerBelongPlayer) {</span>
+<span class="nc" id="L52">            return false;</span>
+        }
+<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (board.getTowerHeight(toX, toY) &gt; MAXHEIGHT-1 || !gridIsFree(board, toX, toY) || </span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">            board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) &gt; 1 || </span>
+<span class="nc bnc" id="L56" title="All 4 branches missed.">            Math.abs(fromX - toX) &gt; 1 || Math.abs(fromY - toY) &gt; 1) {</span>
+<span class="nc" id="L57">            return false;</span>
+        }
+<span class="nc" id="L59">        return true;</span>
     }
 
     /**
-     * Check if the build position is within the board boundaries, the height is less than 4, the cell neighbored with moved worker, etc.
+     * Checks if building at a position is valid.
      * @param board board of the current game
-     * @param x position x of the block or dome
-     * @param y position y of the block or dome
-     * @return {@code true} if the position is valid to build block or dome
+     * @param x position x to build
+     * @param y position y to build
+     * @return {@code true} if building is valid, {@code false} otherwise.
      */
     public boolean isValidBuild(Board board, int x, int y) {
-<span class="nc" id="L53">        int workerX = -1;</span>
-<span class="nc" id="L54">        int workerY = -1;</span>
-<span class="nc" id="L55">        boolean hasMovedWorker = false;</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        for(Worker worker : board.getWorkers()) {</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            if(worker.getIsMoved()) {</span>
-<span class="nc" id="L58">                workerX = worker.getX();</span>
-<span class="nc" id="L59">                workerY = worker.getY();</span>
-<span class="nc" id="L60">                hasMovedWorker = true;</span>
-<span class="nc" id="L61">                break;</span>
+<span class="nc" id="L70">        int workerX = -1;</span>
+<span class="nc" id="L71">        int workerY = -1;</span>
+<span class="nc" id="L72">        boolean hasMovedWorker = false;</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        for(Worker worker : board.getWorkers()) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if(worker.getIsMoved()) {</span>
+<span class="nc" id="L75">                workerX = worker.getX();</span>
+<span class="nc" id="L76">                workerY = worker.getY();</span>
+<span class="nc" id="L77">                hasMovedWorker = true;</span>
+<span class="nc" id="L78">                break;</span>
             }
-<span class="nc" id="L63">        }</span>
+        }
 
-<span class="nc bnc" id="L65" title="All 4 branches missed.">        return isWithinBounds(board, x, y) &amp;&amp; board.getTowerHeight(x, y) &lt; maxHeight &amp;&amp;</span>
-<span class="nc bnc" id="L66" title="All 4 branches missed.">                Math.abs(x - workerX) &lt;= 1 &amp;&amp; Math.abs(y - workerY) &lt;= 1 &amp;&amp;</span>
-<span class="nc bnc" id="L67" title="All 4 branches missed.">                gridIsFree(board, x, y) &amp;&amp; hasMovedWorker;</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (!isWithinBounds(board, x, y)) {</span>
+<span class="nc" id="L83">            return false;</span>
+        }
+<span class="nc bnc" id="L85" title="All 10 branches missed.">        if (board.getTowerHeight(x, y) &gt;= MAXHEIGHT || Math.abs(x - workerX) &gt; 1 || Math.abs(y - workerY) &gt; 1 || !gridIsFree(board, x, y) || !hasMovedWorker) {</span>
+<span class="nc" id="L86">            return false;</span>
+        }
+<span class="nc" id="L88">        return true;</span>
     }
 
     /**
-     * Determines if a move results in a winning condition.
-     * This method checks for default winning conditions (reaching a level 3 tower on the board).
-     * If any worker belongs to current player has moved to a position meeting the winning criteria, the move is considered a winning move.
-     *
-     * @param board The game board on which the move is being made.
-     * @return {@code true} if the move results in a win, otherwise {@code false}.
+     * Checks if a move results in a win.
+     * @param board The game board.
+     * @return {@code true} if the move results in a win, {@code false} otherwise.
      */
     public boolean isWinningMove(Board board) {
-<span class="nc" id="L79">        boolean ifWin = false;</span>
-
-        // Check standard winning condition: any worker reaching the third level
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        for (Worker worker : board.getWorkers()) {</span>
-<span class="nc bnc" id="L83" title="All 4 branches missed.">            if (worker.getIsMoved() &amp;&amp; board.getTowerHeight(worker.getX(), worker.getY()) == maxHeight - 1) {</span>
-<span class="nc" id="L84">                ifWin = true;</span>
-<span class="nc" id="L85">                break;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        for (Worker worker : board.getWorkers()) {</span>
+<span class="nc bnc" id="L98" title="All 4 branches missed.">            if (worker.getIsMoved() &amp;&amp; board.getTowerHeight(worker.getX(), worker.getY()) == MAXHEIGHT - 1) {</span>
+<span class="nc" id="L99">                return true;</span>
             }
-<span class="nc" id="L87">        }</span>
-<span class="nc" id="L88">        return ifWin;</span>
+        }
+<span class="nc" id="L102">        return false;</span>
     }
 
     /**
-     * Check if the cell is within boundary
-     * @param x position x of the checked cell
-     * @param y position y of the checked cell
-     * @return {@code true} if the position within boundary
+     * Checks if a cell is within the board boundaries.
+     * @param board The game board.
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return {@code true} if the cell is within bounds, {@code false} otherwise.
      */
     public boolean isWithinBounds(Board board, int x, int y) {
-<span class="nc bnc" id="L98" title="All 8 branches missed.">        return x &gt;= 0 &amp;&amp; x &lt; board.getROW() &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; board.getCOL();</span>
+<span class="nc bnc" id="L113" title="All 8 branches missed.">        if (x &gt;= 0 &amp;&amp; x &lt; board.getROW() &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; board.getCOL()) {</span>
+<span class="nc" id="L114">            return true;</span>
+        } else {
+<span class="nc" id="L116">            return false;</span>
+        }
     }
 
     /**
-     * Check if the cell is free
-     * @param x position x of the checked cell
-     * @param y position y of the checked cell
-     * @return {@code true} if the position is free
+     * Checks if a cell is unoccupied by a worker.
+     * @param board The game board.
+     * @param x The x-coordinate of the cell.
+     * @param y The y-coordinate of the cell.
+     * @return {@code true} if the cell is unoccupied, {@code false} otherwise.
      */
     public boolean gridIsFree(Board board, int x, int y) {
-        
-<span class="nc bnc" id="L109" title="All 2 branches missed.">        return !board.hasWorker(x, y);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (!board.hasWorker(x, y)) {</span>
+<span class="nc" id="L129">            return true;</span>
+        } else {
+<span class="nc" id="L131">            return false;</span>
+        }
+    }
+
+    /**
+     * Get the maxheight of the game
+     * @return The maxheight of the game
+     */
+    public static int getMaxHeight() {
+<span class="nc" id="L140">        return MAXHEIGHT;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

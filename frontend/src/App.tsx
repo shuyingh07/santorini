@@ -31,24 +31,29 @@ const App: React.FC = () => {
             }))
         );
     }
-    
-    
+
+
     // Initialize the game grid
     const initialGrid: Grid[][] = createInitialGrid();
 
     /// Set up the initial game state
     const initialGameState: GameState = {
         grid: initialGrid,
-        currentPlayer: 0, 
+        currentPlayer: 0,
         status: 'initialize',
         isWinning: false,
-        message: "" 
+        message: ""
     };
 
     // State hooks for managing game state
     const [gameState, setGameState] = useState<GameState>(initialGameState);
     const [selectedPiece, setSelectedPiece] = useState<{ x: number, y: number } | null>(null);
 
+    // 新添加的状态：是否使用神卡，选择的神卡列表
+    const [useGodCards, setUseGodCards] = useState(false);  // 是否使用神卡
+    const [godCards, setGodCards] = useState<string[]>([]);  // 已选择的神卡列表
+    const [gameStarted, setGameStarted] = useState(false);
+    const [playerGodCards, setPlayerGodCards] = useState<string[]>(['Null', 'Null']);  // 初始状态，两位玩家的神卡都未选择
 
     /**
      * Handle clicks on cells in the game grid.
@@ -86,12 +91,44 @@ const App: React.FC = () => {
         }
     };
 
+    // 更新神卡使用的状态
+    const handleUseGodCards = (value: boolean) => {
+        setUseGodCards(value);
+        if (!value) {
+            setGodCards([]); // 如果不使用神卡，清空已选择的神卡列表
+            setPlayerGodCards(['Null', 'Null']); // 不使用神卡时重置
+        }
+    };
+
+    // 选择神卡
+    const handleSelectGodCard = async (godCardName: string) => {
+        const currentPlayer = gameState.currentPlayer;
+        const updatedPlayerGodCards = [...playerGodCards];
+        updatedPlayerGodCards[currentPlayer] = godCardName;
+        setPlayerGodCards(updatedPlayerGodCards);
+        setGodCards([...godCards, godCardName]);
+        const response = await fetch(`http://localhost:8080/setGodClass?godCard=${godCardName}`);
+        await checkAndSetResponse(response);
+    };
+
+    // 放弃额外行动
+    const handlePassAction = async () => {
+        const response = await fetch(`http://localhost:8080/passAction`);
+        await checkAndSetResponse(response);
+    };
+
 
     /**
      * Starts a new game by resetting the game state.
      */
     const newGame = async () => {
-
+        // 重置游戏状态到初始状态
+        setGameState(initialGameState);
+        setSelectedPiece(null);
+        setGodCards([]);  // 重置已选择的神卡列表
+        setUseGodCards(false);  // 重置神卡使用状态
+        setGameStarted(false);  // 允许重新启用神卡选择
+        setPlayerGodCards(['Null', 'Null']);
         const response = await fetch(`http://localhost:8080/newGame`);
         await checkAndSetResponse(response);
     };
@@ -104,44 +141,61 @@ const App: React.FC = () => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const newGameState: GameState = await response.json();
         setGameState(newGameState);
         setSelectedPiece(null);
+
+        // 如果游戏状态不是'initialize'，设置gameStarted为true
+        if (newGameState.status !== 'initialize') {
+            setGameStarted(true);
+        }
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
             <div style={{ width: '200px', padding: '10px', backgroundColor: '#f0f0f0', borderRight: '1px solid #ccc' }}>
                 <h4>Tips</h4>
-                <p><span style={{ color: 'yellow', fontWeight: 'bold' }}>Yellow:</span> Player1</p>
-                <p><span style={{ color: 'lightblue', fontWeight: 'bold' }}>Blue:</span> Player2</p>
+                <p>Player 0: X</p>
+                <p>Player 1: O</p>
                 <p><span style={{ color: 'purple', fontWeight: 'bold' }}>Purple:</span> Selected Grid</p>
             </div>
-            <div style={{ flexGrow: 1 }}>
-                <button onClick={newGame} className="new-game-button">New Game</button>
-                <div className="game-board">
-                    {gameState.grid.map((row, rowIndex) => (
-                        <div key={rowIndex} className="board-row">
-                            {row.map((grid, colIndex) => (
-                                <Cell
-                                    key={`${rowIndex}-${colIndex}`}
-                                    grid={grid}
-                                    onCellClick={handleCellClick}
-                                    x={rowIndex}
-                                    y={colIndex}
-                                    className={selectedPiece && selectedPiece.x === rowIndex && selectedPiece.y === colIndex ? 'selected-grid' : ''}
-                                />
-                            ))}
+            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <div>
+                    <button onClick={newGame} className="new-game-button">New Game</button>
+                    <button onClick={() => handleUseGodCards(!useGodCards)} className="use-god-card-button" disabled={gameStarted}>
+                        {useGodCards ? "Disable God Cards" : "Enable God Cards"}
+                    </button>
+                    {useGodCards && (
+                        <div>
+                            <button onClick={() => handleSelectGodCard('Demeter')} disabled={gameStarted} className="god-card-button">Demeter</button>
+                            <button onClick={() => handleSelectGodCard('Pan')} disabled={gameStarted} className="god-card-button">Pan</button>
+                            <button onClick={() => handleSelectGodCard('Hephaestus')} disabled={gameStarted} className="god-card-button">Hephaestus</button>
+                            <button onClick={() => handleSelectGodCard('Minotaur')} disabled={gameStarted} className="god-card-button">Minotaur</button>
+                            <button onClick={() => handleSelectGodCard('Apollo')} disabled={gameStarted} className="god-card-button">Apollo</button>
+                            <button onClick={handlePassAction} className="pass-button">Pass Action</button>
                         </div>
-                    ))}
+                    )}
+                    <div className="game-board">
+                        {gameState.grid.map((row, rowIndex) => (
+                            <div key={rowIndex} className="board-row">
+                                {row.map((cell, colIndex) => (
+                                    <Cell key={`${rowIndex}-${colIndex}`} grid={cell} onCellClick={() => handleCellClick(rowIndex, colIndex)} x={rowIndex} y={colIndex}
+                                        className={selectedPiece && selectedPiece.x === rowIndex && selectedPiece.y === colIndex ? 'selected-grid' : ''} />
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="game-state-message">{'Message: ' + gameState.message}</div>
+                    <div className="game-info">
+                        {gameState.isWinning ? `Player ${gameState.currentPlayer} wins!` : `Player ${gameState.currentPlayer}'s Turn, Status: ${gameState.status}`}
+                    </div>
                 </div>
-                <div className="game-state-message">
-                    {'Message: ' + gameState.message}
-                </div>
-                <div className="game-info">
-                    {gameState.isWinning ? `Player ${gameState.currentPlayer} wins!` : `Player ${gameState.currentPlayer}'s Turn, Status: ${gameState.status}`}
-                </div>
+            </div>
+            <div style={{ width: '200px', padding: '10px', backgroundColor: '#f0f0f0', borderLeft: '1px solid #ccc' }}>
+                <h4>God Cards</h4>
+                <p>Player0 God Class: {playerGodCards[0]}</p>
+                <p>Player1 God Class: {playerGodCards[1]}</p>
             </div>
         </div>
     );
