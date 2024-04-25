@@ -41,11 +41,7 @@ public class Minotaur implements MoveStrategy{
 
         // Check basic move conditions
         // Different from others, Minotaur don't need the grid is free
-        boolean isValid = isWithinBounds(toX, toY)
-                && workerBelongPlayer
-                && board.getTowerHeight(toX, toY) <= MAXHEIGHT-1
-                && Math.abs(board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY)) <= 1
-                && Math.abs(fromX - toX) <= 1 && Math.abs(fromY - toY) <= 1;
+        boolean isValid = validator.godCardSeizeValidMove(board, fromX, fromY, toX, toY, playerId);
 
         // If the destination is free and the movement is valid, return true.
         if(isValid && validator.gridIsFree(board, toX, toY)) {
@@ -53,6 +49,9 @@ public class Minotaur implements MoveStrategy{
         } else if(isValid && !validator.gridIsFree(board, toX, toY)) {
             // check if the target position has opponent's worker
             for (Worker worker : board.getWorkers()) {
+                if (toX == worker.getX() && toY == worker.getY() && worker.getPlayerId() == playerId) {
+                    return false;
+                }
                 if (toX == worker.getX() && toY == worker.getY() &&
                         worker.getPlayerId() != playerId) {
 

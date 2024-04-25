@@ -2,13 +2,7 @@ package main.java.com.example;
 import java.util.Objects;
 
 
-import main.java.com.example.GodClass.BuildStrategy;
-import main.java.com.example.GodClass.Demeter;
-import main.java.com.example.GodClass.Hephaestus;
-import main.java.com.example.GodClass.Minotaur;
-import main.java.com.example.GodClass.MoveStrategy;
-import main.java.com.example.GodClass.Pan;
-import main.java.com.example.GodClass.WinStrategy;
+import main.java.com.example.GodClass.*;
 
 /**
  * This class manages the entire game flow, including the board, players, and validator to check player actions.
@@ -207,6 +201,11 @@ public class Game {
             case "Pan":
                 WinStrategy pan = new Pan();
                 this.players[currentPlayerId].setWinStrategy(pan);
+                this.message = "Player " + currentPlayerId + " set Pan as god card successfully!";
+                break;
+            case "Apollo":
+                MoveStrategy apollo = new Apollo();
+                this.players[currentPlayerId].setMoveStrategy(apollo);
                 this.message = "Player " + currentPlayerId + " set Pan as god card successfully!";
                 break;
             default:

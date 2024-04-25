@@ -64,6 +64,40 @@ public class Validator {
     }
 
     /**
+     * Checks if a move of a God Card is valid.
+     * This check don't need to test that a grid is not occupied by other workers.
+     * @param board board of the current game
+     * @param fromX position x of the original worker
+     * @param fromY position y of the original worker
+     * @param toX position x of the moved worker
+     * @param toY position y of the moved worker
+     * @param playerId the player id of current player
+     * @return {@code true} if the move is valid, {@code false} otherwise.
+     */
+    public boolean godCardSeizeValidMove(Board board, int fromX, int fromY, int toX, int toY, int playerId) {
+        boolean workerBelongPlayer = false;
+        for (Worker worker : board.getWorkers()) {
+            if (fromX == worker.getX() && fromY == worker.getY() && playerId == worker.getPlayerId()) {
+                workerBelongPlayer = true;
+                break;
+            }
+        }
+
+        if (!isWithinBounds(board, toX, toY)) {
+            return false;
+        }
+        if (!workerBelongPlayer) {
+            return false;
+        }
+        if (board.getTowerHeight(toX, toY) > MAXHEIGHT-1 ||
+                board.getTowerHeight(toX, toY) - board.getTowerHeight(fromX, fromY) > 1 ||
+                Math.abs(fromX - toX) > 1 || Math.abs(fromY - toY) > 1) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Checks if building at a position is valid.
      * @param board board of the current game
      * @param x position x to build
