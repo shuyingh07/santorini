@@ -68,6 +68,12 @@ public class App extends SimpleWebServer {
                 this.game = this.game.build(
                         Integer.parseInt(params.get("x1")), Integer.parseInt(params.get("y1")));
                 break;
+            case "/setGodClass":
+            this.game = this.game.setGodClass(params.get("godCard"));
+            break;
+            case "/passAction":
+                this.game = this.game.passAction();
+                break;
             default:
                 return super.serve(session);
         }

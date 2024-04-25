@@ -1,6 +1,15 @@
 package main.java.com.example;
 import java.util.Objects;
 
+
+import main.java.com.example.GodClass.BuildStrategy;
+import main.java.com.example.GodClass.Demeter;
+import main.java.com.example.GodClass.Hephaestus;
+import main.java.com.example.GodClass.Minotaur;
+import main.java.com.example.GodClass.MoveStrategy;
+import main.java.com.example.GodClass.Pan;
+import main.java.com.example.GodClass.WinStrategy;
+
 /**
  * This class manages the entire game flow, including the board, players, and validator to check player actions.
  */
@@ -165,5 +174,95 @@ public class Game {
      */
     public String getMessage() {
         return message;
+    }
+
+    /**
+    * This method sets the god class for the current player based on the given god class name.
+    * It initializes the corresponding god card strategy for the player, such as Demeter, Hephaestus, Minotaur, or Pan.
+    * After setting the god class, it switches to the next player.
+    * If the given god class name does not match any known god cards, it returns the current state without changing the player.
+    *
+    * @param godClassName The name of the god class to be set for the player.
+    * @return A new instance of Game reflecting the updated state after setting the god class.
+    */
+    public Game setGodClass(String godClassName) {
+        System.out.println(godClassName);
+    
+        switch (godClassName) {
+            case "Demeter":
+                BuildStrategy demeter = new Demeter();
+                this.players[currentPlayerId].setBuildStrategy(demeter);
+                this.message = "Player " + currentPlayerId + " set Demeter as god card successfully!";
+                break;
+            case "Hephaestus":
+                BuildStrategy hephaestus = new Hephaestus();
+                this.players[currentPlayerId].setBuildStrategy(hephaestus);
+                this.message = "Player " + currentPlayerId + " set Hephaestus as god card successfully!";
+                break;
+            case "Minotaur":
+                MoveStrategy minotaur = new Minotaur();
+                this.players[currentPlayerId].setMoveStrategy(minotaur);
+                this.message = "Player " + currentPlayerId + " set Minotaur as god card successfully!";
+                break;
+            case "Pan":
+                WinStrategy pan = new Pan();
+                this.players[currentPlayerId].setWinStrategy(pan);
+                this.message = "Player " + currentPlayerId + " set Pan as god card successfully!";
+                break;
+            default:
+                // Set error message if the god card name does not match any known god cards
+                this.message = "Error: Cannot set god card, please try again!";
+                return this; // Return the current state without changing the player
+        }
+    
+        // Switch to the next player after successfully setting the god card
+        changeCurrentPlayer();
+        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);
+    }
+
+    /**
+     * Handles the passing of an action by the current player.
+     * This method allows a player to skip their current action (move or build) if certain conditions are met.
+     * It checks the current player's status and action execution state, then updates the status accordingly.
+     * The method also resets certain states of the player and switches to the next player.
+     * A success message is set if the action is successfully passed, otherwise, an error message is generated.
+     *
+     * @return A new instance of Game reflecting the updated state after the action is passed.
+     */
+    public Game passAction() {
+        // Check if the current player has executed an action and has a build strategy
+        if(this.players[currentPlayerId].getIsExecuted()) {
+            // Update the player's status based on the current action
+            if(Objects.equals(this.players[currentPlayerId].getStatus(), "move")) {
+                this.players[currentPlayerId].setStatus("build");
+            } else if(Objects.equals(this.players[currentPlayerId].getStatus(), "build")) {
+                this.players[currentPlayerId].setStatus("move");
+            }
+
+            // Reset executed state and perform pass action on the build strategy
+            this.players[currentPlayerId].setExecuted(false);
+
+            if (this.players[currentPlayerId].getBuildStrategy() != null) {
+                // pass build action
+                this.players[currentPlayerId].getBuildStrategy().passAction();
+
+                // Reset move state and switch to the next player
+                this.players[currentPlayerId].resetIsMoved(board);
+                changeCurrentPlayer();
+
+                // Set success message
+                this.message = "Pass Success! Current build action has been passed!";
+            } else if (this.players[currentPlayerId].getMoveStrategy() != null) {
+                // pass move action
+                this.players[currentPlayerId].getMoveStrategy().passAction();
+
+                // Set success message
+                this.message = "Pass Success! Current move action has been passed!";
+            }
+        } else {
+            // Set error message if pass action is not allowed
+            this.message = "Error: Cannot pass this action!";
+        }
+        return new Game(this.board, this.players[0], this.players[1], this.currentPlayerId, this.isWinning, this.message);
     }
 }

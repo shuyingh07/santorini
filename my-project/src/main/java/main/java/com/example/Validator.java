@@ -6,7 +6,11 @@ package main.java.com.example;
 public class Validator {
     private static final int MAXHEIGHT = 4;
 
-    Validator(){
+    /**
+     * Change to public
+     */
+    public Validator(){
+
     }
 
     /**
@@ -130,5 +134,13 @@ public class Validator {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get the maxheight of the game
+     * @return The maxheight of the game
+     */
+    public static int getMaxHeight() {
+        return MAXHEIGHT;
     }
 }
